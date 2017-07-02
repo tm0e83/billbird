@@ -1,0 +1,77 @@
+$primary-color-dark:   #455A64;
+$primary-color:        #607D8B;
+$primary-color-light:  #CFD8DC;
+$primary-color-text:   #FFFFFF;
+$accent-color:         #CDDC39;
+$primary-text-color:   #212121;
+$secondary-text-color: #757575;
+$divider-color:        #BDBDBD;
+
+.datagroup {
+    flex-direction:column;
+    padding:0.5em 1.5em;
+    background-color:$primary-color-text;
+    margin-bottom:1em;
+}
+
+.datagroup.selected {
+    box-shadow:inset 8px 0 0 0 $primary-color-dark;
+}
+
+.setsContainer {
+    position:relative;
+}
+
+.dataset {
+    input, select, button {
+        width:100%;
+    }
+}
+
+.col i {
+    vertical-align:middle;
+    transition:opacity 150ms ease-in-out;
+}
+
+.col i:hover {
+    cursor:pointer;
+    opacity:0.5;
+}
+
+.dataset.selected {
+    background-color:$primary-color-light;
+}
+
+.col-icon,
+.col-id {
+    max-width:20px;
+}
+
+.col-icon i {
+    margin-top:-0.2em;
+}
+
+.col-date {
+    max-width:125px;
+}
+
+.col-val {
+    max-width:110px;
+}
+
+.col-val input {
+    text-align:right;
+}
+
+.col-bttn-small {
+    max-width:40px;
+}
+
+[contenteditable=true] {
+    padding-right:2.5em;
+    outline:0;
+}
+
+.datagroup-description {
+    padding-bottom:1em;
+}

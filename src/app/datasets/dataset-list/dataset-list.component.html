@@ -1,0 +1,91 @@
+<h2>
+    All Datasets
+</h2>
+<button md-button (click)="addNewDatagroup()">New Datagroup</button>
+
+<div>Summe {{sum | currency:'EUR':true}}</div>
+
+<div *ngFor="let datagroup of datagroups" class="datagroup"
+    (click)="onSelectDatagroup(datagroup)"
+    [class.selected]="datagroup === selectedDatagroup">
+    <div class="row">
+        <button md-button (click)="onSelectDatagroup(datagroup);deleteDatagroup()">Delete Datagroup</button>
+        <button md-button *ngIf="selectedDatagroup == datagroup" (click)="addNewDataset()">New Dataset</button>
+        <button md-button *ngIf="selectedDatagroup == datagroup && selectedDataset" (click)="deleteDataset()">Delete Dataset</button>
+    </div>
+    <div class="row">
+        <h3 contenteditable="true"
+            [textContent]="datagroup.title"
+            (input)="datagroup.title=$event.target.textContent"></h3>
+    </div>
+    <div *ngIf="datagroup.description" class="row datagroup-description">
+        <div contenteditable="true"
+            [textContent]="datagroup.description"
+            (input)="datagroup.description=$event.target.textContent"></div>
+    </div>
+    <div class="row tablehead">
+        <div class="col col-icon"></div>
+        <div class="col col-id">ID</div>
+        <div class="col">Title</div>
+        <div class="col col-val">Billing cycle</div>
+        <div class="col col-val">+ / -</div>
+        <div class="col col-bttn-small"></div>
+        <div class="col col-val">Current value</div>
+        <div class="col col-val">Target value</div>
+        <div class="col col-val">Difference</div>
+    </div>
+    <div class="setsContainer" [dragula]="'bag-one'" [dragulaModel]="datagroup.datasets">
+        <div class="row dataset"
+            *ngFor="let dataset of datagroup.datasets"
+            (click)="onSelectDataset(dataset)"
+            [class.selected]="dataset === selectedDataset">
+            <div class="col col-icon">
+                <i class="fa fa-cog" (click)="gotoDetail(dataset)">x</i>
+            </div>
+            <div class="col col-id col-text-only">
+                {{dataset.id}}
+            </div>
+            <div class="col">
+                <input [(ngModel)]="dataset.title" placeholder="Title">
+            </div>
+            <div class="col col-val">
+                <select [(ngModel)]="dataset.billingCycle">
+                    <option value=""></option>
+                    <option value="month">Month</option>
+                    <option value="quarter">Quarter</option>
+                    <option value="year">Year</option>
+                    <option value="2years">2 years</option>
+                </select>
+            </div>
+            <div class="col col-val">
+                <input placeholder="+/-"
+                    [class.negative]="dataset.updateValue < 0"
+                    [class.positive]="dataset.updateValue > 0"
+                    [ngModel]="dataset.updateValue | currency:'EUR':true"
+                    (change)="dataset.updateValue = currencyToNumber($event.target.value); updateSum();">
+            </div>
+            <div class="col col-bttn-small">
+                <button (click)="dataService.updateValues(dataset)" class="fa fa-caret-right"></button>
+            </div>
+            <div class="col col-val">
+                <input placeholder="Current value" disabled
+                    [class.negative]="dataset.currentValue < 0"
+                    [class.positive]="dataset.currentValue > 0"
+                    [ngModel]="dataset.currentValue | currency:'EUR':true"
+                    [class.negative]="dataset.currentValue < 0">
+            </div>
+            <div class="col col-val">
+                <input placeholder="Target value"
+                    [ngModel]="dataset.targetValue | currency:'EUR':true"
+                    (ngModelChange)="dataset.targetValue = currencyToNumber($event)"
+                    [disabled]="dataset.billingCycle != ''">
+            </div>
+            <div class="col col-val">
+                <input placeholder="Difference" disabled
+                    [class.negative]="dataset.diffValue < 0"
+                    [class.positive]="dataset.diffValue > 0"
+                    [ngModel]="dataset.diffValue | currency:'EUR':true">
+            </div>
+        </div>
+    </div>
+</div>

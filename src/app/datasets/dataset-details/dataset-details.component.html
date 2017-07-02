@@ -1,0 +1,51 @@
+<h2>
+    Dataset Details
+</h2>
+<div class="row tablehead">
+    <div class="col col-id">ID</div>
+    <div class="col">Title</div>
+
+    <div class="col">Description</div>
+    <div class="col">Creation date</div>
+    <div class="col">Last modified</div>
+    <div class="col">Charge</div>
+
+    <div class="col">Current value</div>
+    <div class="col">Target value</div>
+    <div class="col">Difference</div>
+</div>
+<div class="row" *ngIf="dataset">
+    <div class="col col-id">
+        {{dataset.id}}
+    </div>
+    <div class="col">
+        <input [(ngModel)]="dataset.title" placeholder="Title">
+    </div>
+    <div class="col">
+        <textarea [(ngModel)]="dataset.description" placeholder="Description"></textarea>
+    </div>
+    <div class="col">
+        {{ dataset.creationDate | unixDateToString }}
+    </div>
+    <div class="col">
+        {{ dataset.lastModifiedDate | unixDateToString }}
+    </div>
+       <div class="col">
+        <input [(ngModel)]="dataset.chargeDate" type="date">
+    </div>
+    <div class="col">
+        <input [(ngModel)]="dataset.billingCycle" placeholder="Billing cycle">
+    </div>
+    <div class="col">
+        <input [(ngModel)]="dataset.currentValue" placeholder="Current value" type="number" step="0.01">
+    </div>
+    <div class="col">
+        <input [(ngModel)]="dataset.targetValue" placeholder="Target value" type="number" step="0.01">
+    </div>
+    <div class="col">
+        <input [(ngModel)]="dataset.diffValue" placeholder="Difference" type="number" step="0.01">
+    </div>
+</div>
+<div class="row">
+    <button md-button (click)="goToList()">back to list</button>
+</div>

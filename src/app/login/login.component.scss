@@ -1,0 +1,10 @@
+#login {
+    max-width:420px;
+    margin:auto;
+    label {
+        max-width:120px;
+    }
+    &.error input {
+        background-color:#fcd1d1;
+    }
+}
