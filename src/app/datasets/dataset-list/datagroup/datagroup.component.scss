@@ -1,0 +1,56 @@
+.group-list-head {
+  background-color:#F5F5F5;
+  box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset;
+  padding:0.5rem 0;
+}
+
+.datagroup-head {
+  background-color:#F5F5F5;
+  box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset;
+
+  input {
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+.datagroup-footer {
+  padding-bottom:1.5rem;
+
+  input {
+    background-color: transparent;
+    border-color: transparent;
+    color: #000;
+    padding-top:0;
+    padding-bottom:0;
+  }
+}
+
+.datagroup-description {
+  textarea {
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+.setsContainer {
+  position:relative;
+}
+
+[contenteditable=true] {
+  padding-right:2.5em;
+  outline:0;
+}
+
+.dataset {
+  // box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset;
+  padding:0.25rem 0;
+
+  &.selected {
+    // background-color:darken(#ecf0f1, 10%);
+  }
+
+  &.invisible {
+    display:none!important;
+  }
+}

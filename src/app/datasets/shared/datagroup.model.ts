@@ -1,10 +1,8 @@
-import {
-    Dataset
-} from './';
+import { Dataset } from './';
 
 export class Datagroup {
-    id: number;
-    title: string;
-    description?: string;
-    datasets?: Dataset[];
+  id: number;
+  title: string;
+  description?: string;
+  datasets?: Dataset[];
 }

@@ -1,0 +1,60 @@
+<div class="modal-window"
+  [class.visible]="isVisible === true">
+  <div class="inner">
+    <div class="content">
+      <div class="row">
+        <div class="col">
+          <h2>Create new Dataset</h2>
+        </div>
+        <div class="col text-right">
+          <button class="button blank" (click)="hide()">&#x2716;</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Title</label>
+          <input type="text" [(ngModel)]="datasetTitle">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Description</label>
+          <textarea [(ngModel)]="datasetDescription"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Charge Date</label>
+          <ng-datepicker
+            [(ngModel)]="datasetChargeDate"
+            (ngModelChange)="onDateChange($event);">
+          </ng-datepicker>
+        </div>
+        <div class="col">
+          <label for="">Period</label>
+          <select [(ngModel)]="datasetBillingCycle">
+            <option value=""></option>
+            <option value="month">Month</option>
+            <option value="quarter">Quarter</option>
+            <option value="year">Year</option>
+            <option value="2years">2 years</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="">Value</label>
+          <input
+            [ngModel]="datasetBillingValue"
+            (input)="billingValueChange($event)">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right">
+          <button class="button blank" (click)="hide()">Cancel</button>
+        </div>
+        <div class="col shrink">
+          <button class="button" (click)="createDataset()">Add Dataset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

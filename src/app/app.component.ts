@@ -3,26 +3,22 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: []
-
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: []
 })
 export class AppComponent implements OnInit {
-    title = 'Billbird';
+  title = 'Billbird';
 
-    constructor(
-        private angularFire: AngularFireAuth,
-        private router: Router
-    ) {}
+  constructor(
+    private angularFire: AngularFireAuth,
+    private router: Router
+  ) {}
 
-    ngOnInit(): void {
-        this.angularFire.authState.subscribe((auth) => {
-            if(auth) {
-                this.router.navigate(['/list']);
-            } else {
-                this.router.navigate(['/login']);
-            }
-        });
-    }
+  ngOnInit(): void {
+    this.angularFire.authState.subscribe((auth) => {
+      let route = auth ? '/list' : '/login';
+      this.router.navigate([route]);
+    });
+  }
 }

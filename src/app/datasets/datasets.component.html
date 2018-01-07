@@ -1,14 +1,24 @@
 <main-menu></main-menu>
 <div *ngIf="datagroups">
-    <div *ngIf="!selectedDataset">
-        <dataset-list *ngIf="!selectedDataset"
-            [datagroups]="datagroups"
-            (datasetSelected)="gotoDetail($event)"></dataset-list>
-    </div>
-    <div *ngIf="selectedDataset">
-        <dataset-details *ngIf="selectedDataset"
-            [dataset]="selectedDataset"
-            (closeDetailView)="showList($event)"></dataset-details>
-    </div>
+  <div *ngIf="!selectedDataset">
+    <dataset-list
+      *ngIf="!selectedDataset"
+      (datasetSelectedEvent)="gotoDetail($event)"
+      (updateSumEvent)="updateSum($event)">
+    </dataset-list>
+  </div>
+  <div *ngIf="selectedDataset">
+    <dataset-details
+      *ngIf="selectedDataset"
+      [dataset]="selectedDataset"
+      (closeDetailView)="showList($event)">
+    </dataset-details>
+  </div>
 </div>
-<button (click)="saveAllData()">Save all</button>
+<div class="container">
+  <div class="row button-row collapse">
+    <div class="col">
+      <button class="button" (click)="saveAllData()">Save all</button>
+    </div>
+  </div>
+</div>

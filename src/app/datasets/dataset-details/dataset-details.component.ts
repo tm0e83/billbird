@@ -6,12 +6,10 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-import {
-    DatasetsComponent,
-    Dataset,
-    DataService,
-    DateService
-} from '../shared';
+import { DatasetsComponent } from '../datasets.component';
+import { Dataset } from '../shared/dataset.model';
+import { DataService } from '../shared/data.service';
+import { DateService } from '../shared/date.service';
 
 @Component({
     moduleId: module.id,
@@ -23,13 +21,12 @@ export class DatasetDetailsComponent implements OnInit {
     @Input() dataset: Dataset;
     @Output() closeDetailView = new EventEmitter();
 
-    // constructor(
-    //     private dataService: DataService,
-    //     private dateService: DateService
-    // ) { }
+    constructor(
+        // private dataService: DataService,
+        // private dateService: DateService
+    ) {}
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     goToList(dataset: Dataset): void {
         this.closeDetailView.emit();

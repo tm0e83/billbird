@@ -1,0 +1,55 @@
+<div class="col col-icon">
+  <i class="fa fa-cog" (click)="gotoDetail(dataset)"></i>
+</div>
+<div class="col">
+  <input [(ngModel)]="dataset.title" placeholder="Title">
+</div>
+<div class="col col-val">
+  <select [(ngModel)]="dataset.billingCycle"
+    (change)="applyUpdateValue();">
+    <option value=""></option>
+    <option value="month">Month</option>
+    <option value="quarter">Quarter</option>
+    <option value="year">Year</option>
+    <option value="2years">2 years</option>
+  </select>
+</div>
+<div class="col col-val">
+  <input placeholder="Desired"
+    [ngModel]="dataset.billingValue | currency:'EUR'"
+    (input)="onBillingValueChange($event)">
+</div>
+<div class="col col-val">
+  <input placeholder="Monthly"
+    [ngModel]="dataset.monthlyShare | currency:'EUR'"
+    (input)="onMonthlyShareChange($event)"
+    [disabled]="dataset.billingCycle != ''">
+</div>
+<div class="col col-val">
+  <input placeholder="+/-"
+    [class.negative]="dataset.updateValue < 0"
+    [class.positive]="dataset.updateValue > 0"
+    [ngModel]="dataset.updateValue | currency:'EUR'"
+    (input)="onUpdateValueChange($event)">
+</div>
+<div class="col col-bttn-small">
+  <button (click)="applyUpdateValue(); updateStore($event);" class="button fa fa-angle-right"></button>
+</div>
+<div class="col col-val">
+  <input placeholder="Current value" disabled
+    [class.negative]="dataset.currentValue < 0"
+    [class.positive]="dataset.currentValue > 0"
+    [ngModel]="dataset.currentValue | currency:'EUR'"
+    [class.negative]="dataset.currentValue < 0">
+</div>
+<div class="col col-val">
+  <input placeholder="Target value"
+    [ngModel]="dataset.targetValue | currency:'EUR'" disabled>
+</div>
+    <!-- (ngModelChange)="dataset.targetValue = currencyToNumber($event)" -->
+<div class="col col-val">
+  <input placeholder="Difference" disabled
+    [class.negative]="dataset.diffValue < 0"
+    [class.positive]="dataset.diffValue > 0"
+    [ngModel]="dataset.diffValue | currency:'EUR'">
+</div>

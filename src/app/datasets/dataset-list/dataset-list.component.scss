@@ -1,77 +1,59 @@
-$primary-color-dark:   #455A64;
-$primary-color:        #607D8B;
-$primary-color-light:  #CFD8DC;
-$primary-color-text:   #FFFFFF;
-$accent-color:         #CDDC39;
-$primary-text-color:   #212121;
-$secondary-text-color: #757575;
-$divider-color:        #BDBDBD;
-
-.datagroup {
-    flex-direction:column;
-    padding:0.5em 1.5em;
-    background-color:$primary-color-text;
-    margin-bottom:1em;
+.datagroup-list-container {
 }
 
-.datagroup.selected {
-    box-shadow:inset 8px 0 0 0 $primary-color-dark;
+.datagroup-list-head {
+  box-shadow:
+    0 1px 3px 0 rgba(0,0,0,0.2),
+    0 1px 1px 0 rgba(0,0,0,0.14),
+    0 2px 1px -1px rgba(0,0,0,0.12);
+  background-color:#F5F5F5;
+  color:rgba(0,0,0,0.6);
+
+  .group-list-head {
+    box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset,
+    0 1px 0 rgba(0,0,0,0.12) inset;
+    padding:0.5rem 0;
+
+    .col:not(.col-icon):not(.col-search) {
+      padding:0.25em calc(1px + 1em);
+    }
+
+    input {
+      background-color:darken(#ecf0f1, 3%);
+      color:#fff;
+      border-color:transparent;
+    }
+  }
+
+  .group-list-sum {
+    // box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset;
+    padding:0.15rem 0;
+
+    input {
+      width:100%;
+      padding-top:0;
+      padding-bottom:0;
+      background-color:transparent;
+      // color:#fff;
+      border-color:transparent;
+    }
+  }
+}
+
+.datagroup-list {
+  // background-color:#fff;
 }
 
 .setsContainer {
-    position:relative;
+  position:relative;
 }
 
-.dataset {
-    input, select, button {
-        width:100%;
-    }
-}
-
-.col i {
-    vertical-align:middle;
-    transition:opacity 150ms ease-in-out;
-}
-
-.col i:hover {
-    cursor:pointer;
-    opacity:0.5;
-}
-
-.dataset.selected {
-    background-color:$primary-color-light;
-}
-
-.col-icon,
-.col-id {
-    max-width:20px;
-}
-
-.col-icon i {
-    margin-top:-0.2em;
-}
-
-.col-date {
-    max-width:125px;
-}
-
-.col-val {
-    max-width:110px;
-}
-
-.col-val input {
-    text-align:right;
-}
-
-.col-bttn-small {
-    max-width:40px;
-}
-
-[contenteditable=true] {
-    padding-right:2.5em;
-    outline:0;
-}
-
-.datagroup-description {
-    padding-bottom:1em;
+.datagroup {
+  margin-top:1rem;
+  background-color:#fff;
+  font-size:0.9rem;
+  box-shadow:
+    0 1px 3px 0 rgba(0,0,0,0.2),
+    0 1px 1px 0 rgba(0,0,0,0.14),
+    0 2px 1px -1px rgba(0,0,0,0.12);
 }

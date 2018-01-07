@@ -1,0 +1,69 @@
+<div class="row datagroup-head">
+  <div class="col col-icon">
+    <datagroup-menu></datagroup-menu>
+  </div>
+  <div class="col">
+    <input type="text" [(ngModel)]="datagroup.title"
+      (change)="updateStore()">
+  </div>
+  <div class="col col-val"></div>
+  <div class="col col-val">
+    <input type="text" value="{{billingValueSum | currency:'EUR'}}">
+  </div>
+  <div class="col col-val">
+    <input type="text" value="{{monthlyShareSum | currency:'EUR'}}">
+  </div>
+  <div class="col col-val">
+    <input type="text" value="{{updateValueSum | currency:'EUR'}}" disabled>
+  </div>
+  <div class="col col-bttn-small"></div>
+  <div class="col col-val">
+    <input type="text" value="{{currentValueSum | currency:'EUR'}}" disabled>
+  </div>
+  <div class="col col-val">
+    <input type="text" value="{{targetValueSum | currency:'EUR'}}" disabled>
+  </div>
+  <div class="col col-val">
+    <input type="text" value="{{diffValueSum | currency:'EUR'}}" disabled>
+  </div>
+</div>
+<div class="setsContainer" [dragula]="'bag-one'" [dragulaModel]="datasets">
+  <dataset class="row dataset"
+    *ngFor="let dataset of datagroup.datasets"
+    (click)="onSelectDataset(dataset)"
+    [class.selected]="dataset === selectedDataset"
+    [class.invisible]="dataset.title.match(filterTitle) === null"
+    [dataset]="dataset"
+    [datagroup]="datagroup"
+    (updateSumEvent)="updateSum($event)"
+    (datasetSelectedEvent)="gotoDetail(dataset)">
+  </dataset>
+</div>
+<div>
+  <div class="row datagroup-footer">
+    <div class="col col-icon"></div>
+    <div class="col">
+<!--       <button class="button blank circle" (click)="createDataset()">
+        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+      </button>
+      <button class="button blank"
+        *ngIf="selectedDataset"
+        (click)="deleteDataset()">
+        <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+      </button> -->
+    </div>
+    <div class="col col-val align-top">
+      <input type="text" value="{{updateValueSum | currency:'EUR'}}" disabled>
+    </div>
+    <div class="col col-bttn-small"></div>
+    <div class="col col-val align-top">
+      <input type="text" value="{{currentValueSum | currency:'EUR'}}" disabled>
+    </div>
+    <div class="col col-val align-top">
+      <input type="text" value="{{targetValueSum | currency:'EUR'}}" disabled>
+    </div>
+    <div class="col col-val align-top">
+      <input type="text" value="{{diffValueSum | currency:'EUR'}}" disabled>
+    </div>
+  </div>
+</div>

@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 
 @Component({
-    moduleId: module.id,
-    selector: 'calendar',
-    templateUrl: './calendar.component.html'
+  moduleId: module.id,
+  selector: 'calendar',
+  templateUrl: './calendar.component.html'
 })
 export class CalendarComponent {
-    constructor(
-        private location: Location
-    ) {}
+  constructor(
+    private location: Location
+  ) {}
 
-    goBack(): void {
-        this.location.back();
-    }
+  goBack(): void {
+    this.location.back();
+  }
 }

@@ -1,5 +1,16 @@
-<div color="primary" class="sticky">
-    <button routerLink="/list">Datasets</button>
-    <button routerLink="/calendar">Calendar</button>
-    <button (click)="logout()">Logout</button>
+<div color="primary" class="sticky" id="topbar-menu">
+  <div class="row">
+    <div class="col">
+      <button routerLink="/list" class="button blank">Datasets</button>
+      <button routerLink="/calendar" class="button blank">Calendar</button>
+      <button (click)="downloadData()" class="button blank">Download Data</button>
+      <button (click)="openLoadDialog()" class="button blank">Import Data</button>
+    </div>
+    <div class="col text-right">
+      <button (click)="logout()" class="button blank">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
 </div>
+<input type="file" id="import-json" style="display:none" (change)="loadData($event)">

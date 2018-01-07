@@ -1,0 +1,35 @@
+<div class="modal-window"
+  [class.visible]="isVisible === true">
+  <div class="inner">
+    <div class="content">
+      <div class="row">
+        <div class="col">
+          <h2>Create new Dataset</h2>
+        </div>
+        <div class="col text-right">
+          <button class="button blank" (click)="hide()">&#x2716;</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Title</label>
+          <input type="text" [(ngModel)]="datagroupTitle">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="">Description</label>
+          <textarea [(ngModel)]="datagroupDescription"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right">
+          <button class="button blank" (click)="hide()">Cancel</button>
+        </div>
+        <div class="col shrink">
+          <button class="button" (click)="createDatagroup()">Add Dataset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
