@@ -1,7 +1,26 @@
 <main-menu></main-menu>
-<div class="row">
-    <div class="col">1. Eintrag</div>
+<div class="row collapse">
+  <div class="col shrink">
+<!--     <button class="button" (click)="goBack()">
+      <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </button> -->
+    <h3 class="normal no-margin">Calendar</h3>
+  </div>
+  <div class="col"></div>
 </div>
-<div class="row">
-    <button md-button (click)="goBack()">back to list</button>
+<div class="card container">
+  <div *ngFor="let month of months">
+    <div *ngIf="month.datasets.length">
+      <div class="row">
+        <div class="col">
+          <b>{{ month.title }}</b>
+        </div>
+      </div>
+      <div *ngFor="let dataset of month.datasets" class="row">
+        <div class="col">{{dataset.title}}</div>
+        <div class="col">{{dataset.billingValue | currency:'EUR'}}</div>
+      </div>
+      <br>
+    </div>
+  </div>
 </div>

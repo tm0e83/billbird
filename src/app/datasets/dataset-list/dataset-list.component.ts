@@ -5,15 +5,13 @@ import {
   EventEmitter,
   Output
 } from '@angular/core';
-import { Datagroup } from '../shared/datagroup.model';
 import { Dataset } from '../shared/dataset.model';
-import { DatagroupComponent } from './datagroup/datagroup.component';
+import { DatasetComponent } from './dataset/dataset.component';
 import { DataService } from '../shared/data.service';
 import { DateService } from '../shared/date.service';
 import { NgRedux, select } from 'ng2-redux';
 import { IAppState, rootReducer } from '../../store';
-import { CreateDatagroupModalService } from './create-datagroup-modal/create-datagroup-modal.service';
-import { CreateDatagroupModalComponent } from './create-datagroup-modal/create-datagroup-modal.component';
+import { ActivatedRoute, Params }   from '@angular/router';
 import {
   CreateDatasetModalComponent,
   CreateDatasetModalService
@@ -27,7 +25,6 @@ import { Observable } from 'rxjs';
 })
 export class DatasetListComponent implements OnInit {
   search: string;
-  selectedDatagroup: Datagroup;
   selectedDataset: Dataset;
   billingValueSum: number = 0;
   monthlyShareSum: number = 0;
@@ -35,20 +32,17 @@ export class DatasetListComponent implements OnInit {
   currentValueSum: number = 0;
   targetValueSum: number = 0;
   diffValueSum: number = 0;
-  datagroups: Datagroup[];
-  addDatasetModalVisible: boolean = false;
+  filterTitle: any = /^.+$/;
+  datasets: Dataset[];
 
   @Output() datasetSelectedEvent = new EventEmitter();
   @Output() updateSumEvent = new EventEmitter();
 
-  @select('datagroups') groups;
-  @select('selectedDatagroup') selectedGroup;
-  @select('selectedDataset') selectedSet;
-
   constructor(
     private dataService: DataService,
     private dateService: DateService,
-    private createDatagroupModalService: CreateDatagroupModalService,
+    private route: ActivatedRoute,
+    private createDatasetModalService: CreateDatasetModalService,
     private ngRedux: NgRedux<IAppState>
   ) {}
 
@@ -58,19 +52,22 @@ export class DatasetListComponent implements OnInit {
       this.updateSum();
     });
 
-    this.getDataFromStore();
-    // this.updateSum();
+    this.route.params.subscribe((params: Params) => {
+      this.getDataFromStore();
+      this.updateSum();
+    });
+  }
+
+  save(dataset: Dataset): void {
+    this.dataService.saveAllData();
   }
 
   getDataFromStore() {
     let state = this.ngRedux.getState();
-    this.datagroups = state.datagroups;
-    this.selectedDatagroup = state.selectedDatagroup;
+    this.datasets = state.datasets;
     this.selectedDataset = state.selectedDataset;
-  }
-
-  addNewDatagroup(): void {
-    this.createDatagroupModalService.show();
+    this.filterTitle = state.filterTitle === '' ? /^(.+)?$/ : new RegExp(state.filterTitle);
+    this.search = state.filterTitle;
   }
 
   onChangeFilterTitle(): void {
@@ -80,10 +77,22 @@ export class DatasetListComponent implements OnInit {
     });
   }
 
-  onSelectDatagroup(datagroup: Datagroup): void {
+  onSelectDataset(dataset: Dataset): void {
     this.ngRedux.dispatch({
-      type:'SELECT_DATAGROUP',
-      selectedDatagroup: datagroup
+      type:'SELECT_DATASET',
+      selectedDataset: dataset
+    });
+  }
+
+  createDataset(): void {
+    this.createDatasetModalService.show();
+  }
+
+  deleteDataset(): void {
+    this.ngRedux.dispatch({
+      type:'DELETE_DATASET',
+      selectedDataset:
+      this.selectedDataset
     });
   }
 
@@ -97,27 +106,23 @@ export class DatasetListComponent implements OnInit {
   }
 
   prefillUpdateValues() {
-    this.datagroups.forEach((datagroup) => {
-      datagroup.datasets.forEach((dataset) => {
-        dataset.updateValue = dataset.monthlyShare;
-      });
+    this.datasets.forEach((dataset) => {
+      dataset.updateValue = dataset.monthlyShare;
       this.ngRedux.dispatch({
-        type:'CHANGE_DATAGROUP',
-        payload: datagroup
+        type:'CHANGE_DATASET',
+        payload: dataset
       });
     });
   }
 
   applyUpdateValues() {
-    this.datagroups.forEach((datagroup) => {
-      datagroup.datasets.forEach((dataset) => {
-        dataset.currentValue += dataset.updateValue;
-        dataset.updateValue = 0;
-        dataset = this.dataService.calcDatasetValues(dataset);
-      });
+    this.datasets.forEach((dataset) => {
+      dataset.currentValue += dataset.updateValue;
+      dataset.updateValue = 0;
+      dataset = this.dataService.calcDatasetValues(dataset);
       this.ngRedux.dispatch({
-        type:'CHANGE_DATAGROUP',
-        payload: datagroup
+        type:'CHANGE_DATASET',
+        payload: dataset
       });
     });
   }
@@ -130,15 +135,23 @@ export class DatasetListComponent implements OnInit {
     this.targetValueSum = 0;
     this.diffValueSum = 0;
 
-    this.datagroups.forEach(group => {
-      group.datasets.forEach(set => {
+    this.datasets.forEach(set => {
+      if(set.active) {
         this.billingValueSum += set.billingValue;
         this.monthlyShareSum += set.monthlyShare;
         this.updateValueSum += set.updateValue;
         this.currentValueSum += set.currentValue;
         this.targetValueSum += set.targetValue;
         this.diffValueSum += set.diffValue;
-      });
+      }
     });
+  }
+
+  updateStore() {
+    // this.ngRedux.dispatch({
+    //   type: 'UPDATE_DATAGROUP',
+    //   payload: this.datagroup
+    // });
+    console.log('DatasetListComponent.updateStore()');
   }
 }

@@ -6,23 +6,21 @@ import {
 } from '@angular/core';
 import { DataService } from '../../../shared/data.service';
 import { ClickOutsideDirective } from './clickoutside.directive';
-import { Datagroup } from '../../../shared/datagroup.model';
 import { Dataset } from '../../../shared/dataset.model';
 import { NgRedux, select } from 'ng2-redux';
 import { IAppState, rootReducer } from '../../../../store';
-import { CreateDatasetModalService } from '../../create-dataset-modal';
 
 @Component({
-  selector: 'datagroup-menu',
-  templateUrl: './datagroup-menu.component.html',
-  styleUrls: ['./datagroup-menu.component.scss']
+  selector: 'dataset-menu',
+  templateUrl: './dataset-menu.component.html',
+  styleUrls: ['./dataset-menu.component.scss']
 })
-export class DatagroupMenuComponent {
+export class DatasetMenuComponent {
   isExpanded: boolean = false;
+  @Input() options;
 
   constructor(
     private dataService: DataService,
-    private createDatasetModalService: CreateDatasetModalService,
     private ngRedux: NgRedux<IAppState>
   ) {}
 
@@ -38,7 +36,7 @@ export class DatagroupMenuComponent {
     this.ngRedux.dispatch({ type: todo });
   }
 
-  createDataset(): void {
-    this.createDatasetModalService.show();
+  deleteDataset(): void {
+
   }
 }

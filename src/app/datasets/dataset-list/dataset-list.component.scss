@@ -1,59 +1,22 @@
-.datagroup-list-container {
-}
-
-.datagroup-list-head {
-  box-shadow:
-    0 1px 3px 0 rgba(0,0,0,0.2),
-    0 1px 1px 0 rgba(0,0,0,0.14),
-    0 2px 1px -1px rgba(0,0,0,0.12);
-  background-color:#F5F5F5;
-  color:rgba(0,0,0,0.6);
+.datasets-list-head {
+  box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset;
 
   .group-list-head {
-    box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset,
-    0 1px 0 rgba(0,0,0,0.12) inset;
-    padding:0.5rem 0;
+    padding:0.25rem 0;
 
     .col:not(.col-icon):not(.col-search) {
       padding:0.25em calc(1px + 1em);
-    }
 
-    input {
-      background-color:darken(#ecf0f1, 3%);
-      color:#fff;
-      border-color:transparent;
-    }
-  }
-
-  .group-list-sum {
-    // box-shadow:0 -1px 0 rgba(0,0,0,0.12) inset;
-    padding:0.15rem 0;
-
-    input {
-      width:100%;
-      padding-top:0;
-      padding-bottom:0;
-      background-color:transparent;
-      // color:#fff;
-      border-color:transparent;
+      span {
+        font-weight:900;
+        font-size:0.8rem;
+        text-transform:uppercase;
+      }
     }
   }
-}
-
-.datagroup-list {
-  // background-color:#fff;
 }
 
 .setsContainer {
   position:relative;
-}
-
-.datagroup {
-  margin-top:1rem;
   background-color:#fff;
-  font-size:0.9rem;
-  box-shadow:
-    0 1px 3px 0 rgba(0,0,0,0.2),
-    0 1px 1px 0 rgba(0,0,0,0.14),
-    0 2px 1px -1px rgba(0,0,0,0.12);
 }

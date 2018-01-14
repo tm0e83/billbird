@@ -1,22 +1,40 @@
 #topbar-menu {
   width:100%;
   background-color:#19212B;
-  padding:0.25rem 0;
 
-  button {
+  .left {
+    .button {
+      float:left;
+    }
+  }
+
+  .button {
+    text-align: center;
     border-radius:0;
     border-color:transparent;
     background-color:transparent;
     color:#fff;
+    font-size:1.4rem;
 
     i:hover {
       opacity:1;
     }
 
-    &:hover {
+    &.active {
+      transition:none;
+    }
+
+    &.active,
+    &:not(.active):active,
+    &:not(.active):focus,
+    &:not(.active):hover {
       background-color:darken(#039BE5, 5%);
       border-color:darken(#039BE5, 5%);
       color:#fff;
+    }
+
+    span {
+      display:none;
     }
   }
 }

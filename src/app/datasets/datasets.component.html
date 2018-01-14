@@ -1,5 +1,5 @@
 <main-menu></main-menu>
-<div *ngIf="datagroups">
+<div *ngIf="datasets">
   <div *ngIf="!selectedDataset">
     <dataset-list
       *ngIf="!selectedDataset"
@@ -15,10 +15,4 @@
     </dataset-details>
   </div>
 </div>
-<div class="container">
-  <div class="row button-row collapse">
-    <div class="col">
-      <button class="button" (click)="saveAllData()">Save all</button>
-    </div>
-  </div>
-</div>
+<simple-notifications [options]="simpleNotificationsOptions"></simple-notifications>

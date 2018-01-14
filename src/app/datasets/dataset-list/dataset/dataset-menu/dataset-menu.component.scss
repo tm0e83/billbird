@@ -1,3 +1,5 @@
+@import '../../../../../scss/settings';
+
 .datagroup-menu {
   display:inline;
 
@@ -12,13 +14,14 @@
     display:none;
     position:absolute;
     list-style:none;
-    left:0;
+    left:5px;
     z-index:2;
     background-color:#fff;
     color:#000;
-    box-shadow:1px 1px 5px 0 rgba(0,0,0,0.3);
+    box-shadow: $global-box-shadow;
     margin-top:0.25rem;
     padding:0.5rem;
+    min-width:175px;
 
     li {
       border-bottom:1px solid #eee;

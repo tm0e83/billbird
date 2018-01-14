@@ -1,111 +1,83 @@
 import { Injectable } from '@angular/core';
-import { Datagroup } from './datasets/shared/datagroup.model';
 import { Dataset } from './datasets/shared/dataset.model';
 
 export interface IAppState {
-  datagroups: Datagroup[];
-  selectedDatagroup?: Datagroup;
+  uid: string;
+  datasets: Dataset[];
+  settings: object;
   selectedDataset?: Dataset;
   filterTitle?: string;
 }
 
 export function rootReducer(state: IAppState, action): IAppState {
   switch(action.type) {
-    case 'ADD_DATAGROUP': {
-      let newDatagroups = state.datagroups;
-      newDatagroups.push(action.payload);
+    case 'SET_UID': {
       return Object.assign({}, state, {
-        datagroups: newDatagroups
+        uid: action.payload
+      });
+    }
+
+    case 'DELETE_SETTINGS': {
+      return Object.assign({}, state, {
+        settings: action.payload
+      });
+    }
+
+    case 'SET_SETTINGS': {
+      return Object.assign({}, state, {
+        settings: action.payload
+      });
+    }
+
+    case 'SET_DATASETS': {
+      return Object.assign({}, state, {
+        datasets: action.payload
       });
     }
 
     case 'ADD_DATASET': {
-      let newDatagroups = state.datagroups;
-      let currentGroupIndex = newDatagroups.indexOf(state.selectedDatagroup);
-      newDatagroups[currentGroupIndex].datasets.push(action.payload);
-
+      let newDatasets = state.datasets;
+      newDatasets.push(action.payload);
       return Object.assign({}, state, {
-        datagroups: newDatagroups
-      });
-    }
-
-    case 'DELETE_ALL_DATAGROUPS': {
-      return Object.assign({}, state, {
-        datagroups: []
-      });
-    }
-
-    case 'DELETE_DATAGROUP': {
-      let newDatagroups = state.datagroups;
-      newDatagroups.splice(newDatagroups.indexOf(state.selectedDatagroup), 1);
-
-      return Object.assign({}, state, {
-        datagroups: newDatagroups
+        datasets: newDatasets
       });
     }
 
     case 'DELETE_DATASET': {
-      let newDatagroups = state.datagroups;
-      let groupIndex = newDatagroups.indexOf(state.selectedDatagroup);
-      newDatagroups[groupIndex].datasets.splice(newDatagroups[groupIndex].datasets.indexOf(state.selectedDataset), 1);
-
+      let newDatasets = state.datasets;
+      let datasetIndex = newDatasets.indexOf(state.selectedDataset);
+      newDatasets.splice(datasetIndex, 1);
       return Object.assign({}, state, {
-        datagroups: newDatagroups
+        datasets: newDatasets
       });
     }
 
-    case 'SELECT_DATAGROUP': {
+    case 'DELETE_ALL_DATASETS': {
       return Object.assign({}, state, {
-        datagroups: state.datagroups,
-        selectedDatagroup: action.selectedDatagroup
+        datasets: []
       });
     }
 
     case 'SELECT_DATASET': {
       return Object.assign({}, state, {
-        datagroups: state.datagroups,
         selectedDataset: action.selectedDataset
       });
     }
 
-    case 'UPDATE_DATAGROUP': {
-      let newDatagroups = state.datagroups;
-      let groupIndex;
-
-      newDatagroups.forEach((group, index) => {
-        if(group.id === action.payload.id) {
-          groupIndex = index;
-        }
-      });
-
-      newDatagroups[groupIndex] = action.payload
-
-      return Object.assign({}, state, {
-        datagroups: newDatagroups
-      });
-    }
-
     case 'UPDATE_DATASET': {
-      let newDatagroups = state.datagroups;
-
-      let groupIndex;
-      newDatagroups.forEach((group, index) =>{
-        if(group.id === action.datagroup.id) {
-          groupIndex = index;
-        }
-      });
-
+      let newDatasets = state.datasets;
       let datasetIndex;
-      newDatagroups[groupIndex].datasets.forEach((set, index) =>{
+
+      newDatasets.forEach((set, index) => {
         if(set.id === action.dataset.id) {
           datasetIndex = index;
         }
       });
 
-      newDatagroups[groupIndex].datasets[datasetIndex] = action.dataset;
+      newDatasets[datasetIndex] = action.dataset;
 
       return Object.assign({}, state, {
-        datagroups: newDatagroups
+        datasets: newDatasets
       });
     }
 

@@ -1,15 +1,51 @@
 <div color="primary" class="sticky" id="topbar-menu">
-  <div class="row">
-    <div class="col">
-      <button routerLink="/list" class="button blank">Datasets</button>
-      <button routerLink="/calendar" class="button blank">Calendar</button>
-      <button (click)="downloadData()" class="button blank">Download Data</button>
-      <button (click)="openLoadDialog()" class="button blank">Import Data</button>
+  <div class="row collapse">
+    <div class="col left">
+      <a class="button blank"
+        tabindex="1"
+        routerLink="/list"
+        routerLinkActive="active">
+        <i class="fa fa-list" aria-hidden="true"></i>
+        <span>List</span>
+      </a>
+      <a class="button blank"
+        tabindex="2"
+        routerLink="/calendar"
+        routerLinkActive="active">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        <span>Calendar</span>
+      </a>
+      <a class="button blank"
+        tabindex="3"
+        (click)="downloadData()">
+        <i class="fa fa-download" aria-hidden="true"></i>
+        <span>Download Data</span>
+      </a>
+      <a class="button blank"
+        tabindex="4"
+        (click)="openLoadDialog()">
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        <span>Import Data</span>
+      </a>
+      <a class="button blank"
+        tabindex="5"
+        (click)="openSettings()">
+        <i class="fa fa-cogs" aria-hidden="true"></i>
+        <span>Settings</span>
+      </a>
     </div>
-    <div class="col text-right">
-      <button (click)="logout()" class="button blank">
+    <div class="col right text-right">
+      <a class="button blank"
+        tabindex="5">
+        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+        <span>User Settings</span>
+      </a>
+      <a class="button blank"
+        (click)="logout()"
+        tabindex="6">
         <i class="fa fa-sign-out" aria-hidden="true"></i>
-      </button>
+        <span>Logout</span>
+      </a>
     </div>
   </div>
 </div>

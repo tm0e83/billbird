@@ -1,0 +1,83 @@
+<div class="row dataset"
+  [class.inactive]="!dataset.active"
+  [class.invisible]="dataset.title.match(filterTitle) === null">
+  <div class="col col-icon">
+    <dataset-menu
+      [options]="menuOptions">
+    </dataset-menu>
+  </div>
+  <div class="col">
+    <input placeholder="Title"
+      [(ngModel)]="dataset.title"
+      (ngModelChange)="updateStore()"
+      [disabled]="!dataset.active">
+  </div>
+  <div class="col col-val">
+    <dp-date-picker
+      [(ngModel)]="chargeDate"
+      (ngModelChange)="onDateChange($event)"
+      [config]="datepickerOptions"
+      [disabled]="!dataset.active"
+      mode="month">
+    </dp-date-picker>
+  </div>
+  <div class="col col-val">
+    <select [(ngModel)]="dataset.billingCycle"
+      (change)="applyUpdateValue();"
+      [disabled]="!dataset.active">
+      <option value=""></option>
+      <option value="month">Month</option>
+      <option value="quarter">Quarter</option>
+      <option value="year">Year</option>
+      <option value="2years">2 years</option>
+    </select>
+  </div>
+  <div class="col col-val">
+    <input placeholder="Desired" currencyMask
+      [(ngModel)]="dataset.billingValue"
+      (ngModelChange)="updateStore()"
+      [options]="currencyMaskOptions"
+      [disabled]="!dataset.active">
+  </div>
+  <div class="col col-val">
+    <input placeholder="Monthly" currencyMask
+      [(ngModel)]="dataset.monthlyShare"
+      (ngModelChange)="updateStore()"
+      [disabled]="dataset.billingCycle != ''"
+      [options]="currencyMaskOptions"
+      [disabled]="!dataset.active">
+  </div>
+  <div class="col col-val">
+    <input placeholder="+/-" currencyMask
+      [class.negative]="dataset.updateValue < 0"
+      [class.positive]="dataset.updateValue > 0"
+      [(ngModel)]="dataset.updateValue"
+      (ngModelChange)="updateStore()"
+      [options]="currencyMaskOptions"
+      [disabled]="!dataset.active">
+  </div>
+  <div class="col col-bttn-small">
+    <button class="button fa fa-angle-right"
+      (click)="applyUpdateValue(); updateStore($event);"
+      [disabled]="!dataset.active"
+      [class.blank]="!dataset.active || dataset.updateValue === 0">
+    </button>
+  </div>
+  <div class="col col-val">
+    <input placeholder="Current value" disabled
+      [class.negative]="dataset.currentValue < 0"
+      [class.positive]="dataset.currentValue > 0"
+      [ngModel]="dataset.currentValue | currency:'EUR'"
+      [class.negative]="dataset.currentValue < 0">
+  </div>
+  <div class="col col-val">
+    <input placeholder="Target value"
+      [ngModel]="dataset.targetValue | currency:'EUR'" disabled>
+  </div>
+  <div class="col col-val">
+    <input placeholder="Difference" disabled
+      [class.negative]="dataset.diffValue < 0"
+      [class.positive]="dataset.diffValue > 0"
+      [ngModel]="dataset.diffValue | currency:'EUR'">
+  </div>
+</div>

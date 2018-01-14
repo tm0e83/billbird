@@ -1,69 +1,72 @@
-<div class="datagroup-list-container">
-  <div class="datagroup-list-head container">
-    <div class="row button-row">
-      <div class="col col-icon"></div>
-      <div class="col">
-        <h3>Overview</h3>
-      </div>
-      <div class="col text-right">
-        <button class="button" (click)="addNewDatagroup()">New Datagroup</button>
-        <button class="button" (click)="prefillUpdateValues()">Prefill Update Values</button>
-        <button class="button" (click)="applyUpdateValues()">Apply Update Values</button>
-      </div>
+<div class="container">
+  <div class="row button-row collapse">
+    <div class="col">
+      <h3 class="normal no-margin">Overview</h3>
     </div>
-    <div class="row group-list-head">
+    <div class="col text-right">
+      <button class="button"
+        title="Create Dataset"
+        (click)="createDataset()">+</button>
+      <button class="button" (click)="prefillUpdateValues()">Prefill Update Values</button>
+      <button class="button" (click)="applyUpdateValues()">Apply Update Values</button>
+      <button class="button" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>
+<div class="card container no-padding">
+  <div class="datasets-list-head">
+    <div class="row group-list-head align-top">
       <div class="col col-icon"></div>
       <div class="col col-search">
-        <input type="text" placeholder="Title"
+        <input type="text" placeholder="Search title..."
           [(ngModel)]="search"
           (input)="onChangeFilterTitle()">
       </div>
-      <div class="col col-val">Zyklus</div>
-      <div class="col col-val text-right"><b>RE</b></div>
-      <div class="col col-val text-right"><b>Mtl</b></div>
-      <div class="col col-val text-right">+ / -</div>
-      <div class="col col-bttn-small"></div>
-      <div class="col col-val text-right"><b>Ist</b></div>
-      <div class="col col-val text-right"><b>Soll</b></div>
-      <div class="col col-val text-right"><b>Diff</b></div>
-    </div>
-    <div class="row group-list-sum">
-      <div class="col col-icon"></div>
-      <div class="col"></div>
-      <div class="col col-val">
-        <input type="text" value="{{billingValueSum | currency:'EUR'}}">
+      <div class="col col-val text-right"><span>DOI</span></div>
+      <div class="col col-val"><span>Cycle</span></div>
+      <div class="col col-val text-right">
+        <span>Bill</span><br>
+        {{billingValueSum | currency:'EUR'}}
       </div>
-      <div class="col col-val">
-        <input type="text" value="{{monthlyShareSum | currency:'EUR'}}">
+      <div class="col col-val text-right">
+        <span>Monthly</span><br>
+        {{monthlyShareSum | currency:'EUR'}}
       </div>
-      <div class="col col-val">
-        <input type="text" value="{{updateValueSum | currency:'EUR'}}">
+      <div class="col col-val text-right">
+        <span>+ / -</span><br>
+        {{updateValueSum | currency:'EUR'}}
       </div>
       <div class="col col-bttn-small"></div>
-      <div class="col col-val">
-        <input type="text" value="{{currentValueSum | currency:'EUR'}}">
+      <div class="col col-val text-right">
+        <span>Current</span><br>
+        {{currentValueSum | currency:'EUR'}}
       </div>
-      <div class="col col-val">
-        <input type="text" value="{{targetValueSum | currency:'EUR'}}">
+      <div class="col col-val text-right">
+        <span>Target</span><br>
+        {{targetValueSum | currency:'EUR'}}
       </div>
-      <div class="col col-val">
-        <input type="text" value="{{diffValueSum | currency:'EUR'}}">
+      <div class="col col-val text-right">
+        <span>Diff</span><br>
+        {{diffValueSum | currency:'EUR'}}
       </div>
     </div>
   </div>
-  <div class="datagroup-list container">
-    <div *ngFor="let datagroup of datagroups"
-      class="datagroup"
-      [class.selected]="datagroup === selectedDatagroup">
-      <datagroup
-        (click)="onSelectDatagroup(datagroup)"
-        [datagroup]="datagroup"
-        [datagroups]="datagroups"
-        (updateSumEvent)="updateSum($event)"
-        (datasetSelectedEvent)="gotoDetail($event)">
-      </datagroup>
+  <div class="datasets-list">
+    <div class="datagroup">
+      <div class="setsContainer"
+        [dragula]="bag-one"
+        [dragulaModel]="datasets">
+        <dataset
+          *ngFor="let dataset of datasets"
+          (click)="onSelectDataset(dataset)"
+          [class.selected]="dataset === selectedDataset"
+          [filterTitle]="filterTitle"
+          [dataset]="dataset"
+          (updateSumEvent)="updateSum($event)"
+          (datasetSelectedEvent)="gotoDetail(dataset)">
+        </dataset>
+      </div>
     </div>
   </div>
-  <create-datagroup-modal [addDatasetModalVisible]="addDatasetModalVisible"></create-datagroup-modal>
-  <create-dataset-modal [addDatasetModalVisible]="addDatasetModalVisible"></create-dataset-modal>
 </div>
+<create-dataset-modal></create-dataset-modal>

@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
-export class CreateDatagroupModalService {
-  isVisibleSubject = new BehaviorSubject<boolean>(false);
+export class LoadingLayerService {
+  isVisibleSubject = new BehaviorSubject<boolean>(true);
 
   isVisible() {
     return this.isVisibleSubject.asObservable();

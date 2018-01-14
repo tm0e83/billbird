@@ -1,19 +1,20 @@
-export class Dataset {
+export interface Dataset {
   id: number;
-  groupID: number;
   title: string;
+  active: boolean;
   description?: string;
   billingCycle: string;
 
   creationDate: number;
   lastModifiedDate: number;
   chargeDate: number;
+  validFromDate?: number;
   expireDate?: number;
 
   updateValue?: number;
-  currentValue: number = 0;
-  billingValue: number = 0;
-  targetValue: number = 0;
-  diffValue: number = 0;
-  monthlyShare: number = 0;
+  currentValue: number;
+  billingValue: number;
+  targetValue: number;
+  diffValue: number;
+  monthlyShare: number;
 }

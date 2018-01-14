@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class DateService {
-  getMonthBetween(date1, date2): number {
+  getMonthBetween(date1: Date, date2: Date, allowNegative: boolean = false): number {
     var months;
     months = (date2.getFullYear() - date1.getFullYear()) * 12;
     months -= date1.getMonth() + 1;
-    months += date2.getMonth();
-    return months <= 0 ? 0 : months;
+    months += date2.getMonth() + 1;
+    return allowNegative ? months : (months <= 0 ? 0 : months);
   }
 
   getCurrentDateString(): string {

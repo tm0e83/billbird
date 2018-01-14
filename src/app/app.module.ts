@@ -14,14 +14,9 @@ import { AppComponent } from './app.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { DataService } from './datasets/shared/data.service';
 import { DateService } from './datasets/shared/date.service';
-import { Datagroup } from './datasets/shared/datagroup.model';
-
-import { DatagroupMenuComponent } from './datasets/dataset-list/datagroup/datagroup-menu/datagroup-menu.component';
-import { DatagroupComponent } from './datasets/dataset-list/datagroup/datagroup.component';
-import { DatasetComponent } from './datasets/dataset-list/datagroup/dataset/dataset.component';
-
-import { ClickOutsideDirective } from './datasets/dataset-list/datagroup/datagroup-menu/clickoutside.directive';
-
+import { DatasetComponent } from './datasets/dataset-list/dataset/dataset.component';
+import { ClickOutsideDirective } from './datasets/dataset-list/dataset/dataset-menu/clickoutside.directive';
+import { DatasetMenuComponent } from './datasets/dataset-list/dataset/dataset-menu/dataset-menu.component';
 import { Dataset } from './datasets/shared/dataset.model';
 import { DatasetsComponent } from './datasets/datasets.component';
 import { DatasetListComponent } from './datasets/dataset-list/dataset-list.component';
@@ -32,6 +27,7 @@ import { unixDateToStringPipe } from './datasets/shared/unix-date-to-string.pipe
 import { AppRoutingModule } from './shared/app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Router, Routes, ActivatedRoute, Params } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { Location } from '@angular/common';
@@ -45,12 +41,21 @@ registerLocaleData(localeDe);
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-
 import { NgRedux, NgReduxModule } from 'ng2-redux';
 import { IAppState, rootReducer } from './store';
-import { CreateDatagroupModalComponent, CreateDatagroupModalService } from './datasets/dataset-list/create-datagroup-modal';
-import { CreateDatasetModalComponent, CreateDatasetModalService } from './datasets/dataset-list/create-dataset-modal';
-import { NgDatepickerModule } from 'ng2-datepicker';
+import {
+  CreateDatasetModalComponent,
+  CreateDatasetModalService
+} from './datasets/dataset-list/create-dataset-modal';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { SimpleNotificationsModule, NotificationsService } from 'angular2-notifications';
+import { DpDatePickerModule } from 'ng2-date-picker';
+import { DatabaseService } from './shared/database.service';
+import { LoadingLayerComponent } from './loading-layer/loading-layer.component';
+import { LoadingLayerService } from './loading-layer/loading-layer.service';
+
+import { ModalComponent } from './modal/modal.component';
+import { ModalService } from './modal/modal.service';
 
 const myFirebaseConfig = {
   apiKey: 'AIzaSyCTt-w2KYpb_EdLt0lX0KkhmeE3-9r1Cxg',
@@ -65,9 +70,8 @@ const myFirebaseConfig = {
 	declarations: [
 		AppComponent,
 		CalendarComponent,
-    DatagroupComponent,
-    DatagroupMenuComponent,
     ClickOutsideDirective,
+    DatasetMenuComponent,
 		DatasetListComponent,
 		DatasetDetailsComponent,
 		DatasetsComponent,
@@ -75,8 +79,9 @@ const myFirebaseConfig = {
 		LoginComponent,
 		MainMenuComponent,
 		unixDateToStringPipe,
-		CreateDatagroupModalComponent,
+    ModalComponent,
     CreateDatasetModalComponent,
+    LoadingLayerComponent,
 	],
 	imports: [
 		AppRoutingModule,
@@ -87,16 +92,32 @@ const myFirebaseConfig = {
     AngularFireAuthModule,
     DragulaModule,
     NgReduxModule,
-    NgDatepickerModule,
-    HttpModule
+    HttpModule,
+    CurrencyMaskModule,
+    BrowserAnimationsModule,
+    DpDatePickerModule,
+    SimpleNotificationsModule.forRoot()
 	],
 	providers: [
 		DataService,
 		DateService,
-    CreateDatagroupModalService,
+    ModalService,
     CreateDatasetModalService,
+    NotificationsService,
+    DatabaseService,
+    LoadingLayerService,
 		{ provide: LOCALE_ID, useValue: 'de-DE' }
 	],
 	bootstrap: [ AppComponent ]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private ngRedux: NgRedux<IAppState>
+   ) {
+    this.ngRedux.configureStore(rootReducer, {
+      uid: '',
+      datasets: [],
+      settings: {}
+    });
+  }
+}

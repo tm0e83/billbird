@@ -1,0 +1,116 @@
+body {
+  dp-date-picker .dp-popup {
+    border-top:0;
+    border-right:0;
+    border-bottom:0;
+    border-left:0;
+    padding:10px;
+    box-shadow: $global-box-shadow;
+  }
+
+  dp-calendar-nav {
+    .dp-calendar-nav-container {
+      border:0;
+      margin-bottom:10px;
+    }
+
+    .dp-nav-header-btn {
+      background-color:transparent;
+      border:0;
+    }
+
+    .dp-nav-header {
+      width:100%;
+      text-align:center;
+    }
+
+    .dp-nav-btns-container {
+      display:flex;
+      justify-content:space-between;
+      width:calc(100% - 10px);
+
+      .dp-calendar-nav-container-left {
+        flex:0;
+
+        button {
+          background-color:transparent;
+          border:0;
+          height:100%;
+
+          // &:before {
+          //   left:4px;
+          // }
+        }
+      }
+
+      .dp-calendar-nav-container-right {
+        flex:0;
+
+        button {
+          background-color:transparent;
+          border:0;
+          height:100%;
+
+          &:before {
+            right:5px;
+          }
+        }
+      }
+
+      .dp-current-location-btn {
+        display:none;
+      }
+    }
+  }
+
+  dp-day-calendar,
+  dp-month-calendar {
+    .dp-calendar-wrapper {
+      border:0;
+      padding-top:10px;
+      border-top:1px solid rgba(0,0,0,0.25);
+    }
+
+    .dp-weekdays {
+      display:flex;
+    }
+
+    .dp-calendar-weekday {
+      border:0;
+      flex:1;
+      text-transform:uppercase;
+      color:rgba(0,0,0,0.25);
+      font-weight:500;
+    }
+
+    .dp-calendar-day,
+    .dp-calendar-month {
+      background-color:transparent;
+      border:0;
+      width:40px;
+      height:40px;
+
+      &.dp-current-day,
+      &.dp-current-month {
+        font-weight:700;
+        color:#3498db;
+      }
+
+      &.dp-selected {
+        font-weight:700;
+        background-color:#3498db;
+        border-radius:100px;
+        color:#fff;
+      }
+    }
+  }
+
+  dp-day-calendar {
+    .dp-calendar-day {
+      background-color:transparent;
+      border:0;
+      width:40px;
+      height:40px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<div class="datagroup-menu text-left"
+  [class.open]="isExpanded === true"
+  (clickOutside)="closeMenu()">
+  <i class="fa fa-ellipsis-v datagroup-menu-icon"
+  aria-hidden="true"
+  (click)="toggleMenu()"></i>
+  <ul>
+    <li *ngFor="let option of options">
+      <a (click)="option.fn()">{{option.text}}</a>
+    </li>
+  </ul>
+</div>
