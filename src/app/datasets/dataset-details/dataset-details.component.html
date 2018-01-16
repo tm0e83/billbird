@@ -1,21 +1,9 @@
-<div class="container">
+<div class="container content-head">
   <div class="row">
     <div class="col">
       <h3 class="normal">Dataset Details</h3>
     </div>
   </div>
-<!--   <div class="col col-id">ID</div>
-  <div class="col">Title</div>
-
-  <div class="col">Description</div>
-  <div class="col">Creation date</div>
-  <div class="col">Last modified</div>
-  <div class="col">Charge</div>
-
-  <div class="col">Current value</div>
-  <div class="col">Target value</div>
-  <div class="col">Difference</div> -->
-</div>
 <div class="container" *ngIf="dataset">
   <div class="row">
     <div class="col">created on {{ dataset.creationDate | unixDateToString }}, last modified on {{ dataset.lastModifiedDate | unixDateToString }}</div>
@@ -42,6 +30,26 @@
     </div>
   </div>
   <div class="col">
+    <div class="row">
+      <div class="col">
+        <label for="">Valid from</label>
+        <dp-date-picker
+          [(ngModel)]="validFromDate"
+          (ngModelChange)="onValidFromDateChange($event)"
+          [config]="datepickerOptions"
+          mode="month">
+        </dp-date-picker>
+      </div>
+      <div class="col">
+        <label for="">Valid through</label>
+        <dp-date-picker
+          [(ngModel)]="expireDate"
+          (ngModelChange)="onExpireDateChange($event)"
+          [config]="datepickerOptions"
+          mode="month">
+        </dp-date-picker>
+      </div>
+    </div>
     <div class="row">
       <div class="col">
         <label for="">Charge date</label>

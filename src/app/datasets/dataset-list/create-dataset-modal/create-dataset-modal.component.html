@@ -22,12 +22,12 @@
           <textarea [(ngModel)]="datasetDescription"></textarea>
         </div>
       </div>
-<!--       <div class="row">
+      <div class="row">
         <div class="col">
           <label for="">Valid from</label>
           <dp-date-picker
-            [(ngModel)]="chargeDate"
-            (ngModelChange)="onDateChange($event)"
+            [(ngModel)]="validFromDate"
+            (ngModelChange)="onValidFromDateChange($event)"
             [config]="datepickerOptions"
             mode="month">
           </dp-date-picker>
@@ -35,20 +35,20 @@
         <div class="col">
           <label for="">Valid through</label>
           <dp-date-picker
-            [(ngModel)]="chargeDate"
-            (ngModelChange)="onDateChange($event)"
+            [(ngModel)]="expireDate"
+            (ngModelChange)="onExpireDateChange($event)"
             [config]="datepickerOptions"
             mode="month">
           </dp-date-picker>
         </div>
         <div class="col"></div>
-      </div> -->
+      </div>
       <div class="row">
         <div class="col">
           <label for="">Charge Date</label>
           <dp-date-picker
             [(ngModel)]="chargeDate"
-            (ngModelChange)="onDateChange($event)"
+            (ngModelChange)="onChargeDateChange($event)"
             [config]="datepickerOptions"
             mode="month">
           </dp-date-picker>

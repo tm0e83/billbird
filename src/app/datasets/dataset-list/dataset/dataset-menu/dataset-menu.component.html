@@ -6,7 +6,7 @@
   (click)="toggleMenu()"></i>
   <ul>
     <li *ngFor="let option of options">
-      <a (click)="option.fn()">{{option.text}}</a>
+      <button (click)="option.fn()" [disabled]="option.disabled">{{option.text}}</button>
     </li>
   </ul>
 </div>

@@ -107,23 +107,27 @@ export class DatasetListComponent implements OnInit {
 
   prefillUpdateValues() {
     this.datasets.forEach((dataset) => {
-      dataset.updateValue = dataset.monthlyShare;
-      this.ngRedux.dispatch({
-        type:'CHANGE_DATASET',
-        payload: dataset
-      });
+      if(dataset.active === true) {
+        dataset.updateValue = dataset.monthlyShare;
+        this.ngRedux.dispatch({
+          type:'CHANGE_DATASET',
+          payload: dataset
+        });
+      }
     });
   }
 
   applyUpdateValues() {
     this.datasets.forEach((dataset) => {
-      dataset.currentValue += dataset.updateValue;
-      dataset.updateValue = 0;
-      dataset = this.dataService.calcDatasetValues(dataset);
-      this.ngRedux.dispatch({
-        type:'CHANGE_DATASET',
-        payload: dataset
-      });
+      if(dataset.active === true) {
+        dataset.currentValue += dataset.updateValue;
+        dataset.updateValue = 0;
+        dataset = this.dataService.calcDatasetValues(dataset);
+        this.ngRedux.dispatch({
+          type:'CHANGE_DATASET',
+          payload: dataset
+        });
+       }
     });
   }
 

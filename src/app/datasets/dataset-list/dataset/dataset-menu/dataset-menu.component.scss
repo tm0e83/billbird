@@ -19,24 +19,37 @@
     background-color:#fff;
     color:#000;
     box-shadow: $global-box-shadow;
+    padding:0;
     margin-top:0.25rem;
-    padding:0.5rem;
     min-width:175px;
 
     li {
       border-bottom:1px solid #eee;
-      padding:0.5rem 0;
 
       &:last-of-type {
         border-bottom:0;
       }
     }
 
-    a {
+    button {
+      background:transparent;
+      border:0;
+      text-align:left;
+      color:#000;
       display:block;
       width:100%;
       white-space:nowrap;
       cursor:pointer;
+      padding:0.5rem 0.75rem;
+
+      &:disabled {
+        color:#ccc;
+        cursor:default;
+      }
+
+      &:not([disabled]):hover {
+        background-color:#f5f5f5;
+      }
     }
   }
 

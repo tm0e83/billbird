@@ -1,5 +1,6 @@
 import {
   Component,
+  OnChanges,
   OnInit,
   Input,
   EventEmitter,
@@ -18,7 +19,7 @@ import * as moment from 'moment/moment';
   templateUrl: './dataset.component.html',
   styleUrls: ['./dataset.component.scss']
 })
-export class DatasetComponent implements OnInit {
+export class DatasetComponent implements OnChanges, OnInit {
   currencyMaskOptions: object = currencyMaskOptions;
   datepickerOptions: object = {};
   gotoDetailCallback: Function;
@@ -27,9 +28,21 @@ export class DatasetComponent implements OnInit {
   deleteCallback: Function;
   chargeDate: object;
   menuOptions: object = [
-      { fn: this.gotoDetailCallback = this.gotoDetail.bind(this), text: 'Details' },
-      { fn: this.deactivateCallback = this.deactivate.bind(this), text: 'Deactivate' },
-      { fn: this.deleteCallback = this.delete.bind(this), text: 'Löschen' }
+      {
+        fn: this.gotoDetailCallback = this.gotoDetail.bind(this),
+        text: 'Details',
+        disabled: false
+      },
+      {
+        fn: this.deactivateCallback = this.deactivate.bind(this),
+        text: 'Deactivate',
+        disabled: false
+      },
+      {
+        fn: this.deleteCallback = this.delete.bind(this),
+        text: 'Löschen',
+        disabled: false
+      }
   ];
   @Input() filterTitle: any;
   @Input() dataset: Dataset;
@@ -41,15 +54,44 @@ export class DatasetComponent implements OnInit {
     private ngRedux: NgRedux<IAppState>
   ) {}
 
-  ngOnInit(): void {
+  ngOnChanges() {
     this.updateMenu();
+  }
+
+  ngOnInit(): void {
+    this.dataset.active = this.setActiveState();
     this.chargeDate = moment(this.dataset.chargeDate);
     this.dataset = this.dataService.calcDatasetValues(this.dataset);
     this.updateBillingDate();
     this.updateStore();
   }
 
-  updateBillingDate() {
+  setActiveState(): boolean {
+    let isActive = true;
+    if(this.dataset.expireDate) {
+      if(this.isExpired()) {
+        isActive = false;
+      }
+    }
+    if(this.dataset.validFromDate) {
+      if(this.isNotActiveYet()) {
+        isActive = false;
+      }
+    }
+    return isActive;
+  }
+
+  isExpired(): boolean {
+    if(!this.dataset.expireDate) return false;
+    return moment(this.dataset.expireDate).diff(moment(new Date), 'month', true) <= 0 && moment(this.dataset.expireDate).isSame(moment(new Date), 'month') === false;
+  }
+
+  isNotActiveYet(): boolean {
+    if(!this.dataset.validFromDate) return false;
+    return moment(this.dataset.validFromDate).diff(moment(new Date), 'month', true) > 0;
+  }
+
+  updateBillingDate(): void {
     let chargeDate = moment(this.dataset.chargeDate);
     let currentDate = moment(new Date());
     let monthBetween = chargeDate.diff(currentDate, 'month');
@@ -61,7 +103,7 @@ export class DatasetComponent implements OnInit {
     }
   };
 
-  onDateChange($event) {
+  onDateChange($event): void {
     this.dataset.chargeDate = $event.unix() * 1000;
     this.updateStore();
   }
@@ -77,11 +119,28 @@ export class DatasetComponent implements OnInit {
     });
   }
 
-  updateMenu() {
+  updateMenu(): void {
+    if(this.isExpired() || this.isNotActiveYet()) {
+      this.menuOptions[1] = {
+        fn: this.activateCallback = this.activate.bind(this),
+        text: 'Activate',
+        disabled: true
+      };
+      return;
+    }
+
     if(this.dataset.active) {
-      this.menuOptions[1] = { fn: this.deactivateCallback = this.deactivate.bind(this), text: 'Deactivate' };
+      this.menuOptions[1] = {
+        fn: this.deactivateCallback = this.deactivate.bind(this),
+        text: 'Deactivate',
+        disabled: false
+      };
     } else {
-      this.menuOptions[1] = { fn: this.activateCallback = this.activate.bind(this), text: 'Activate' };
+      this.menuOptions[1] = {
+        fn: this.activateCallback = this.activate.bind(this),
+        text: 'Activate',
+        disabled: false
+      };
     }
   }
 
@@ -109,7 +168,7 @@ export class DatasetComponent implements OnInit {
     this.updateStore();
   }
 
-  updateStore() {
+  updateStore(): void {
     this.ngRedux.dispatch({
       type: 'UPDATE_DATASET',
       dataset: this.dataService.calcDatasetValues(this.dataset)
