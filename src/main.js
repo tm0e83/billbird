@@ -1,12 +1,18 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+// import '@/assets/styles/tailwind.scss';
+import '@/assets/styles/main.scss';
 
-import App from './App.vue'
-import router from './router'
+import ModalWindow from '@/components/ModalWindow.vue';
 
-const app = createApp(App)
+import App from './App.vue';
+import router from './router';
 
-app.use(createPinia())
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(createPinia());
+app.use(router);
+
+app.component('ModalWindow', ModalWindow);
+
+app.mount('#app');

@@ -1,0 +1,14 @@
+button {
+  display: inline-block;
+  padding: 0.65rem 1rem;
+  background-color: $primary-color;
+  transition: background-color 300ms ease;
+  border: 0;
+  color: #fff;
+  border-radius: $global-radius;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary-color, 5%);
+  }
+}

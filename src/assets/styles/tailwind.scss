@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button {
+  @apply font-bold text-white bg-emerald-500	py-2 px-4 rounded;
+  transition: background-color 300ms ease;
+
+  &:hover {
+    @apply bg-emerald-600;
+  }
+
+  &.large {
+    @apply text-lg;
+  }
+}
+
+.container {
+  @apply max-w-full m-auto;
+}
