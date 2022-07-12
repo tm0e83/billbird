@@ -3,24 +3,36 @@
   import { useStore } from '@/stores/store.js';
   import DatasetList from '@/components/DatasetList.vue';
   import EditDataset from '@/components/EditDataset.vue';
+  import DeleteDataset from '@/components/DeleteDataset.vue';
 
   const store = useStore();
 
+  const state = reactive({
+    showModal: false,
+    dataset: null,
+    modalAction: ''
+  });
+
   function createNew() {
-    console.log('Create new dataset');
+    state.modalAction = 'edit';
     state.showModal = true;
     state.dataset = getNewDataset();
   }
 
   function getNewDataset() {
     return {
+      actualAmount: 0,
+      debitAmount: 0,
+      id: null,
+      interval: '',
+      invoiceAmount: null,
+      invoiceDate: null,
+      lastInvoiceDate: null,
+      lastUpdateDate: null,
+      monthlyAmount: 0,
       title: '',
-      id: getNextId()
+      type: ''
     }
-  }
-
-  function getNextId() {
-    return 1;
   }
 
   function closeModal() {
@@ -28,7 +40,13 @@
   }
 
   function editDataset(dataset) {
-    console.log('edit dataset', dataset);
+    state.modalAction = 'edit';
+    state.dataset = dataset;
+    state.showModal = true;
+  }
+
+  function deleteDataset(dataset) {
+    state.modalAction = 'delete';
     state.dataset = dataset;
     state.showModal = true;
   }
@@ -43,23 +61,30 @@
         console.log(e);
       })
   });
-
-  const state = reactive({
-    showModal: false,
-    dataset: getNewDataset()
-  });
 </script>
 
 <template>
   <div>
-    <ModalWindow :show="state.showModal" @close="closeModal">
-      <EditDataset :dataset="state.dataset" @close="closeModal" />
-    </ModalWindow>
+    <ModalWindow :show="state.showModal" @close="closeModal" />
+
+    <EditDataset
+      v-if="state.dataset && state.modalAction === 'edit'"
+      :dataset="state.dataset"
+      @close="closeModal"
+    />
+
+    <DeleteDataset
+      v-if="state.dataset && state.modalAction === 'delete'"
+      :dataset="state.dataset"
+      @close="closeModal"
+    />
 
     <DatasetList
-      @delete="id => deleteDataset(id)"
+      v-if="store.datasets.length"
+      @delete="dataset => deleteDataset(dataset)"
       @edit="dataset => editDataset(dataset)"
     />
+    <div v-else>Keine Datensätze vorhanden</div>
 
     <button @click="createNew" class="large mt-3">Neuer Datensatz</button>
   </div>

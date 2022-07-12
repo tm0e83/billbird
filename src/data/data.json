@@ -1,10 +1,41 @@
 [
   {
+    "actualAmount": 0,
+    "debitAmount": 50,
     "id": 1,
-    "title": "Mein erster Datensatz"
+    "interval": "year",
+    "invoiceAmount": 120,
+    "invoiceDate": "2022-10-01",
+    "lastInvoiceDate": "2021-10-01",
+    "lastUpdateDate": "2022-06-01",
+    "monthlyAmount": 10,
+    "title": "First Dataset",
+    "type": 1
   },
   {
+    "actualAmount": 0,
+    "debitAmount": 120,
     "id": 2,
-    "title": "Mein zweiter Datensatz"
+    "interval": "year",
+    "invoiceAmount": 240,
+    "invoiceDate": "2022-01-01",
+    "lastInvoiceDate": "2021-10-01",
+    "lastUpdateDate": "2022-06-01",
+    "monthlyAmount": 20,
+    "title": "Second Dataset",
+    "type": 1
+  },
+  {
+    "actualAmount": 25,
+    "debitAmount": 25,
+    "id": 3,
+    "interval": null,
+    "invoiceAmount": 360,
+    "invoiceDate": null,
+    "lastInvoiceDate": null,
+    "lastUpdateDate": "2022-06-01",
+    "monthlyAmount": 30,
+    "title": "Third Dataset",
+    "type": 2
   }
 ]

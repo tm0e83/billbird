@@ -29,9 +29,9 @@
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div class="modal" v-show="show" ref="outerModal" @click="clickOutside">
+      <div class="modal" v-show="show" ref="outerModal" @mousedown="clickOutside">
         <div class="modal-inner" :style="styles">
-          <slot />
+          <!-- teleport target -->
         </div>
       </div>
     </Transition>
