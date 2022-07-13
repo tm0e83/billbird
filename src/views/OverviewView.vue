@@ -54,12 +54,17 @@
   onMounted(() => {
     fetch('/src/data/data.json')
       .then(response => response.json())
-      .then(jsonArr => {
-        store.setDatasets(jsonArr);
-      })
-      .catch(e => {
+      .then(data => {
+        const datasets = data.reduce((datasets, group) => {
+          datasets = [...datasets, ...group.datasets];
+          return datasets;
+        }, []);
+
+        store.setDatasets(datasets);
+        store.setGroups(data);
+      }).catch(e => {
         console.log(e);
-      })
+      });
   });
 </script>
 

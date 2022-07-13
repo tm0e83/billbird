@@ -92,8 +92,16 @@
   <div class="dataset">
     <div class="prop id">{{ data.id }}</div>
     <div class="prop title">{{ data.title }}</div>
-    <div class="prop invoice-amount">{{ toCurrency(data.invoiceAmount) }}</div>
-    <div class="prop invoice-data">{{ format(new Date(data.invoiceDate), 'dd.MM.yyyy') }}</div>
+    <div class="prop invoice-amount">
+      <span v-if="data.invoiceAmount">
+      {{ toCurrency(data.invoiceAmount) }}
+      </span>
+    </div>
+    <div class="prop invoice-data">
+      <span v-if="data.invoiceDate">
+        {{ format(new Date(data.invoiceDate), 'dd.MM.yyyy') }}
+      </span>
+    </div>
     <div class="prop interval">{{ intervalName }}</div>
     <div class="prop monthly-amount">{{ toCurrency(data.monthlyAmount) }}</div>
     <div class="prop update-amount">
