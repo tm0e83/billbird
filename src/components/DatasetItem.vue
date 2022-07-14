@@ -5,17 +5,15 @@
 
   import { useStore } from '@/stores/store.js' ;
   import { format } from 'date-fns' ;
+  import { ChevronRightIcon, PencilAltIcon, TrashIcon } from '@heroicons/vue/solid';
+  import CurrencyInput from '@/components/CurrencyInput.vue';
 
   const props = defineProps(['data']);
   const store = useStore();
 
-  const updateAmount = ref(null);
-  const debitAmount = ref(0);
-  const diffAmount = ref(0);
-
   const intervalName = computed(() => props.data.type === 1 ? intervals[props.data.interval].name : '');
-  const isPositiveDiff = computed(() => diffAmount.value > 0);
-  const isNegativeDiff = computed(() => diffAmount.value < 0);
+  const isPositiveDiff = computed(() => props.data.diffAmount > 0);
+  const isNegativeDiff = computed(() => props.data.diffAmount < 0);
 
   function isValidDate(date) {
     return date instanceof Date && date.getTime();
@@ -26,32 +24,35 @@
 
     if (isValidDate(invoiceDate)) {
       if (invoiceDate < store.currentDate) {
-        store.updateLastInvoiceDate(props.data.id, format(invoiceDate, 'yyyy-MM-dd'));
+        store.setLastInvoiceDate(props.data.id, format(invoiceDate, 'yyyy-MM-dd'));
         const monthsPerInterval = intervals[props.data.interval].months;
         invoiceDate.setMonth(invoiceDate.getMonth() + monthsPerInterval);
-        store.updateInvoiceDate(props.data.id, format(invoiceDate, 'yyyy-MM-dd'));
+        store.setInvoiceDate(props.data.id, format(invoiceDate, 'yyyy-MM-dd'));
       }
+    }
+  }
+
+  function calculateMonthlyAmount() {
+    if (props.data.type === 1) {
+      store.setMonthlyAmount(props.data.id, props.data.invoiceAmount / intervals[props.data.interval].months);
     }
   }
 
   function calculateDebitAmount() {
     if (props.data.type !== 1) {
-      debitAmount.value = props.data.actualAmount;
+      store.setDebitAmount(props.data.id, props.data.actualAmount);
     } else {
       let invoiceDate = new Date(props.data.invoiceDate);
-
       if (isValidDate(invoiceDate)) {
         const monthsBetween = getMonthDifference(store.currentDate, invoiceDate);
         const pastIntervalMonths = intervals[props.data.interval].months - monthsBetween;
-        debitAmount.value = pastIntervalMonths * props.data.monthlyAmount;
+        store.setDebitAmount(props.data.id, pastIntervalMonths * props.data.monthlyAmount);
       }
     }
-
-    store.updateDebitAmount(props.data.id, debitAmount);
   }
 
   function calculateDiffAmount() {
-    diffAmount.value = props.data.actualAmount - debitAmount.value;
+    store.setDiffAmount(props.data.id, props.data.actualAmount - props.data.debitAmount);
   }
 
   function getMonthDifference(startDate, endDate) {
@@ -63,74 +64,77 @@
   }
 
   function applyUpdate() {
-    store.updateActualAmount(props.data.id, updateAmount.value);
+    store.setActualAmount(props.data.id, props.data.updateAmount);
     calculateDebitAmount();
     calculateDiffAmount();
-    updateAmount.value = null;
+    store.setUpdateAmount(props.data.id, null);
   }
 
   onMounted(() => {
     updateInvoiceDates();
+    calculateMonthlyAmount();
     calculateDebitAmount();
     calculateDiffAmount();
   });
 
   onBeforeUpdate(() => {
     updateInvoiceDates();
+    calculateMonthlyAmount();
     calculateDebitAmount();
     calculateDiffAmount();
   });
 
   defineExpose({
-    applyUpdate,
-    diffAmount,
-    updateAmount
+    applyUpdate
   });
 </script>
 
 <template>
-  <div class="dataset">
-    <div class="prop id">{{ data.id }}</div>
-    <div class="prop title">{{ data.title }}</div>
-    <div class="prop invoice-amount">
+  <div class="dataset odd:bg-gray-100 even:bg-gray-125 flex items-center">
+    <div class="prop flex-1 title">{{ data.title }}</div>
+    <div class="prop flex-1 text-right invoice-amount">
       <span v-if="data.invoiceAmount">
       {{ toCurrency(data.invoiceAmount) }}
       </span>
     </div>
-    <div class="prop invoice-data">
+    <div class="prop flex-1 invoice-data">
       <span v-if="data.invoiceDate">
         {{ format(new Date(data.invoiceDate), 'dd.MM.yyyy') }}
       </span>
     </div>
-    <div class="prop interval">{{ intervalName }}</div>
-    <div class="prop monthly-amount">{{ toCurrency(data.monthlyAmount) }}</div>
-    <div class="prop update-amount">
-      <input type="text" v-model.number="updateAmount">
-      <button @click="applyUpdate">&raquo;</button>
+    <div class="prop flex-1 interval">{{ intervalName }}</div>
+    <div class="prop flex-1 text-right monthly-amount">{{ toCurrency(data.monthlyAmount) }}</div>
+    <div class="prop flex-1 update-amount">
+      <div class="flex">
+        <CurrencyInput
+          v-model="data.updateAmount"
+          :options="{ currency: 'EUR', locale: 'de-DE', autoDecimalDigits: true }"
+          classes="w-full text-right"
+        />
+        <button @click="applyUpdate">
+          <ChevronRightIcon class="w-5 h-5" />
+        </button>
+      </div>
     </div>
-    <div class="prop actual-amount">{{ toCurrency(data.actualAmount) }}</div>
-    <div class="prop debit-amount">{{ toCurrency(debitAmount) }}</div>
-    <div class="prop diff-amount" :class="{ positive: isPositiveDiff, negative: isNegativeDiff }">
-      {{ toCurrency(diffAmount) }}
+    <div class="prop flex-1 text-right actual-amount">{{ toCurrency(data.actualAmount) }}</div>
+    <div class="prop flex-1 text-right debit-amount">{{ toCurrency(data.debitAmount) }}</div>
+    <div class="prop flex-1 text-right diff-amount" :class="{ 'text-green-600': isPositiveDiff, 'text-red-600': isNegativeDiff }">
+      {{ toCurrency(data.diffAmount) }}
     </div>
-    <div class="prop buttons">
-      <button @click="$emit('delete', data)">Löschen</button>
-      <button @click="$emit('edit', data)">Bearbeiten</button>
+    <div class="prop flex-0 min-w-[135px] buttons">
+      <div class="flex justify-end">
+        <button @click="$emit('delete', data)" class="alert flex items-center mr-3" title="Löschen">
+          <TrashIcon class="w-5 h-5" />
+        </button>
+        <button @click="$emit('edit', data)" class="flex items-center" title="Bearbeiten">
+          <PencilAltIcon class="w-5 h-5" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/styles/variables';
-
-  .dataset {
-    display: flex;
-
-    &:nth-child(odd) {
-      background-color: $gray-100-color;
-    }
-  }
-
   .positive {
     color: green;
   }
@@ -140,7 +144,6 @@
   }
 
   .prop {
-    flex: 1;
-    padding: 0.5rem;
+    @apply py-2 px-4;
   }
 </style>

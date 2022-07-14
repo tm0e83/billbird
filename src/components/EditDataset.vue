@@ -3,39 +3,59 @@
   import intervals from './shared/intervals.json';
   import { useStore } from '@/stores/store.js' ;
   import { format } from 'date-fns' ;
+  import { de } from 'date-fns/locale';
+  import CurrencyInput from '@/components/CurrencyInput.vue';
 
   const store = useStore();
   const props = defineProps(['dataset']);
-  const emit = defineEmits(['close']);
 
   let data = Object.assign({}, toRaw(props.dataset));
-  let state = reactive({ dataset: data });
+  let state = reactive({
+    dataset: data,
+    errors: []
+  });
 
   watch(() => props.dataset, (newData, oldData) => {
     data = Object.assign({}, toRaw(newData));
     state.dataset = data;
   });
 
-  function getNextId() {
-    if (!store.datasets.length) return 0;
-    return Math.max(...store.datasets.map(dataset => dataset.id)) + 1;
+  function validate() {
+    state.errors = [];
+
+    if (!state.dataset.type) state.errors.push('type');
+    if (!state.dataset.groupId) state.errors.push('groupId');
+    if (!state.dataset.title) state.errors.push('title');
+
+    if (state.dataset.type === 1) {
+      if (!state.dataset.invoiceDate) state.errors.push('invoiceDate');
+      if (!state.dataset.interval) state.errors.push('interval');
+      if (!state.dataset.invoiceAmount) state.errors.push('invoiceAmount');
+    } else {
+      if (!state.dataset.monthlyAmount) state.errors.push('monthlyAmount');
+    }
+
+    return state.errors.length === 0;
   }
 
   function save() {
-    if (state.dataset.id === null) {
-      state.dataset.id = getNextId();
+    const isValid = validate();
 
-      if (state.dataset.type === 1) {
-        state.dataset.monthlyAmount = state.dataset.invoiceAmount / intervals[state.dataset.interval].months;
-      }
+    if (!isValid) return;
+
+    if (state.dataset.id === null) {
+      state.dataset.id = store.nextDatasetId;
+
+      // if (state.dataset.type === 1) {
+      //   state.dataset.monthlyAmount = state.dataset.invoiceAmount / intervals[state.dataset.interval].months;
+      // }
 
       store.addDataset(state.dataset);
     } else {
-      store.updateDataset(state.dataset);
-      console.log('updated', state.dataset);
+      store.replaceDataset(state.dataset);
     }
 
-    emit('close');
+    store.hideModal();
   }
 
   function handleDate(invoiceDate) {
@@ -46,22 +66,26 @@
 <template>
   <Teleport to=".modal-inner">
     <div>
-      <div>
+      <div class="modal-head">
         <span v-if="state.dataset.id">Datensatz bearbeiten</span>
         <span v-else>Datensatz erstellen</span>
       </div>
 
-      <div>
+      <div v-if="state.errors.length" class="mb-4 p-5 text-red-700 border border-red-700 bg-red-100">
+        Ups! Ihre Eingaben sind fehlerhaft. Bitte überprüfen Sie die markierten Felder.
+      </div>
+
+      <div class="mb-4">
         <label for="ds-new-type">Typ</label>
         <select id="ds-new-type" v-model.number="state.dataset.type">
-          <option value="">Auswählen</option>
+          <option value="" style="display:none">Auswählen</option>
           <option value="1">Rechnung</option>
           <option value="2">Sparplan</option>
         </select>
       </div>
 
-      <div v-if="state.dataset.type">
-        <div>
+      <div v-if="state.dataset.type" class="mb-4">
+        <div class="mb-4">
           <label for="ds-new-title">Titel</label>
           <input
             type="text"
@@ -70,16 +94,29 @@
           >
         </div>
 
+        <div class="mb-4">
+          <label for="ds-new-group">Gruppe</label>
+          <select id="ds-new-group" v-model.number="state.dataset.groupId">
+            <option value="" style="display:none">Auswählen</option>
+            <option v-for="datagroup in store.datagroups" :value="datagroup.id">{{ datagroup.title }}</option>
+          </select>
+        </div>
+
         <div v-if="state.dataset.type === 1">
-          <div>
+          <div class="mb-4">
             <label for="ds-new-invoice-date">Rechnungsdatum</label>
             <Datepicker
               v-model="state.dataset.invoiceDate"
               @update:modelValue="handleDate"
+              :enableTimePicker="false"
+              locale="de-DE"
+              :format-locale="de"
+              format="dd.MM.yyyy"
               autoApply
             />
           </div>
-          <div>
+
+          <div class="mb-4">
             <label for="ds-new-interval">Interval</label>
             <select id="ds-new-interval" v-model="state.dataset.interval">
               <option value="">Auswählen</option>
@@ -88,17 +125,24 @@
               <option value="2years">2 Jahre</option>
             </select>
           </div>
-          <div>
+
+          <div class="mb-4">
             <label for="ds-new-invoice-amount">Rechnungsbetrag</label>
-            <input
+            <!-- <input
               type="text"
               id="ds-new-invoice-amount"
               v-model.number="state.dataset.invoiceAmount"
-            >
+            > -->
+            <CurrencyInput
+              v-model.number="state.dataset.invoiceAmount"
+              :options="{ currency: 'EUR', locale: 'de-DE', autoDecimalDigits: true }"
+              classes="w-full"
+            />
           </div>
         </div>
+
         <div v-else>
-          <div>
+          <div class="mb-4">
             <label for="ds-new-monthly-amount">Pro Monat</label>
             <input
               type="text"
@@ -109,8 +153,10 @@
         </div>
       </div>
 
-      <button @click="$emit('close')">Schließen</button>
-      <button @click="save" v-if="state.dataset.type">Speichern</button>
+      <div class="mt-2 flex justify-between">
+        <button @click="store.hideModal()" class="hollow">Schließen</button>
+        <button @click="save" v-if="state.dataset.type">Speichern</button>
+      </div>
     </div>
   </Teleport>
 </template>

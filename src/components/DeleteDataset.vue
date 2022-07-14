@@ -3,21 +3,21 @@
 
   const store = useStore();
   const props = defineProps(['dataset']);
-  const emit = defineEmits(['close']);
 
   function deleteDataset() {
-    console.log('deleteDataset', props.dataset.id);
     store.deleteDataset(props.dataset.id);
-    emit('close');
+    store.hideModal();
   }
 </script>
 
 <template>
   <Teleport to=".modal-inner">
     <div>
-      <div>Datensatz wirklich löschen?</div>
-      <button @click="$emit('close')">Abbrechen</button>
-      <button @click="deleteDataset">Löschen</button>
+      <div class="modal-head">Datensatz wirklich löschen?</div>
+      <div class="flex justify-between">
+        <button @click="store.hideModal()" class="hollow">Abbrechen</button>
+        <button @click="deleteDataset">Löschen</button>
+      </div>
     </div>
   </Teleport>
 </template>

@@ -6,6 +6,7 @@
       {
         "actualAmount": 0,
         "debitAmount": 50,
+        "diffAmount": 0,
         "groupId": 1,
         "id": 1,
         "interval": "year",
@@ -15,11 +16,13 @@
         "lastUpdateDate": "2022-06-01",
         "monthlyAmount": 10,
         "title": "First Dataset",
-        "type": 1
+        "type": 1,
+        "updateAmount": null
       },
       {
         "actualAmount": 0,
         "debitAmount": 120,
+        "diffAmount": 0,
         "groupId": 1,
         "id": 2,
         "interval": "year",
@@ -29,11 +32,13 @@
         "lastUpdateDate": "2022-06-01",
         "monthlyAmount": 20,
         "title": "Second Dataset",
-        "type": 1
+        "type": 1,
+        "updateAmount": null
       },
       {
         "actualAmount": 25,
         "debitAmount": 25,
+        "diffAmount": 0,
         "groupId": 1,
         "id": 3,
         "interval": null,
@@ -43,7 +48,8 @@
         "lastUpdateDate": "2022-06-01",
         "monthlyAmount": 30,
         "title": "Third Dataset",
-        "type": 2
+        "type": 2,
+        "updateAmount": null
       }
     ]
   },
@@ -54,6 +60,7 @@
       {
         "actualAmount": 0,
         "debitAmount": 0,
+        "diffAmount": 0,
         "groupId": 2,
         "id": 4,
         "interval": "year",
@@ -63,7 +70,8 @@
         "lastUpdateDate": "2022-06-01",
         "monthlyAmount": 10,
         "title": "Fourth Dataset",
-        "type": 1
+        "type": 1,
+        "updateAmount": null
       }
     ]
   }
