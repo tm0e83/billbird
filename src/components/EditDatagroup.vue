@@ -4,6 +4,7 @@
 
   const store = useStore();
   const props = defineProps(['datagroup']);
+  const emit = defineEmits(['close']);
 
   let data = Object.assign({}, toRaw(props.datagroup));
   let state = reactive({
@@ -14,6 +15,7 @@
   watch(() => props.datagroup, (newData, oldData) => {
     data = Object.assign({}, toRaw(newData));
     state.datagroup = data;
+    state.errors = [];
   });
 
   function validate() {
@@ -37,38 +39,39 @@
       store.replaceDatagroup(state.datagroup);
     }
 
-    store.hideModal();
+    emit('close');
   }
 </script>
 
 <template>
-  <Teleport to=".modal-inner">
-    <div>
-      <div class="modal-head">
-        <span v-if="state.datagroup.id">Datengruppe bearbeiten</span>
-        <span v-else>Datengruppe erstellen</span>
-      </div>
-
-      <div v-if="state.errors.length" class="error">
-        Ups! Ihre Eingaben sind fehlerhaft. Bitte überprüfen Sie die markierten Felder.
-      </div>
-
-      <div>
-        <label for="ds-new-title">Titel</label>
-        <input
-          type="text"
-          id="ds-new-title"
-          v-model="state.datagroup.title"
-        >
-      </div>
-
-      <div class="mt-4 flex justify-between">
-        <button @click="store.setModalVisibility(false)" class="hollow">Schließen</button>
-        <button @click="save">Speichern</button>
-      </div>
+  <div>
+    <div class="modal-head">
+      <span v-if="state.datagroup.id">Datengruppe bearbeiten</span>
+      <span v-else>Datengruppe erstellen</span>
     </div>
-  </Teleport>
+
+    <div v-if="state.errors.length" class="errors">
+      Ups! Ihre Eingaben sind unvollständig oder fehlerhaft. Bitte überprüfen Sie Ihre Eingaben.
+    </div>
+
+    <div>
+      <label for="ds-new-title">Titel</label>
+      <input
+        type="text"
+        id="ds-new-title"
+        v-model="state.datagroup.title"
+      >
+    </div>
+
+    <div class="mt-4 flex justify-between">
+      <button @click="$emit('close')" class="button hollow">Schließen</button>
+      <button @click="save" class="button">Speichern</button>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+  .errors {
+    @apply mb-4 p-5 text-red-700 border border-red-700 bg-red-100;
+  }
 </style>

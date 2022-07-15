@@ -6,7 +6,7 @@
 </script>
 
 <template>
-  <header class="p-3 shadow">
+  <header class="p-3 bg-white shadow">
     <div class="container m-auto flex items-end">
       <div class="text-2xl font-black">Bill<span class="text-emerald-500">Bird</span></div>
       <nav class="flex gap-x-6 ml-12">
@@ -20,7 +20,7 @@
     <RouterView />
   </main>
 
-  <ModalWindow :show="store.modalVisible" @close="store.hideModal()" />
+  <!-- <ModalWindow :show="store.modalVisible" @close="store.hideModal()" /> -->
 </template>
 
 <style scoped lang="scss">

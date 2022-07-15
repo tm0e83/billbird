@@ -1,8 +1,14 @@
 <script setup>
-  import { useCurrencyInput } from 'vue-currency-input'
+  import { watch } from 'vue';
+  import { useCurrencyInput } from 'vue-currency-input';
 
   const props = defineProps(['modelValue', 'options', 'classes']);
-  const { inputRef } = useCurrencyInput(props.options);
+  const { inputRef, setValue } = useCurrencyInput(props.options);
+
+    watch(
+      () => props.modelValue,
+      (value) => setValue(value)
+    )
 
   defineExpose({
     inputRef

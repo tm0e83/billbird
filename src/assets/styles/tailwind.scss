@@ -2,19 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-button {
-  @apply transition duration-300 font-bold text-white bg-emerald-500 px-3 py-2 hover:bg-emerald-600;
+html, body {
+  @apply bg-gray-200 text-gray-600;
+}
+
+.button {
+  @apply transition duration-300 font-bold text-white bg-emerald-500 px-3 py-2 hover:bg-emerald-600 rounded;
 
   &.alert {
     @apply transition duration-300 bg-red-500 hover:bg-red-600;
   }
 
+  &:not(.hollow) {
+    &[disabled] {
+      @apply transition duration-300 text-gray-500 bg-gray-300 hover:bg-gray-300 cursor-default;
+    }
+  }
+
   &.hollow {
     @apply transition duration-300 border border-emerald-500 text-emerald-500 bg-transparent hover:bg-transparent hover:border-emerald-600 hover:text-emerald-600;
+
+    &.alert {
+      @apply transition duration-300 border-red-500 hover:border-red-600 text-red-500 hover:text-red-600;
+    }
   }
 
   &.large {
     @apply text-lg;
+  }
+}
+
+.icon-button {
+  @apply transition duration-300 text-emerald-500 hover:text-emerald-600 bg-transparent hover:bg-transparent;
+
+  &.alert {
+    @apply transition duration-300 text-red-500 hover:text-red-600 bg-transparent hover:bg-transparent;
   }
 }
 
@@ -61,6 +83,10 @@ label {
   @apply block;
 }
 
+p {
+  @apply mb-3;
+}
+
 .container {
   @apply max-w-full m-auto;
 }
@@ -84,5 +110,5 @@ input.dp__input {
 
 // Modal Window
 .modal-head {
-  @apply text-xl mb-6;
+  @apply text-2xl mb-6;
 }

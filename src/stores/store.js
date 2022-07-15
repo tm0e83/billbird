@@ -11,8 +11,6 @@ export const useStore = defineStore({
     currentDate: new Date(),
     datagroups: [],
     datasets: [],
-    modalAction: '',
-    modalVisible: false,
   }),
 
   getters: {
@@ -104,14 +102,10 @@ export const useStore = defineStore({
       allDatasets(this.datagroups).filter(d => d.id === id).map(d => d.updateAmount = amount);
     },
 
-    showModal(modalAction) {
-      this.modalVisible = true;
-      this.modalAction = modalAction;
-    },
-
-    hideModal() {
-      this.modalVisible = false;
-      this.modalAction = '';
+    replaceDatagroup(datagroup) {
+      this.datagroups = this.datagroups.map(currentDatagroup => {
+        return currentDatagroup.id === datagroup.id ? datagroup : currentDatagroup;
+      });
     },
 
     replaceDataset(dataset) {

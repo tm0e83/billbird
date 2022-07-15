@@ -13,27 +13,29 @@
   const state = reactive({
     dataset: null,
     datagroup: null,
-    modalAction: ''
+    editDatasetModalVisible: false,
+    editDatagroupModalVisible: false,
+    deleteDatagroupModalVisible: false
   });
 
   function editDatagroup(datagroup) {
     state.datagroup = datagroup;
-    store.showModal('editDatagroup');
+    state.editDatagroupModalVisible = true;
   }
 
   function deleteDatagroup(datagroup) {
     state.datagroup = datagroup;
-    store.showModal('deleteDatagroup');
+    state.deleteDatagroupModalVisible = true;
   }
 
   function createNewDatagroup() {
     state.datagroup = getNewDatagroup();
-    store.showModal('createNewDatagroup');
+    state.editDatagroupModalVisible = true;
   }
 
   function createNewDataset() {
     state.dataset = getNewDataset();
-    store.showModal('createNewDataset');
+    state.editDatasetModalVisible = true;
   }
 
   function getNewDatagroup() {
@@ -70,29 +72,44 @@
 
 <template>
   <div>
-    <EditDataset
-      v-if="state.dataset && store.modalAction === 'createNewDataset'"
-      :dataset="state.dataset"
-    />
+    <ModalWindow :show="state.editDatasetModalVisible" @close="state.editDatasetModalVisible = false">
+      <EditDataset
+        v-if="state.dataset"
+        :dataset="state.dataset"
+        @close="state.editDatasetModalVisible = false"
+      />
+    </ModalWindow>
 
+  <ModalWindow :show="state.editDatagroupModalVisible" @close="state.editDatagroupModalVisible = false">
     <EditDatagroup
-      v-if="state.datagroup && (store.modalAction === 'editDatagroup' || store.modalAction === 'createNewDatagroup')"
+      v-if="state.datagroup"
       :datagroup="state.datagroup"
+      @close="state.editDatagroupModalVisible = false"
     />
+  </ModalWindow>
 
+  <ModalWindow
+    :show="state.deleteDatagroupModalVisible"
+    max-width="400px"
+    @close="state.deleteDatagroupModalVisible = false"
+  >
     <DeleteDatagroup
-      v-if="state.datagroup && store.modalAction === 'deleteDatagroup'"
+      v-if="state.datagroup"
       :datagroup="state.datagroup"
+      @close="state.deleteDatagroupModalVisible = false"
     />
+  </ModalWindow>
 
     <div class="list">
       <DatagroupItem
         v-for="datagroup in store.datagroups"
         :datagroup="datagroup"
+        @edit="datagroup => editDatagroup(datagroup)"
+        @delete="datagroup => deleteDatagroup(datagroup)"
       />
     </div>
 
-    <div class="list-footer flex items-center font-bold border border-gray-300">
+    <div class="list-footer flex items-center font-bold border bg-white rounded">
       <div class="prop flex-1 title">Summe</div>
       <div class="prop flex-1 text-right invoice-amount">{{ toCurrency(store.totalInvoiceAmount) }}</div>
       <div class="prop flex-1 invoice-date"></div>
@@ -100,7 +117,7 @@
       <div class="prop flex-1 text-right monthly-amount">{{ toCurrency(store.totalMonthlyAmount) }}</div>
       <div class="prop flex-1 update-amount">
       <div class="flex">
-        <div class="w-full py-2 px-3 text-right">
+        <div class="w-full py-2 px-6 text-right">
           {{ toCurrency(store.totalUpdateAmount) }}
         </div>
         <button @click="applyUpdate">
@@ -114,11 +131,11 @@
       <div class="prop flex-0 min-w-[135px] buttons"></div>
     </div>
 
-    <button @click="createNewDatagroup" class="large mt-3 md:mr-3 inline-flex items-center	">
+    <button @click="createNewDatagroup" class="button large mt-3 md:mr-3 inline-flex items-center">
       <PlusIcon class="h-5 w-5 mr-2" />
       Neue Datengruppe
     </button>
-    <button @click="createNewDataset" class="large mt-3 inline-flex items-center">
+    <button @click="createNewDataset" class="button large mt-3 inline-flex items-center">
       <PlusIcon class="h-5 w-5 mr-2" />
       Neuer Datensatz
     </button>

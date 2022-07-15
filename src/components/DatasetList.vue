@@ -13,17 +13,21 @@
   const datasetRefs = ref([]);
 
   const state = reactive({
-    dataset: null
+    dataset: null,
+    editModalVisible: false,
+    deleteModalVisible: false
   });
 
   function editDataset(dataset) {
+    state.dataset = null;
     state.dataset = dataset;
-    store.showModal('editDataset');
+    state.editModalVisible = true;
   }
 
   function deleteDataset(dataset) {
+    state.dataset = null;
     state.dataset = dataset;
-    store.showModal('deleteDataset');
+    state.deleteModalVisible = true;
   }
 
   const totalInvoiceAmount = computed(() => {
@@ -47,27 +51,45 @@
   });
 
   const totalUpdateAmount = computed(() => {
-    return datasetRefs.value.reduce((sum, datasetRef) => datasetRef.updateAmount ? sum += datasetRef.updateAmount : sum, 0);
+    return props.datagroup.datasets.reduce((sum, dataset) => dataset.updateAmount ? sum += dataset.updateAmount : sum, 0);
   });
 
   function applyUpdate() {
     datasetRefs.value.map(datasetRef => datasetRef.applyUpdate());
   }
+
+  function closeEditModal() {
+    state.editModalVisible = false;
+    state.dataset = null;
+  }
 </script>
 
 <template>
-  <EditDataset
-    v-if="state.dataset && store.modalAction === 'editDataset'"
-    :dataset="state.dataset"
-  />
+  <ModalWindow
+    :show="state.editModalVisible"
+    @close="closeEditModal()"
+  >
+    <EditDataset
+      v-if="state.dataset"
+      :dataset="state.dataset"
+      @close="closeEditModal()"
+    />
+  </ModalWindow>
 
-  <DeleteDataset
-    v-if="state.dataset && store.modalAction === 'deleteDataset'"
-    :dataset="state.dataset"
-  />
+  <ModalWindow
+    :show="state.deleteModalVisible"
+    max-width="400px"
+    @close="state.deleteModalVisible = false"
+  >
+    <DeleteDataset
+      v-if="state.dataset"
+      :dataset="state.dataset"
+      @close="state.deleteModalVisible = false"
+    />
+  </ModalWindow>
 
   <div>
-    <div class="list-head flex items-center">
+    <div class="list-head font-bold flex items-center uppercase">
       <div class="prop flex-1 title">Titel</div>
       <div class="prop flex-1 text-right invoice-amount">Rg.-Betrag</div>
       <div class="prop flex-1 invoice-data">Rg.-Datum</div>
@@ -83,13 +105,13 @@
     <div class="list">
       <DatasetItem
         v-for="dataset in datagroup.datasets" ref="datasetRefs"
-        :data="dataset"
+        :dataset="dataset"
         @delete="dataset => deleteDataset(dataset)"
         @edit="dataset => editDataset(dataset)"
       />
     </div>
 
-    <div class="list-footer flex items-center">
+    <div class="list-footer font-bold flex items-center">
       <div class="prop flex-1 title"></div>
       <div class="prop flex-1 text-right invoice-amount">{{ toCurrency(totalInvoiceAmount) }}</div>
       <div class="prop flex-1 invoice-data"></div>
@@ -97,8 +119,12 @@
       <div class="prop flex-1 text-right monthly-amount">{{ toCurrency(totalMonthlyAmount) }}</div>
       <div class="prop flex-1 update-amount">
         <div class="flex">
-          <div class="w-full py-2 px-3 text-right">{{ toCurrency(totalUpdateAmount) }}</div>
-          <button @click="applyUpdate">
+          <div class="w-full py-2 px-6 text-right">{{ toCurrency(totalUpdateAmount) }}</div>
+          <button
+            @click="applyUpdate"
+            :disabled="!totalUpdateAmount"
+            title="Update für alle Datensätze der Gruppe ausführen"
+          >
             <ChevronRightIcon class="w-5 h-5" />
           </button>
         </div>
@@ -112,19 +138,6 @@
 </template>
 
 <style lang="scss" scoped>
-  .list-head,
-  .list-footer {
-    font-weight: bold;
-  }
-
-  .list-head {
-    border-bottom: 1px solid #ccc;
-  }
-
-  .list-footer {
-    border-top: 1px solid #ccc;
-  }
-
   .prop {
     @apply py-2 px-4;
   }

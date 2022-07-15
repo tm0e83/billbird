@@ -31,7 +31,7 @@
     <Transition name="modal">
       <div class="modal" v-show="show" ref="outerModal" @mousedown="clickOutside">
         <div class="modal-inner" :style="styles">
-          <!-- teleport target -->
+          <slot></slot>
         </div>
       </div>
     </Transition>
@@ -54,10 +54,6 @@
     margin: 1.5rem auto;
     background-color: #fff;
     padding: 1.5rem;
-  }
-
-  .modal-head {
-    font-size: 1.5em;
   }
 
   .modal-enter-active,
