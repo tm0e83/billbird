@@ -31,16 +31,14 @@
     <Transition name="modal">
       <div class="modal" v-show="show" ref="outerModal" @mousedown="clickOutside">
         <div class="modal-inner" :style="styles">
-          <!-- teleport target -->
+          <slot></slot>
         </div>
       </div>
     </Transition>
   </Teleport>
 </template>
 
-<style lang="scss" scoped>
-  @import '@/assets/styles/variables';
-
+<style lang="scss">
   .modal {
     background-color: rgba(0, 0, 0, 0.15);
     position: fixed;
@@ -56,7 +54,6 @@
     margin: 1.5rem auto;
     background-color: #fff;
     padding: 1.5rem;
-    border-radius: $global-radius;
   }
 
   .modal-enter-active,

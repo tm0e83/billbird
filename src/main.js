@@ -1,9 +1,10 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-// import '@/assets/styles/tailwind.scss';
-import '@/assets/styles/main.scss';
+
+// import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+import '@/assets/styles/tailwind.scss';
 
 import ModalWindow from '@/components/ModalWindow.vue';
 

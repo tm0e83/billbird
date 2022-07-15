@@ -1,41 +1,78 @@
 [
   {
-    "actualAmount": 0,
-    "debitAmount": 50,
+    "title": "Allgemein",
     "id": 1,
-    "interval": "year",
-    "invoiceAmount": 120,
-    "invoiceDate": "2022-10-01",
-    "lastInvoiceDate": "2021-10-01",
-    "lastUpdateDate": "2022-06-01",
-    "monthlyAmount": 10,
-    "title": "First Dataset",
-    "type": 1
+    "datasets": [
+      {
+        "actualAmount": 0,
+        "debitAmount": 50,
+        "diffAmount": 0,
+        "groupId": 1,
+        "id": 1,
+        "interval": "year",
+        "invoiceAmount": 120,
+        "invoiceDate": "2022-10-01",
+        "lastInvoiceDate": "2021-10-01",
+        "lastUpdateDate": "2022-06-01",
+        "monthlyAmount": 10,
+        "title": "First Dataset",
+        "type": 1,
+        "updateAmount": null
+      },
+      {
+        "actualAmount": 0,
+        "debitAmount": 120,
+        "diffAmount": 0,
+        "groupId": 1,
+        "id": 2,
+        "interval": "year",
+        "invoiceAmount": 240,
+        "invoiceDate": "2022-01-01",
+        "lastInvoiceDate": "2021-10-01",
+        "lastUpdateDate": "2022-06-01",
+        "monthlyAmount": 20,
+        "title": "Second Dataset",
+        "type": 1,
+        "updateAmount": null
+      },
+      {
+        "actualAmount": 25,
+        "debitAmount": 25,
+        "diffAmount": 0,
+        "groupId": 1,
+        "id": 3,
+        "interval": null,
+        "invoiceAmount": null,
+        "invoiceDate": null,
+        "lastInvoiceDate": null,
+        "lastUpdateDate": "2022-06-01",
+        "monthlyAmount": 30,
+        "title": "Third Dataset",
+        "type": 2,
+        "updateAmount": null
+      }
+    ]
   },
   {
-    "actualAmount": 0,
-    "debitAmount": 120,
+    "title": "Sonstige",
     "id": 2,
-    "interval": "year",
-    "invoiceAmount": 240,
-    "invoiceDate": "2022-01-01",
-    "lastInvoiceDate": "2021-10-01",
-    "lastUpdateDate": "2022-06-01",
-    "monthlyAmount": 20,
-    "title": "Second Dataset",
-    "type": 1
-  },
-  {
-    "actualAmount": 25,
-    "debitAmount": 25,
-    "id": 3,
-    "interval": null,
-    "invoiceAmount": 360,
-    "invoiceDate": null,
-    "lastInvoiceDate": null,
-    "lastUpdateDate": "2022-06-01",
-    "monthlyAmount": 30,
-    "title": "Third Dataset",
-    "type": 2
+    "datasets": [
+      {
+        "actualAmount": 0,
+        "debitAmount": 0,
+        "diffAmount": 0,
+        "groupId": 2,
+        "id": 4,
+        "interval": "year",
+        "invoiceAmount": 120,
+        "invoiceDate": "2022-11-01",
+        "lastInvoiceDate": "2021-10-01",
+        "lastUpdateDate": "2022-06-01",
+        "monthlyAmount": 10,
+        "title": "Fourth Dataset",
+        "type": 1,
+        "updateAmount": null
+      }
+    ]
   }
 ]

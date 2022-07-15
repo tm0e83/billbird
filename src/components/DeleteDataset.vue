@@ -6,20 +6,19 @@
   const emit = defineEmits(['close']);
 
   function deleteDataset() {
-    console.log('deleteDataset', props.dataset.id);
     store.deleteDataset(props.dataset.id);
     emit('close');
   }
 </script>
 
 <template>
-  <Teleport to=".modal-inner">
-    <div>
-      <div>Datensatz wirklich löschen?</div>
-      <button @click="$emit('close')">Abbrechen</button>
-      <button @click="deleteDataset">Löschen</button>
+  <div>
+    <div class="modal-head text-center">Datensatz wirklich löschen?</div>
+    <div class="flex justify-between">
+      <button @click="$emit('close')" class="button alert hollow">Abbrechen</button>
+      <button @click="deleteDataset" class="button alert">Löschen</button>
     </div>
-  </Teleport>
+  </div>
 </template>
 
 <style lang="scss" scoped>
