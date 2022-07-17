@@ -87,6 +87,10 @@ p {
   @apply mb-3;
 }
 
+a {
+  @apply cursor-pointer transition duration-300 text-emerald-500 hover:text-emerald-600;
+}
+
 .container {
   @apply max-w-full m-auto;
 }

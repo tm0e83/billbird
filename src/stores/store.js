@@ -70,6 +70,10 @@ export const useStore = defineStore({
       });
     },
 
+    deleteDatagroup(id) {
+      this.datagroups = this.datagroups.filter(datagroup => datagroup.id !== id);
+    },
+
     setActualAmount(id, amount) {
       allDatasets(this.datagroups).filter(d => d.id === id).map(d => d.actualAmount += amount);
     },

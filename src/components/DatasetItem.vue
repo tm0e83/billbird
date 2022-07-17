@@ -92,19 +92,19 @@
 <template>
   <div class="dataset border-t last:border-b border-gray-100 flex items-center">
     <div class="prop flex-1 title">{{ dataset.title }}</div>
-    <div class="prop flex-1 text-right invoice-amount">
+    <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">
       <span v-if="dataset.invoiceAmount">
       {{ toCurrency(dataset.invoiceAmount) }}
       </span>
     </div>
-    <div class="prop flex-1 invoice-data">
+    <div class="prop grow-0 shrink-0 basis-[140px] invoice-data">
       <span v-if="dataset.invoiceDate">
         {{ format(new Date(dataset.invoiceDate), 'dd.MM.yyyy') }}
       </span>
     </div>
-    <div class="prop flex-1 interval">{{ intervalName }}</div>
-    <div class="prop flex-1 text-right monthly-amount">{{ toCurrency(dataset.monthlyAmount) }}</div>
-    <div class="prop flex-1 update-amount">
+    <div class="prop grow-0 shrink-0 basis-[140px] interval">{{ intervalName }}</div>
+    <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">{{ toCurrency(dataset.monthlyAmount) }}</div>
+    <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
       <div class="flex">
         <CurrencyInput
           v-model="dataset.updateAmount"
@@ -116,12 +116,12 @@
         </button>
       </div>
     </div>
-    <div class="prop flex-1 text-right actual-amount">{{ toCurrency(dataset.actualAmount) }}</div>
-    <div class="prop flex-1 text-right debit-amount">{{ toCurrency(dataset.debitAmount) }}</div>
-    <div class="prop flex-1 text-right diff-amount" :class="{ 'text-green-600': isPositiveDiff, 'text-red-600': isNegativeDiff }">
+    <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">{{ toCurrency(dataset.actualAmount) }}</div>
+    <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">{{ toCurrency(dataset.debitAmount) }}</div>
+    <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount" :class="{ 'text-green-600': isPositiveDiff, 'text-red-600': isNegativeDiff }">
       {{ toCurrency(dataset.diffAmount) }}
     </div>
-    <div class="prop flex-0 min-w-[135px] buttons">
+    <div class="prop grow-0 shrink-0 basis-[140px] buttons">
       <div class="flex justify-end">
         <button @click="$emit('delete', dataset)" class="icon-button alert flex items-center mr-3" title="Löschen">
           <TrashIcon class="w-5 h-5" />

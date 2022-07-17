@@ -111,24 +111,24 @@
 
     <div class="list-footer flex items-center font-bold border bg-white rounded">
       <div class="prop flex-1 title">Summe</div>
-      <div class="prop flex-1 text-right invoice-amount">{{ toCurrency(store.totalInvoiceAmount) }}</div>
-      <div class="prop flex-1 invoice-date"></div>
-      <div class="prop flex-1 interval"></div>
-      <div class="prop flex-1 text-right monthly-amount">{{ toCurrency(store.totalMonthlyAmount) }}</div>
-      <div class="prop flex-1 update-amount">
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">{{ toCurrency(store.totalInvoiceAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] invoice-date"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">{{ toCurrency(store.totalMonthlyAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
       <div class="flex">
         <div class="w-full py-2 px-6 text-right">
           {{ toCurrency(store.totalUpdateAmount) }}
         </div>
-        <button @click="applyUpdate">
+        <button @click="applyUpdate" :disabled="!store.totalUpdateAmount" class="button">
           <ChevronRightIcon class="w-5 h-5" />
         </button>
       </div>
       </div>
-      <div class="prop flex-1 text-right actual-amount">{{ toCurrency(store.totalActualAmount) }}</div>
-      <div class="prop flex-1 text-right debit-amount">{{ toCurrency(store.totalDebitAmount) }}</div>
-      <div class="prop flex-1 text-right diff-amount">{{ toCurrency(store.totalDiffAmount) }}</div>
-      <div class="prop flex-0 min-w-[135px] buttons"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">{{ toCurrency(store.totalActualAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">{{ toCurrency(store.totalDebitAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount">{{ toCurrency(store.totalDiffAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
     </div>
 
     <button @click="createNewDatagroup" class="button large mt-3 md:mr-3 inline-flex items-center">

@@ -15,7 +15,8 @@
     "pinia": "^2.0.14",
     "vue": "^3.2.37",
     "vue-currency-input": "^3.0.0",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.0.16",
+    "vue-tabler-icons": "^2.6.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

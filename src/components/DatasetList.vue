@@ -91,15 +91,15 @@
   <div>
     <div class="list-head font-bold flex items-center uppercase">
       <div class="prop flex-1 title">Titel</div>
-      <div class="prop flex-1 text-right invoice-amount">Rg.-Betrag</div>
-      <div class="prop flex-1 invoice-data">Rg.-Datum</div>
-      <div class="prop flex-1 interval">Interval</div>
-      <div class="prop flex-1 text-right monthly-amount">Mtl. Betrag</div>
-      <div class="prop flex-1 update-amount">Update</div>
-      <div class="prop flex-1 text-right actual-amount">Ist</div>
-      <div class="prop flex-1 text-right debit-amount">Soll</div>
-      <div class="prop flex-1 text-right diff-amount">Differenz</div>
-      <div class="prop flex-0 min-w-[135px] buttons"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">Rg.-Betrag</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] invoice-data">Rg.-Datum</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] interval">Interval</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">Mtl. Betrag</div>
+      <div class="prop grow-0 shrink-0 basis-[200px] update-amount">Update</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">Ist</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">Soll</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount">Differenz</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
     </div>
 
     <div class="list">
@@ -111,28 +111,29 @@
       />
     </div>
 
-    <div class="list-footer font-bold flex items-center">
+    <div class="list-footer font-bold flex items-center text-gray-400">
       <div class="prop flex-1 title"></div>
-      <div class="prop flex-1 text-right invoice-amount">{{ toCurrency(totalInvoiceAmount) }}</div>
-      <div class="prop flex-1 invoice-data"></div>
-      <div class="prop flex-1 interval"></div>
-      <div class="prop flex-1 text-right monthly-amount">{{ toCurrency(totalMonthlyAmount) }}</div>
-      <div class="prop flex-1 update-amount">
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">{{ toCurrency(totalInvoiceAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] invoice-data"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">{{ toCurrency(totalMonthlyAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
         <div class="flex">
           <div class="w-full py-2 px-6 text-right">{{ toCurrency(totalUpdateAmount) }}</div>
           <button
             @click="applyUpdate"
             :disabled="!totalUpdateAmount"
+            class="button"
             title="Update für alle Datensätze der Gruppe ausführen"
           >
             <ChevronRightIcon class="w-5 h-5" />
           </button>
         </div>
       </div>
-      <div class="prop flex-1 text-right actual-amount">{{ toCurrency(totalActualAmount) }}</div>
-      <div class="prop flex-1 text-right debit-amount">{{ toCurrency(totalDebitAmount) }}</div>
-      <div class="prop flex-1 text-right diff-amount">{{ toCurrency(totalDiffAmount) }}</div>
-      <div class="prop flex-0 min-w-[135px] buttons"></div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">{{ toCurrency(totalActualAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">{{ toCurrency(totalDebitAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount">{{ toCurrency(totalDiffAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
     </div>
   </div>
 </template>

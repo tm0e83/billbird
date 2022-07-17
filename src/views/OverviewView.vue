@@ -2,6 +2,8 @@
   import { onMounted } from 'vue';
   import { useStore } from '@/stores/store.js';
   import DatagroupList from '@/components/DatagroupList.vue' ;
+  import { format } from 'date-fns' ;
+  import { DownloadIcon, UploadIcon } from 'vue-tabler-icons';
 
   const store = useStore();
 
@@ -12,10 +14,47 @@
         console.log(e);
       });
   });
+
+  function loadData() {
+    const fileInput = document.createElement('input');
+    fileInput.setAttribute('type', 'file');
+
+    fileInput.addEventListener('change', e => {
+      const reader = new FileReader();
+      reader.onload = event => store.setDatagroups(JSON.parse(event.target.result));
+      reader.readAsText(event.target.files[0]);
+    })
+
+    fileInput.click();
+  }
+
+  function downloadAsJSON() {
+    const a = document.createElement('a');
+    const file = new Blob([JSON.stringify(store.datagroups)], { type: 'text/plain' });
+    a.href = URL.createObjectURL(file);
+    a.download = `billbird-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
+    a.click();
+  }
 </script>
 
 <template>
-  <div>
+  <div class="mt-8">
+    <nav>
+      <ul class="flex gap-7 mb-3">
+        <li>
+          <a @click="downloadAsJSON" class="flex gap-1">
+            <DownloadIcon />
+            JSON herunterladen
+          </a>
+        </li>
+        <li>
+          <a @click="loadData" class="flex gap-1">
+            <UploadIcon />
+            JSON laden
+          </a>
+        </li>
+      </ul>
+    </nav>
     <DatagroupList v-if="store.datagroups.length" />
     <div v-else>Keine Datensätze vorhanden</div>
   </div>

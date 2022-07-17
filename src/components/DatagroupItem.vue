@@ -13,10 +13,10 @@
       <div class="title text-lg">{{ datagroup.title }}</div>
 
       <div class="flex justify-end">
-        <button @click="$emit('delete', datagroup)" class="alert flex items-center mr-3" title="Löschen">
+        <button @click="$emit('delete', datagroup)" class="icon-button alert flex items-center mr-3" title="Löschen">
           <TrashIcon class="w-5 h-5" />
         </button>
-        <button @click="$emit('edit', datagroup)" class="flex items-center" title="Bearbeiten">
+        <button @click="$emit('edit', datagroup)" class="icon-button flex items-center" title="Bearbeiten">
           <PencilAltIcon class="w-5 h-5" />
         </button>
       </div>

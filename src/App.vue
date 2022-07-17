@@ -19,8 +19,6 @@
   <main class="p-3">
     <RouterView />
   </main>
-
-  <!-- <ModalWindow :show="store.modalVisible" @close="store.hideModal()" /> -->
 </template>
 
 <style scoped lang="scss">
