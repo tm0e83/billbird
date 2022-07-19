@@ -10,7 +10,11 @@
   onMounted(() => {
     fetch('/src/data/data.json')
       .then(response => response.json())
-      .then(datagroups => store.setDatagroups(datagroups)).catch(e => {
+      .then(data => {
+        store.setDatagroups(data.datagroups);
+        store.setDatasets(data.datasets);
+      })
+      .catch(e => {
         console.log(e);
       });
   });
@@ -21,7 +25,11 @@
 
     fileInput.addEventListener('change', e => {
       const reader = new FileReader();
-      reader.onload = event => store.setDatagroups(JSON.parse(event.target.result));
+      reader.onload = event => {
+        const json = JSON.parse(event.target.result);
+        store.setDatagroups(json.datagroups);
+        store.setDatasets(json.datasets);
+      };
       reader.readAsText(event.target.files[0]);
     })
 
@@ -38,7 +46,7 @@
 </script>
 
 <template>
-  <div class="mt-8">
+  <div class="mt-8 max-w-[2000px] mx-auto">
     <nav>
       <ul class="flex gap-7 mb-3">
         <li>

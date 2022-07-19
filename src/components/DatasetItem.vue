@@ -5,11 +5,13 @@
 
   import { useStore } from '@/stores/store.js' ;
   import { format } from 'date-fns' ;
-  import { ChevronRightIcon, PencilAltIcon, TrashIcon } from '@heroicons/vue/solid';
+  import { ChevronDownIcon, CheckIcon, ChevronUpIcon, PencilAltIcon, TrashIcon } from '@heroicons/vue/solid';
   import CurrencyInput from '@/components/CurrencyInput.vue';
 
   const props = defineProps(['dataset']);
   const store = useStore();
+
+  const collapsed = ref(true);
 
   const intervalName = computed(() => props.dataset.type === 1 ? intervals[props.dataset.interval].name : '');
   const isPositiveDiff = computed(() => props.dataset.diffAmount > 0);
@@ -90,60 +92,200 @@
 </script>
 
 <template>
-  <div class="dataset border-t last:border-b border-gray-100 flex items-center">
-    <div class="prop flex-1 title">{{ dataset.title }}</div>
-    <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">
+  <div class="dataset">
+    <div class="prop title">
+      <span>{{ dataset.title }}</span>
+    </div>
+
+    <div class="prop text-right actual-amount">
+      <span class="prop-label">Ist</span>
+      <span>{{ toCurrency(dataset.actualAmount) }}</span>
+    </div>
+
+    <div class="prop text-right debit-amount">
+      <span class="prop-label">Soll</span>
+      <span>{{ toCurrency(dataset.debitAmount) }}</span>
+    </div>
+
+    <div class="prop text-right diff-amount">
+      <span class="prop-label">Differenz</span>
+      <span :class="{ 'text-green-600': isPositiveDiff, 'text-red-600': isNegativeDiff }">
+        {{ toCurrency(dataset.diffAmount) }}
+      </span>
+    </div>
+
+    <div class="prop text-right invoice-amount" :class="{ 'collapsed': collapsed }">
+      <span class="prop-label">Rg.-Betrag</span>
       <span v-if="dataset.invoiceAmount">
       {{ toCurrency(dataset.invoiceAmount) }}
       </span>
     </div>
-    <div class="prop grow-0 shrink-0 basis-[140px] invoice-data">
+
+    <div class="prop text-right monthly-amount" :class="{ 'collapsed': collapsed }">
+      <span class="prop-label">Monatlich</span>
+      <span>{{ toCurrency(dataset.monthlyAmount) }}</span>
+    </div>
+
+    <div class="prop text-right invoice-date" :class="{ 'collapsed': collapsed }">
+      <span class="prop-label">Rg.-Datum</span>
       <span v-if="dataset.invoiceDate">
         {{ format(new Date(dataset.invoiceDate), 'dd.MM.yyyy') }}
       </span>
     </div>
-    <div class="prop grow-0 shrink-0 basis-[140px] interval">{{ intervalName }}</div>
-    <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">{{ toCurrency(dataset.monthlyAmount) }}</div>
-    <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
+
+    <div class="prop text-right interval" :class="{ 'collapsed': collapsed }">
+      <span class="prop-label">Interval</span>
+      <span>{{ intervalName }}</span>
+    </div>
+
+    <div class="prop update-amount" :class="{ 'collapsed': collapsed }">
+      <span class="prop-label">Update</span>
       <div class="flex">
         <CurrencyInput
           v-model="dataset.updateAmount"
           :options="{ currency: 'EUR', locale: 'de-DE', autoDecimalDigits: true }"
-          classes="w-full text-right mr-3"
+          classes="currency-input"
         />
-        <button @click="applyUpdate" :disabled="!dataset.updateAmount" class="button">
-          <ChevronRightIcon class="w-5 h-5" />
+        <button
+          @click="applyUpdate"
+          :disabled="!dataset.updateAmount"
+          class="button"
+        >
+          <CheckIcon class="icon" />
         </button>
       </div>
     </div>
-    <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">{{ toCurrency(dataset.actualAmount) }}</div>
-    <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">{{ toCurrency(dataset.debitAmount) }}</div>
-    <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount" :class="{ 'text-green-600': isPositiveDiff, 'text-red-600': isNegativeDiff }">
-      {{ toCurrency(dataset.diffAmount) }}
-    </div>
-    <div class="prop grow-0 shrink-0 basis-[140px] buttons">
-      <div class="flex justify-end">
-        <button @click="$emit('delete', dataset)" class="icon-button alert flex items-center mr-3" title="Löschen">
-          <TrashIcon class="w-5 h-5" />
-        </button>
-        <button @click="$emit('edit', dataset)" class="icon-button flex items-center" title="Bearbeiten">
-          <PencilAltIcon class="w-5 h-5" />
-        </button>
+
+    <div class="prop details-toggle" @click="collapsed = !collapsed">
+      <div v-if="collapsed" class="inner">
+        <ChevronDownIcon class="icon" />
+        Details anzeigen
+      </div>
+      <div v-else class="inner">
+        <ChevronUpIcon class="icon" />
+        Details ausblenden
       </div>
     </div>
+
+    <div class="prop buttons">
+      <button @click="$emit('delete', dataset)" class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0" title="Löschen">
+        <TrashIcon class="icon" />
+      </button>
+      <button @click="$emit('edit', dataset)" class="button grow 2xl:clear 2xl:p-1 2xl:grow-0" title="Bearbeiten">
+        <PencilAltIcon class="icon" />
+      </button>
+    </div>
+
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .positive {
-    color: green;
-  }
-
-  .negative {
-    color: red;
+  .dataset {
+    @apply
+      mb-5
+      flex
+      flex-col
+      grow
+      border-t
+      border-t-gray-100
+      2xl:flex-row
+      2xl:flex-nowrap
+      2xl:items-center
+      2xl:mb-0;
   }
 
   .prop {
-    @apply py-2 px-4;
+    @apply
+      flex
+      grow
+      justify-between
+      px-4
+      py-2;
+
+    &.collapsed {
+      @apply hidden 2xl:block;
+    }
+  }
+
+  .prop-label {
+    @apply 2xl:hidden;
+  }
+
+  .title {
+    @apply
+      text-2xl
+      sm:basis-full
+      2xl:basis-auto
+      2xl:text-base;
+  }
+
+  .details-toggle {
+    @apply
+      flex
+      justify-center
+      text-sm
+      text-gray-400
+      py-2
+      sm:basis-full
+      2xl:hidden;
+
+    .inner {
+      @apply flex gap-1 items-center;
+    }
+  }
+
+  .actual-amount,
+  .debit-amount,
+  .diff-amount,
+  .invoice-amount,
+  .monthly-amount,
+  .invoice-date,
+  .interval,
+  .buttons {
+    @apply 2xl:justify-end 2xl:grow-0 2xl:shrink-0 2xl:basis-[140px];
+  }
+
+  .actual-amount {
+    @apply 2xl:order-7;
+  }
+
+  .debit-amount {
+    @apply 2xl:order-8;
+  }
+
+  .diff-amount {
+    @apply 2xl:order-9;
+  }
+
+  .buttons {
+    @apply 2xl:order-10;
+  }
+
+  .update-amount {
+    @apply
+      2xl:grow-0
+      2xl:shrink-0
+      2xl:basis-[200px];
+    .currency-input {
+      @apply
+        rounded
+        grow
+        mr-2
+        max-w-[120px];
+    }
+  }
+
+  .buttons {
+    @apply
+      flex
+      gap-2
+      justify-end;
+  }
+
+  .icon {
+    @apply
+      w-5
+      h-5
+      mx-auto;
   }
 </style>
