@@ -1,16 +1,12 @@
 {
   "datagroups": [
     {
-      "title": "Allgemein",
+      "title": "Test 123",
       "id": 1
     },
     {
-      "title": "Sonstige",
+      "title": "XYZ",
       "id": 2
-    },
-    {
-      "title": "Mehr",
-      "id": 3
     }
   ],
   "datasets": [

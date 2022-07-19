@@ -12,14 +12,18 @@
     }
   });
 
-  const emit = defineEmits(['close']);
+  const emit = defineEmits(['afterLeave', 'close']);
   const outerModal = ref(null);
 
   const styles = reactive({
     'max-width': props.maxWidth
   });
 
-  function clickOutside(e) {
+  function onAfterLeave(e) {
+    emit('afterLeave');
+  }
+
+  function onclickOutside(e) {
     if (e.target === outerModal.value) {
       emit('close');
     }
@@ -28,10 +32,12 @@
 
 <template>
   <Teleport to="body">
-    <Transition name="modal">
-      <div class="modal" v-show="show" ref="outerModal" @mousedown="clickOutside">
-        <div class="modal-inner" :style="styles">
-          <slot></slot>
+    <Transition name="modal" @after-leave="onAfterLeave">
+      <div class="modal" v-show="show" @mousedown="onclickOutside">
+        <div class="modal-outer" ref="outerModal">
+          <div class="modal-inner" :style="styles">
+            <slot></slot>
+          </div>
         </div>
       </div>
     </Transition>
@@ -47,9 +53,20 @@
     height: 100%;
     top: 0;
     left: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .modal-outer {
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
 
   .modal-inner {
+    width: 100%;
     max-width: 600px;
     margin: 1.5rem auto;
     background-color: #fff;
