@@ -44,50 +44,46 @@
   </Teleport>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .modal {
-    background-color: rgba(0, 0, 0, 0.15);
-    position: fixed;
-    z-index: 11;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
+    @apply
+      fixed
+      z-10
+      bg-black
+      bg-opacity-25
+      w-full
+      h-full
+      top-0
+      left-0
+      flex
+      flex-col
+      overflow-y-auto
+      overflow-x-hidden;
   }
 
   .modal-outer {
-    flex: 1;
-    display: flex;
-    align-items: center;
+    @apply flex grow items-center justify-center;
   }
 
   .modal-inner {
-    width: 100%;
-    max-width: 600px;
-    margin: 1.5rem auto;
-    background-color: #fff;
-    padding: 1.5rem;
+    @apply w-full max-w-lg m-4 bg-white p-6 rounded;
   }
 
   .modal-enter-active,
   .modal-leave-active {
-    transition: opacity 0.3s ease;
+    @apply transition transition-opacity duration-300;
 
     .modal-inner {
-      transition: transform 0.3s ease;
+      @apply transition transition-[transform] duration-300;
     }
   }
 
   .modal-enter-from,
   .modal-leave-to {
-    opacity: 0;
+    @apply opacity-0;
 
     .modal-inner {
-      transform: translateY(-100px);
+      @apply opacity-0 -translate-y-1/2;
     }
   }
 </style>

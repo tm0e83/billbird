@@ -72,6 +72,12 @@
 
 <style lang="scss" scoped>
   .errors {
-    @apply mb-4 p-5 text-red-700 border border-red-700 bg-red-100;
+    @apply
+      mb-4
+      p-5
+      text-red-700
+      border
+      border-red-700
+      bg-red-100;
   }
 </style>

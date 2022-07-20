@@ -62,7 +62,7 @@ export const useStore = defineStore({
       this.datagroups = this.datagroups.filter(datagroup => datagroup.id !== id);
     },
 
-    setActualAmount(id, amount) {
+    addActualAmount(id, amount) {
       this.datasets.filter(d => d.id === id).map(d => d.actualAmount += amount);
     },
 

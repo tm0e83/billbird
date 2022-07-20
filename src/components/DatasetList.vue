@@ -43,7 +43,7 @@
   });
 
   const totalDiffAmount = computed(() => {
-    return datasetRefs.value.reduce((sum, datasetRef) => datasetRef.diffAmount ? sum += datasetRef.diffAmount : sum, 0);
+    return props.datasets.reduce((sum, dataset) => dataset.diffAmount ? sum += dataset.diffAmount : sum, 0);
   });
 
   const totalMonthlyAmount = computed(() => {
@@ -88,9 +88,9 @@
     <div class="list-head">
       <div class="prop title">Titel</div>
       <div class="prop text-right invoice-amount">Rg.-Betrag</div>
+      <div class="prop text-right monthly-amount">Mtl. Betrag</div>
       <div class="prop invoice-date">Rg.-Datum</div>
       <div class="prop interval">Interval</div>
-      <div class="prop text-right monthly-amount">Mtl. Betrag</div>
       <div class="prop update-amount">Update</div>
       <div class="prop text-right actual-amount">Ist</div>
       <div class="prop text-right debit-amount">Soll</div>
@@ -149,7 +149,6 @@
     @apply
       hidden
       2xl:font-bold
-      2xl:uppercase
       2xl:flex
       2xl:items-center;
   }

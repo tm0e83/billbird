@@ -16,8 +16,8 @@
   "datasets": [
     {
       "actualAmount": 0,
-      "debitAmount": 50,
-      "diffAmount": 0,
+      "debitAmount": 90,
+      "diffAmount": -90,
       "groupId": 1,
       "id": 1,
       "interval": "year",

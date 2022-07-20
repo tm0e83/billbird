@@ -66,9 +66,7 @@
   }
 
   function applyUpdate() {
-    store.setActualAmount(props.dataset.id, props.dataset.updateAmount);
-    calculateDebitAmount();
-    calculateDiffAmount();
+    store.addActualAmount(props.dataset.id, props.dataset.updateAmount)
     store.setUpdateAmount(props.dataset.id, null);
   }
 

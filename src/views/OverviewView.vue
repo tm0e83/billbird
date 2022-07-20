@@ -8,7 +8,7 @@
   const store = useStore();
 
   onMounted(() => {
-    fetch('/src/data/data.json')
+    fetch('/data.json')
       .then(response => response.json())
       .then(data => {
         store.setDatagroups(data.datagroups);
@@ -48,17 +48,17 @@
 <template>
   <div class="mt-8 max-w-[2000px] mx-auto">
     <nav>
-      <ul class="flex gap-7 mb-3">
+      <ul class="flex flex-col gap-3 sm:flex-row sm:gap-7 mb-3">
         <li>
           <a @click="downloadAsJSON" class="flex gap-1">
             <DownloadIcon />
-            JSON herunterladen
+            <span>JSON herunterladen</span>
           </a>
         </li>
         <li>
           <a @click="loadData" class="flex gap-1">
             <UploadIcon />
-            JSON laden
+            <span>JSON laden</span>
           </a>
         </li>
       </ul>
@@ -67,3 +67,6 @@
     <div v-else>Keine Datensätze vorhanden</div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+</style>
