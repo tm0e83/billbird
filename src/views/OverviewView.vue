@@ -1,23 +1,66 @@
 <script setup>
-  import { onMounted } from 'vue';
+  import { onMounted, reactive } from 'vue';
   import { useStore } from '@/stores/store.js';
   import DatagroupList from '@/components/DatagroupList.vue' ;
+  import EditDataset from '@/components/EditDataset.vue';
+  import EditDatagroup from '@/components/EditDatagroup.vue';
+  import DeleteDatagroup from '@/components/DeleteDatagroup.vue';
   import { format } from 'date-fns' ;
-  import { DownloadIcon, UploadIcon } from 'vue-tabler-icons';
+  import { DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
 
   const store = useStore();
 
-  onMounted(() => {
-    fetch('/data.json')
-      .then(response => response.json())
-      .then(data => {
-        store.setDatagroups(data.datagroups);
-        store.setDatasets(data.datasets);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const state = reactive({
+    dataset: null,
+    datagroup: null,
+    editDatasetModalVisible: false,
+    editDatagroupModalVisible: false,
+    deleteDatagroupModalVisible: false
   });
+
+  function editDatagroup(datagroup) {
+    state.datagroup = datagroup;
+    state.editDatagroupModalVisible = true;
+  }
+
+  function deleteDatagroup(datagroup) {
+    state.datagroup = datagroup;
+    state.deleteDatagroupModalVisible = true;
+  }
+
+  function createNewDatagroup() {
+    state.datagroup = getNewDatagroup();
+    state.editDatagroupModalVisible = true;
+  }
+
+  function createNewDataset() {
+    state.dataset = getNewDataset();
+    state.editDatasetModalVisible = true;
+  }
+
+  function getNewDatagroup() {
+    return {
+      datasets: [],
+      id: null,
+      title: '',
+    }
+  }
+
+  function getNewDataset() {
+    return {
+      actualAmount: 0,
+      debitAmount: 0,
+      id: null,
+      interval: '',
+      invoiceAmount: null,
+      invoiceDate: null,
+      lastInvoiceDate: null,
+      lastUpdateDate: null,
+      monthlyAmount: 0,
+      title: '',
+      type: ''
+    }
+  }
 
   function loadData() {
     const fileInput = document.createElement('input');
@@ -38,15 +81,60 @@
 
   function downloadAsJSON() {
     const a = document.createElement('a');
-    const file = new Blob([JSON.stringify(store.datagroups)], { type: 'text/plain' });
+    const file = new Blob([JSON.stringify({
+      datagroups: store.datagroups,
+      datasets: store.datasets
+    })], { type: 'text/plain' });
+
     a.href = URL.createObjectURL(file);
     a.download = `billbird-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
     a.click();
   }
+
+    onMounted(() => {
+    fetch('/data.json')
+      .then(response => response.json())
+      .then(data => {
+        store.setDatagroups(data.datagroups);
+        store.setDatasets(data.datasets);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  });
 </script>
 
 <template>
   <div class="mt-8 max-w-[2000px] mx-auto">
+
+    <ModalWindow :show="state.editDatasetModalVisible" @close="state.editDatasetModalVisible = false">
+      <EditDataset
+        v-if="state.dataset"
+        :dataset="state.dataset"
+        @close="state.editDatasetModalVisible = false"
+      />
+    </ModalWindow>
+
+    <ModalWindow :show="state.editDatagroupModalVisible" @close="state.editDatagroupModalVisible = false">
+      <EditDatagroup
+        v-if="state.datagroup"
+        :datagroup="state.datagroup"
+        @close="state.editDatagroupModalVisible = false"
+      />
+    </ModalWindow>
+
+    <ModalWindow
+      :show="state.deleteDatagroupModalVisible"
+      max-width="400px"
+      @close="state.deleteDatagroupModalVisible = false"
+    >
+      <DeleteDatagroup
+        v-if="state.datagroup"
+        :datagroup="state.datagroup"
+        @close="state.deleteDatagroupModalVisible = false"
+      />
+    </ModalWindow>
+
     <nav>
       <ul class="flex flex-col gap-3 sm:flex-row sm:gap-7 mb-3">
         <li>
@@ -61,10 +149,37 @@
             <span>JSON laden</span>
           </a>
         </li>
+        <li>
+          <a @click="createNewDatagroup" class="flex gap-1">
+            <PlusIcon />
+            <span>Neue Datengruppe</span>
+          </a>
+        </li>
+        <li>
+          <a @click="createNewDataset" class="flex gap-1">
+            <PlusIcon />
+            <span>Neue Datensatz</span>
+          </a>
+        </li>
       </ul>
     </nav>
-    <DatagroupList v-if="store.datagroups.length" />
-    <div v-else>Keine Datensätze vorhanden</div>
+    <DatagroupList
+      v-if="store.datagroups.length"
+      @editDatagroup="datagroup => editDatagroup(datagroup)"
+      @deleteDatagroup="datagroup => deleteDatagroup(datagroup)"
+    />
+    <div v-else>
+      <p>Keine Datensätze vorhanden</p>
+    </div>
+
+    <button @click="createNewDatagroup" class="button large mt-3 md:mr-3 inline-flex items-center">
+      <PlusIcon class="h-5 w-5 mr-2" />
+      Neue Datengruppe
+    </button>
+    <button @click="createNewDataset" class="button large mt-3 inline-flex items-center">
+      <PlusIcon class="h-5 w-5 mr-2" />
+      Neuer Datensatz
+    </button>
   </div>
 </template>
 

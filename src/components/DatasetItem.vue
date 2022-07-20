@@ -5,7 +5,7 @@
 
   import { useStore } from '@/stores/store.js' ;
   import { format } from 'date-fns' ;
-  import { ChevronDownIcon, CheckIcon, ChevronUpIcon, PencilAltIcon, TrashIcon } from '@heroicons/vue/solid';
+  import { CheckIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, TrashIcon } from 'vue-tabler-icons';
   import CurrencyInput from '@/components/CurrencyInput.vue';
 
   const props = defineProps(['dataset']);
@@ -170,7 +170,7 @@
         <TrashIcon class="icon" />
       </button>
       <button @click="$emit('edit', dataset)" class="button grow 2xl:clear 2xl:p-1 2xl:grow-0" title="Bearbeiten">
-        <PencilAltIcon class="icon" />
+        <EditIcon class="icon" />
       </button>
     </div>
 

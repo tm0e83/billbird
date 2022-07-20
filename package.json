@@ -9,7 +9,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@heroicons/vue": "^1.0.6",
     "@vuepic/vue-datepicker": "^3.3.1",
     "date-fns": "^2.28.0",
     "pinia": "^2.0.14",

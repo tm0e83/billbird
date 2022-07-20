@@ -1,6 +1,5 @@
 <script setup>
   import { reactive, toRaw, watch } from 'vue';
-  import intervals from './shared/intervals.json';
   import { useStore } from '@/stores/store.js' ;
   import { format } from 'date-fns' ;
   import { de } from 'date-fns/locale';
@@ -135,11 +134,11 @@
       <div v-else>
         <div class="mb-4">
           <label for="ds-new-monthly-amount">Pro Monat</label>
-          <input
-            type="text"
-            id="ds-new-monthly-amount"
-            v-model="state.dataset.monthlyAmount"
-          >
+          <CurrencyInput
+            v-model.number="state.dataset.monthlyAmount"
+            :options="{ currency: 'EUR', locale: 'de-DE', autoDecimalDigits: true }"
+            classes="w-full"
+          />
         </div>
       </div>
     </div>

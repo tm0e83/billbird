@@ -2,7 +2,7 @@
   import { computed } from 'vue';
   import { useStore } from '@/stores/store.js';
   import DatasetList from '@/components/DatasetList.vue';
-  import { PencilAltIcon, TrashIcon } from '@heroicons/vue/solid';
+  import { EditIcon, TrashIcon } from 'vue-tabler-icons';
 
   const props = defineProps(['datagroup']);
   const store = useStore();
@@ -19,7 +19,7 @@
           <TrashIcon class="w-5 h-5" />
         </button>
         <button @click="$emit('edit', datagroup)" class="button flex clear p-1" title="Bearbeiten">
-          <PencilAltIcon class="w-5 h-5" />
+          <EditIcon class="w-5 h-5" />
         </button>
       </div>
     </div>

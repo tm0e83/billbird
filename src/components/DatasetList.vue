@@ -5,7 +5,7 @@
   import DatasetItem from '@/components/DatasetItem.vue' ;
   import EditDataset from '@/components/EditDataset.vue' ;
   import DeleteDataset from '@/components/DeleteDataset.vue' ;
-  import { CheckIcon } from '@heroicons/vue/solid';
+  import { CheckIcon } from 'vue-tabler-icons';
 
   const props = defineProps(['datasets']);
   const store = useStore();
