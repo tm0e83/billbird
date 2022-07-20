@@ -1,6 +1,6 @@
 <script setup>
-  import { computed } from 'vue' ;
-  import { useStore } from '@/stores/store.js' ;
+  import { computed } from 'vue';
+  import { useStore } from '@/stores/store.js';
   import DatasetList from '@/components/DatasetList.vue';
   import { PencilAltIcon, TrashIcon } from '@heroicons/vue/solid';
 
@@ -35,11 +35,4 @@
 </template>
 
 <style lang="scss" scoped>
-  .positive {
-    color: green;
-  }
-
-  .negative {
-    color: red;
-  }
 </style>

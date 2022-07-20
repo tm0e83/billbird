@@ -63,11 +63,11 @@
   }
 
   function applyUpdate() {
-    console.log('not implemented yet');
+    store.datasets.map(dataset => {
+      store.addActualAmount(dataset.id, dataset.updateAmount);
+      store.setUpdateAmount(dataset.id, null);
+    });
   }
-
-  // @delete="datagroup => deleteDatagroup(datagroup)"
-  // @edit="datagroup => editDatagroup(datagroup)"
 </script>
 
 <template>
@@ -112,9 +112,9 @@
     <div class="list-footer">
       <div class="prop flex-1 title">Summe</div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">{{ toCurrency(store.totalInvoiceAmount) }}</div>
+      <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">{{ toCurrency(store.totalMonthlyAmount) }}</div>
       <div class="prop grow-0 shrink-0 basis-[140px] invoice-date"></div>
       <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
-      <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">{{ toCurrency(store.totalMonthlyAmount) }}</div>
       <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
         <div class="flex grow">
           <div class="grow py-2 px-6 text-right">
