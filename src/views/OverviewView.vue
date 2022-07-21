@@ -69,9 +69,8 @@
     fileInput.addEventListener('change', e => {
       const reader = new FileReader();
       reader.onload = event => {
-        const json = JSON.parse(event.target.result);
-        store.setDatagroups(json.datagroups);
-        store.setDatasets(json.datasets);
+        const datagroups = JSON.parse(event.target.result);
+        store.datagroups = datagroups;
       };
       reader.readAsText(event.target.files[0]);
     })
@@ -81,23 +80,17 @@
 
   function downloadAsJSON() {
     const a = document.createElement('a');
-    const file = new Blob([JSON.stringify({
-      datagroups: store.datagroups,
-      datasets: store.datasets
-    })], { type: 'text/plain' });
+    const file = new Blob([JSON.stringify({ datagroups: store.datagroups })], { type: 'text/plain' });
 
     a.href = URL.createObjectURL(file);
     a.download = `billbird-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
     a.click();
   }
 
-    onMounted(() => {
+  onMounted(() => {
     fetch('/data.json')
       .then(response => response.json())
-      .then(data => {
-        store.setDatagroups(data.datagroups);
-        store.setDatasets(data.datasets);
-      })
+      .then(datagroups => store.datagroups = datagroups)
       .catch(e => {
         console.log(e);
       });
@@ -136,7 +129,7 @@
     </ModalWindow>
 
     <nav>
-      <ul class="flex flex-col gap-3 sm:flex-row sm:gap-7 mb-3">
+      <ul class="flex flex-col flex-wrap gap-3 sm:flex-row sm:gap-7 mb-3">
         <li>
           <a @click="downloadAsJSON" class="flex gap-1">
             <DownloadIcon />
@@ -163,6 +156,7 @@
         </li>
       </ul>
     </nav>
+
     <DatagroupList
       v-if="store.datagroups.length"
       @editDatagroup="datagroup => editDatagroup(datagroup)"
@@ -172,11 +166,11 @@
       <p>Keine Datensätze vorhanden</p>
     </div>
 
-    <button @click="createNewDatagroup" class="button large mt-3 md:mr-3 inline-flex items-center">
+    <button @click="createNewDatagroup" class="w-full button large mt-3 sm:w-auto sm:mr-3 inline-flex justify-center items-center">
       <PlusIcon class="h-5 w-5 mr-2" />
       Neue Datengruppe
     </button>
-    <button @click="createNewDataset" class="button large mt-3 inline-flex items-center">
+    <button @click="createNewDataset" class="w-full button large mt-3 sm:w-auto inline-flex justify-center items-center">
       <PlusIcon class="h-5 w-5 mr-2" />
       Neuer Datensatz
     </button>

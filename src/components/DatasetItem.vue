@@ -2,10 +2,9 @@
   import { computed, onBeforeUpdate, onMounted, ref } from 'vue';
   import intervals from './shared/intervals.json';
   import { toCurrency } from './shared/functions.js';
-
   import { useStore } from '@/stores/store.js' ;
   import { format } from 'date-fns' ;
-  import { CheckIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, TrashIcon } from 'vue-tabler-icons';
+  import { CheckIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, GripVerticalIcon, TrashIcon } from 'vue-tabler-icons';
   import CurrencyInput from '@/components/CurrencyInput.vue';
 
   const props = defineProps(['dataset']);
@@ -92,6 +91,9 @@
 <template>
   <div class="dataset">
     <div class="prop title">
+      <div class="drag-handle">
+        <GripVerticalIcon class="w-5 h-5" />
+      </div>
       <span>{{ dataset.title }}</span>
     </div>
 
@@ -211,10 +213,23 @@
 
   .title {
     @apply
+      justify-start
+      items-center
       text-2xl
       sm:basis-full
       2xl:basis-auto
       2xl:text-base;
+  }
+
+  .drag-handle {
+    @apply
+      transition
+      duration-300
+      shrink
+      cursor-move
+      mr-2
+      text-gray-300
+      hover:text-gray-500;
   }
 
   .details-toggle {

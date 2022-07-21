@@ -5,57 +5,67 @@ export const useStore = defineStore({
 
   state: () => ({
     currentDate: new Date(),
-    datagroups: [],
-    datasets: [],
+    datagroups: []
   }),
 
   getters: {
-    nextDatagroupId: state => {
+    allDatasets(state) {
+      return this.datagroups.reduce((datasets, datagroup) => datasets.concat(datagroup.datasets), []);
+    },
+
+    nextDatagroupId(state) {
       if (!state.datagroups.length) return 0;
       return Math.max(...state.datagroups.map(datagroup => datagroup.id)) + 1;
     },
 
-    nextDatasetId: state => {
-      if (!state.datasets) return 0;
-      return Math.max(...state.datasets.map(dataset => dataset.id)) + 1;
+    nextDatasetId(state) {
+      const allDatasets = this.allDataSets;
+      if (!allDatasets) return 0;
+      return Math.max(...allDatasets.map(dataset => dataset.id)) + 1;
     },
 
-    totalInvoiceAmount: state => {
-      return state.datasets.reduce((sum, dataset) => dataset.invoiceAmount ? sum += dataset.invoiceAmount : sum, 0);
+    totalInvoiceAmount(state) {
+      return this.allDatasets.reduce((sum, dataset) => dataset.invoiceAmount ? sum += dataset.invoiceAmount : sum, 0);
     },
 
-    totalMonthlyAmount: state => {
-      return state.datasets.reduce((sum, dataset) => dataset.monthlyAmount ? sum += dataset.monthlyAmount : sum, 0);
+    totalMonthlyAmount(state) {
+      return this.allDatasets.reduce((sum, dataset) => dataset.monthlyAmount ? sum += dataset.monthlyAmount : sum, 0);
     },
 
-    totalActualAmount: state => {
-      return state.datasets.reduce((sum, dataset) => dataset.actualAmount ? sum += dataset.actualAmount : sum, 0);
+    totalActualAmount(state) {
+      return this.allDatasets.reduce((sum, dataset) => dataset.actualAmount ? sum += dataset.actualAmount : sum, 0);
     },
 
-    totalDebitAmount: state => {
-      return state.datasets.reduce((sum, dataset) => dataset.debitAmount ? sum += dataset.debitAmount : sum, 0);
+    totalDebitAmount(state) {
+      return this.allDatasets.reduce((sum, dataset) => dataset.debitAmount ? sum += dataset.debitAmount : sum, 0);
     },
 
-    totalDiffAmount: state => {
-      return state.datasets.reduce((sum, dataset) => dataset.diffAmount ? sum += dataset.diffAmount : sum, 0);
+    totalDiffAmount(state) {
+      return this.allDatasets.reduce((sum, dataset) => dataset.diffAmount ? sum += dataset.diffAmount : sum, 0);
     },
 
-    totalUpdateAmount: state => {
-      return state.datasets.reduce((sum, dataset) => dataset.updateAmount ? sum += dataset.updateAmount : sum, 0);
+    totalUpdateAmount(state) {
+      return this.allDatasets.reduce((sum, dataset) => dataset.updateAmount ? sum += dataset.updateAmount : sum, 0);
     }
   },
 
   actions: {
     addDataset(dataset) {
-      this.datasets.push(dataset);
+      this.datagroups.map(datagroup => {
+        if (datagroup.id === dataset.groupId) datagroup.datasets.push(dataset);
+      });
     },
 
     addDatagroup(datagroup) {
       this.datagroups.push(datagroup);
     },
 
-    deleteDataset(id) {
-      this.datasets = this.datasets.filter(dataset => dataset.id !== id);
+    deleteDataset(dataset) {
+      this.datagroups.map(datagroup => {
+        if (datagroup.id === dataset.groupId) {
+          datagroup.datasets = datagroup.datasets.filter(currentDataset => currentDataset.id !== dataset.id);
+        }
+      });
     },
 
     deleteDatagroup(id) {
@@ -63,39 +73,59 @@ export const useStore = defineStore({
     },
 
     addActualAmount(id, amount) {
-      this.datasets.filter(d => d.id === id).map(d => d.actualAmount += amount);
-    },
-
-    setDatagroups(datagroups) {
-      this.datagroups = datagroups;
-    },
-
-    setDatasets(datasets) {
-      this.datasets = datasets;
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.actualAmount += amount);
+      });
     },
 
     setDebitAmount(id, amount) {
-      this.datasets.filter(d => d.id === id).map(d => d.debitAmount = amount);
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.debitAmount = amount);
+      });
     },
 
     setDiffAmount(id, amount) {
-      this.datasets.filter(d => d.id === id).map(d => d.diffAmount = amount);
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.diffAmount = amount);
+      });
     },
 
     setInvoiceDate(id, dateStr) {
-      this.datasets.filter(d => d.id === id).map(d => d.invoiceDate = dateStr);
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.invoiceDate = dateStr);
+      });
     },
 
     setLastInvoiceDate(id, dateStr) {
-      this.datasets.filter(d => d.id === id).map(d => d.lastInvoiceDate = dateStr);
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.lastInvoiceDate = dateStr);
+      });
     },
 
     setMonthlyAmount(id, amount) {
-      this.datasets.filter(d => d.id === id).map(d => d.monthlyAmount = amount);
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.monthlyAmount = amount);
+      });
     },
 
     setUpdateAmount(id, amount) {
-      this.datasets.filter(d => d.id === id).map(d => d.updateAmount = amount);
+      this.datagroups.map(datagroup => {
+        datagroup.datasets
+          .filter(d => d.id === id)
+          .map(d => d.updateAmount = amount);
+      });
     },
 
     replaceDatagroup(datagroup) {
@@ -105,10 +135,19 @@ export const useStore = defineStore({
     },
 
     replaceDataset(dataset) {
-      this.datasets = this.datasets.reduce((datasets, currentDataset) => {
-        datasets.push(currentDataset.id === dataset.id ? dataset : currentDataset);
-        return datasets;
-      }, []);
-    },
+      this.datagroups.map(datagroup => {
+        datagroup.datasets.map((set, idx) => {
+          if (set.id === dataset.id) {
+            datagroup.datasets.splice(idx, 1);
+          }
+        });
+      });
+
+      this.datagroups.map(group => {
+        if (group.id === dataset.groupId) {
+          group.datasets.unshift(dataset);
+        }
+      });
+    }
   }
 });
