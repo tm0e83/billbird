@@ -11,29 +11,53 @@ const wrapper = mount(DatagroupItem, {
   propsData: {
     datagroup: {
       title: 'Datagroup 1',
-      id: 1
+      id: 1,
+      datasets: [
+        {
+          actualAmount: 0,
+          debitAmount: 90,
+          diffAmount: -90,
+          groupId: 1,
+          id: 1,
+          interval: "year",
+          invoiceAmount: 120,
+          invoiceDate: "2022-10-01",
+          lastInvoiceDate: "2021-10-01",
+          lastUpdateDate: "2022-06-01",
+          monthlyAmount: 10,
+          title: "Sample Dataset",
+          type: 1,
+          updateAmount: null
+        }
+      ]
     }
   }
 });
 
 const store = useStore();
 
-store.datasets = [
+store.datagroups = [
   {
-    actualAmount: 0,
-    debitAmount: 90,
-    diffAmount: -90,
-    groupId: 1,
+    title: 'Datagroup 1',
     id: 1,
-    interval: "year",
-    invoiceAmount: 120,
-    invoiceDate: "2022-10-01",
-    lastInvoiceDate: "2021-10-01",
-    lastUpdateDate: "2022-06-01",
-    monthlyAmount: 10,
-    title: "Sample Dataset",
-    type: 1,
-    updateAmount: null
+    datasets: [
+      {
+        actualAmount: 0,
+        debitAmount: 90,
+        diffAmount: -90,
+        groupId: 1,
+        id: 1,
+        interval: "year",
+        invoiceAmount: 120,
+        invoiceDate: "2022-10-01",
+        lastInvoiceDate: "2021-10-01",
+        lastUpdateDate: "2022-06-01",
+        monthlyAmount: 10,
+        title: "Sample Dataset",
+        type: 1,
+        updateAmount: null
+      }
+    ]
   }
 ];
 

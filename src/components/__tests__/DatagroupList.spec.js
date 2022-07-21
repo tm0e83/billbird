@@ -15,26 +15,25 @@ const store = useStore();
 store.datagroups = [
   {
     title: 'Datagroup 1',
-    id: 1
-  }
-];
-
-store.datasets = [
-  {
-    actualAmount: 0,
-    debitAmount: 90,
-    diffAmount: -90,
-    groupId: 1,
     id: 1,
-    interval: "year",
-    invoiceAmount: 120,
-    invoiceDate: "2022-10-01",
-    lastInvoiceDate: "2021-10-01",
-    lastUpdateDate: "2022-06-01",
-    monthlyAmount: 10,
-    title: "Sample Dataset",
-    type: 1,
-    updateAmount: null
+    datasets: [
+      {
+        actualAmount: 0,
+        debitAmount: 90,
+        diffAmount: -90,
+        groupId: 1,
+        id: 1,
+        interval: "year",
+        invoiceAmount: 120,
+        invoiceDate: "2022-10-01",
+        lastInvoiceDate: "2021-10-01",
+        lastUpdateDate: "2022-06-01",
+        monthlyAmount: 10,
+        title: "Sample Dataset",
+        type: 1,
+        updateAmount: null
+      }
+    ]
   }
 ];
 
@@ -44,7 +43,7 @@ describe('DatagroupList', () => {
   });
 
   it('shows correct invoice sum', () => {
-    const invoiceAmountSum = store.datasets.reduce((sum, dataset) => sum += dataset.invoiceAmount, 0);
+    const invoiceAmountSum = store.allDatasets.reduce((sum, dataset) => sum += dataset.invoiceAmount, 0);
     expect(parseFloat(wrapper.find('.list-footer .invoice-amount').text())).toBe(invoiceAmountSum);
   });
 });
