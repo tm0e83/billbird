@@ -3,27 +3,37 @@
   import DatagroupItem from '@/components/DatagroupItem.vue' ;
   import { toCurrency } from './shared/functions.js';
   import { CheckIcon } from 'vue-tabler-icons';
+  import draggable from 'vuedraggable';
 
   const store = useStore();
 
   function applyUpdate() {
-    store.datasets.map(dataset => {
-      store.addActualAmount(dataset.id, dataset.updateAmount);
-      store.setUpdateAmount(dataset.id, null);
+    store.datagroups.map(datagroup => {
+      datagroup.datasets.map(dataset => {
+        store.addActualAmount(dataset.id, dataset.updateAmount);
+        store.setUpdateAmount(dataset.id, null);
+      });
     });
   }
 </script>
 
 <template>
   <div>
-    <div class="list">
-      <DatagroupItem
-        v-for="datagroup in store.datagroups"
-        :datagroup="datagroup"
-        @edit="datagroup => $emit('editDatagroup', datagroup)"
-        @delete="datagroup => $emit('deleteDatagroup', datagroup)"
-      />
-    </div>
+    <draggable
+      :list="store.datagroups"
+      class="list"
+      group="datagroups"
+      handle=".drag-handle"
+      item-key="id"
+    >
+      <template #item="{element}">
+        <DatagroupItem
+          :datagroup="element"
+          @edit="datagroup => $emit('editDatagroup', datagroup)"
+          @delete="datagroup => $emit('deleteDatagroup', datagroup)"
+        />
+      </template>
+    </draggable>
 
     <div class="list-footer">
       <div class="prop flex-1 title">Summe</div>

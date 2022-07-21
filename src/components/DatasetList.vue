@@ -6,6 +6,7 @@
   import EditDataset from '@/components/EditDataset.vue' ;
   import DeleteDataset from '@/components/DeleteDataset.vue' ;
   import { CheckIcon } from 'vue-tabler-icons';
+  import draggable from 'vuedraggable';
 
   const props = defineProps(['datasets']);
   const store = useStore();
@@ -57,6 +58,10 @@
   function applyUpdate() {
     datasetRefs.value.map(datasetRef => datasetRef.applyUpdate());
   }
+
+  function onSort(args) {
+    console.log(args);
+  }
 </script>
 
 <template>
@@ -86,7 +91,10 @@
 
   <div>
     <div class="list-head">
-      <div class="prop title">Titel</div>
+      <div class="prop title">
+        <span class="w-5 h-5 mr-2">&nbsp;</span>
+        <span>Titel</span>
+      </div>
       <div class="prop text-right invoice-amount">Rg.-Betrag</div>
       <div class="prop text-right monthly-amount">Mtl. Betrag</div>
       <div class="prop invoice-date">Rg.-Datum</div>
@@ -98,14 +106,23 @@
       <div class="prop buttons"></div>
     </div>
 
-    <div class="list">
-      <DatasetItem
-        v-for="dataset in datasets" ref="datasetRefs"
-        :dataset="dataset"
-        @delete="dataset => deleteDataset(dataset)"
-        @edit="dataset => editDataset(dataset)"
-      />
-    </div>
+    <draggable
+      :list="datasets"
+      class="list"
+      handle=".drag-handle"
+      group="datasets"
+      item-key="id"
+      @change="onSort"
+    >
+      <template #item="{element}">
+        <DatasetItem
+          ref="datasetRefs"
+          :dataset="element"
+          @delete="dataset => deleteDataset(dataset)"
+          @edit="dataset => editDataset(dataset)"
+        />
+      </template>
+    </draggable>
 
     <div class="list-footer">
       <div class="prop title"></div>
@@ -137,6 +154,7 @@
 <style lang="scss" scoped>
   .list {
     @apply
+      items-start
       sm:grid
       sm:grid-cols-2
       lg:grid-cols-3
@@ -175,6 +193,7 @@
 
   .title {
     @apply
+      justify-start
       text-2xl
       sm:basis-full
       2xl:basis-auto

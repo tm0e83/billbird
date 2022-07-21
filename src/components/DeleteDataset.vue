@@ -6,7 +6,7 @@
   const emit = defineEmits(['close']);
 
   function deleteDataset() {
-    store.deleteDataset(props.dataset.id);
+    store.deleteDataset(props.dataset);
     emit('close');
   }
 </script>
