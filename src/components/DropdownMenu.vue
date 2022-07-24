@@ -2,6 +2,8 @@
   // DO NOT use this component yet!
 
   import { onMounted, onUnmounted, ref } from 'vue';
+  import { DotsVerticalIcon } from 'vue-tabler-icons';
+  import { useElementEdges } from '@/composables/element-edges.js';
 
   const props = defineProps({
     'menuItems': {
@@ -21,8 +23,23 @@
   }
 
   function positionLayer() {
-    const x = window.scrollX + triggerRef.value.getBoundingClientRect().x;
-    const y = window.scrollY + triggerRef.value.getBoundingClientRect().y;
+    const layerRect = dropdownLayerRef.value.getBoundingClientRect();
+    const bodyRect = document.body.getBoundingClientRect();
+
+    const triggerEdges = useElementEdges(triggerRef.value);
+
+    const fitsLeft = triggerEdges.top.right.x - layerRect.width > 0;
+    const fitsRight = bodyRect.width - triggerEdges.top.right.x - layerRect.width > 0;
+
+    let x, y = triggerEdges.bottom.left.y;
+
+    if (fitsRight) {
+      x = triggerEdges.top.left.x;
+    } else if (fitsLeft) {
+      x = triggerEdges.top.right.x - layerRect.width;
+    } else {
+      x = triggerEdges.bottom.left.x - (triggerEdges.bottom.left.x + layerRect.width - bodyRect.width);
+    }
 
     dropdownLayerRef.value.style.left = `${x}px`;
     dropdownLayerRef.value.style.top = `${y}px`;
@@ -30,9 +47,8 @@
 
   function onClickOutside(e) {
     const clickedOutsideDropownMenu = !e.target.isEqualNode(dropdownMenuRef.value) && !dropdownMenuRef.value.contains(e.target);
-    const clickedOutsideDropownLayer = !e.target.isEqualNode(dropdownLayerRef.value) && !dropdownLayerRef.value.contains(e.target);
 
-    if (isExpanded.value && clickedOutsideDropownMenu && clickedOutsideDropownLayer) {
+    if (isExpanded.value && clickedOutsideDropownMenu) {
       isExpanded.value = false;
     }
   }
@@ -40,11 +56,13 @@
   onMounted(() => {
     document.body.addEventListener('click', onClickOutside);
     window.addEventListener('scroll', positionLayer);
+    window.addEventListener('resize', positionLayer);
     window.addEventListener('orientationchange', positionLayer);
   });
 
   onUnmounted(() => {
     document.body.removeEventListener('click', onClickOutside);
+    window.removeEventListener('resize', positionLayer);
     window.removeEventListener('scroll', positionLayer);
     window.removeEventListener('orientationchange', positionLayer);
   });
@@ -52,9 +70,9 @@
 
 <template>
   <div class="dropdown-menu" ref="dropdownMenuRef">
-    <span @click="toggle" ref="triggerRef">
-      <slot></slot>
-    </span>
+    <a @click="toggle" ref="triggerRef">
+      <slot><DotsVerticalIcon class="w-5 h-5" /></slot>
+    </a>
 
     <Teleport to="body">
       <div :class="{ 'expanded': isExpanded}" class="dropdown-layer" ref="dropdownLayerRef">
@@ -76,12 +94,11 @@
   .dropdown-menu {
     @apply inline-block;
   }
-
   .dropdown-layer {
-    @apply absolute top-0 left-0 bg-white hidden;
+    @apply absolute bg-white opacity-0 invisible -z-10 drop-shadow-md rounded;
 
     &.expanded {
-      @apply block;
+      @apply opacity-100 visible z-10;
     }
   }
 
