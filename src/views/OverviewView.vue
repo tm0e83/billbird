@@ -1,12 +1,13 @@
 <script setup>
-  import { onMounted, reactive } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
   import { useStore } from '@/stores/store.js';
   import DatagroupList from '@/components/DatagroupList.vue' ;
   import EditDataset from '@/components/EditDataset.vue';
   import EditDatagroup from '@/components/EditDatagroup.vue';
   import DeleteDatagroup from '@/components/DeleteDatagroup.vue';
+  import DropdownMenu from '@/components/DropdownMenu.vue';
   import { format } from 'date-fns' ;
-  import { DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
+  import { DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
 
   const store = useStore();
 
@@ -95,6 +96,25 @@
         console.log(e);
       });
   });
+
+  const menuItems = ref([
+    {
+      label: 'JSON herunterladen',
+      onClick: () => downloadAsJSON()
+    },
+    {
+      label: 'JSON laden',
+      onClick: () => loadData()
+    },
+    {
+      label: 'Neue Datengruppe',
+      onClick: () => createNewDatagroup()
+    },
+    {
+      label: 'Neuer Datensatz',
+      onClick: () => createNewDataset()
+    }
+  ]);
 </script>
 
 <template>
@@ -128,8 +148,14 @@
       />
     </ModalWindow>
 
+    <div class="flex justify-end md:hidden mb-3">
+      <DropdownMenu :menuItems="menuItems">
+        <DotsVerticalIcon />
+      </DropdownMenu>
+    </div>
+
     <nav>
-      <ul class="flex flex-col flex-wrap gap-3 sm:flex-row sm:gap-7 mb-3">
+      <ul class="hidden md:flex flex-col flex-wrap gap-3 md:flex-row md:gap-7 mb-3">
         <li>
           <a @click="downloadAsJSON" class="flex gap-1">
             <DownloadIcon />

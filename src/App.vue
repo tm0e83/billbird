@@ -16,7 +16,7 @@
         <span class="text-xs self-end font-mono text-red-600 ml-1 font-bolder">alpha</span>
       </div>
       <div class="flex grow justify-between mt-2 sm-mt-0">
-        <nav class="flex gap-x-6 sm:ml-16">
+        <nav class="flex gap-x-8 sm:gap-x-12 sm:ml-20">
           <RouterLink to="/">Übersicht</RouterLink>
           <RouterLink to="/faq">FAQ</RouterLink>
         </nav>
@@ -34,10 +34,10 @@
 
 <style scoped lang="scss">
   nav a {
-    @apply transition duration-300 px-2 text-gray-400 hover:text-black;
+    @apply transition duration-300 text-gray-400 hover:text-black;
   }
 
   .router-link-active {
-    @apply border-b-2 border-emerald-500 text-black;
+    @apply text-black cursor-default;
   }
 </style>
