@@ -28,4 +28,4 @@ coverage
 *.sw?
 
 # Data
-*/**/billbird-data-*.json
+*/**/timo.json

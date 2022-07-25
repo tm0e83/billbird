@@ -91,12 +91,21 @@
   }
 
   onMounted(() => {
-    fetch('/data.json')
+    try {
+      fetch('/timo.json')
       .then(response => response.json())
-      .then(datagroups => store.datagroups = datagroups)
+      .then(data => store.datagroups = data.datagroups)
       .catch(e => {
         console.log(e);
       });
+    } catch(e) {
+      fetch('/data.json')
+        .then(response => response.json())
+        .then(data => store.datagroups = data.datagroups)
+        .catch(e => {
+          console.log(e);
+        });
+    }
   });
 
   const menuItems = ref([

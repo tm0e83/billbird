@@ -31,9 +31,9 @@
     if (state.dataset.type === 1) {
       if (!state.dataset.invoiceDate) state.errors.push('invoiceDate');
       if (!state.dataset.interval) state.errors.push('interval');
-      if (!state.dataset.invoiceAmount) state.errors.push('invoiceAmount');
+      if (isNaN(state.dataset.invoiceAmount)) state.errors.push('invoiceAmount');
     } else {
-      if (!state.dataset.monthlyAmount) state.errors.push('monthlyAmount');
+      if (isNaN(state.dataset.monthlyAmount)) state.errors.push('monthlyAmount');
     }
 
     return state.errors.length === 0;
