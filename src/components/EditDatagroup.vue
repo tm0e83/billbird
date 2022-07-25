@@ -33,7 +33,6 @@
 
     if (state.datagroup.id === null) {
       state.datagroup.id = store.nextDatagroupId;
-
       store.addDatagroup(state.datagroup);
     } else {
       store.replaceDatagroup(state.datagroup);

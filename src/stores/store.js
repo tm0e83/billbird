@@ -14,7 +14,7 @@ export const useStore = defineStore({
     },
 
     nextDatagroupId(state) {
-      if (!state.datagroups.length) return 0;
+      if (!state.datagroups.length) return 1;
       return Math.max(...state.datagroups.map(datagroup => datagroup.id)) + 1;
     },
 
