@@ -60,7 +60,7 @@
   }
 
   function onSort(args) {
-    console.log(args);
+    //
   }
 </script>
 

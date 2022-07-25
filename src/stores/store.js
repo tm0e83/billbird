@@ -138,15 +138,19 @@ export const useStore = defineStore({
       this.datagroups.map(datagroup => {
         datagroup.datasets.map((set, idx) => {
           if (set.id === dataset.id) {
-            datagroup.datasets.splice(idx, 1);
+            if (datagroup.id === dataset.groupId) {
+              datagroup.datasets.splice(idx, 1, dataset);
+            } else {
+              datagroup.datasets.splice(idx, 1);
+
+              this.datagroups.map(datagroup => {
+                if (datagroup.id === dataset.groupId) {
+                  datagroup.datasets.unshift(dataset);
+                }
+              });
+            }
           }
         });
-      });
-
-      this.datagroups.map(group => {
-        if (group.id === dataset.groupId) {
-          group.datasets.unshift(dataset);
-        }
       });
     }
   }
