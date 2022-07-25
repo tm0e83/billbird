@@ -132,7 +132,7 @@
       <div class="prop interval"></div>
       <div class="prop update-amount">
         <div class="flex grow">
-          <div class="grow py-2 px-6 text-right">{{ toCurrency(totalUpdateAmount) }}</div>
+          <div class="grow py-2 px-3 mr-2 border border-transparent text-right">{{ toCurrency(totalUpdateAmount) }}</div>
           <button
             @click="applyUpdate"
             :disabled="!totalUpdateAmount"

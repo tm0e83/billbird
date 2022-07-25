@@ -94,7 +94,7 @@
       <div class="drag-handle">
         <GripVerticalIcon class="w-5 h-5 relative -left-[5px] 2xl-left-0" />
       </div>
-      <span>{{ dataset.title }}</span>
+      <span class="overflow-hidden text-ellipsis">{{ dataset.title }}</span>
     </div>
 
     <div class="prop text-right actual-amount">
@@ -144,7 +144,7 @@
         <CurrencyInput
           v-model="dataset.updateAmount"
           :options="{ currency: 'EUR', locale: 'de-DE', autoDecimalDigits: true }"
-          classes="currency-input"
+          classes="currency-input text-right"
         />
         <button
           @click="applyUpdate"
@@ -200,7 +200,8 @@
       grow
       justify-between
       px-4
-      py-2;
+      py-1
+      2xl:py-2;
 
     &.collapsed {
       @apply hidden 2xl:block;
@@ -216,6 +217,7 @@
       justify-start
       items-center
       font-bold
+      overflow-hidden
       sm:basis-full
       2xl:basis-auto
       2xl:font-normal;

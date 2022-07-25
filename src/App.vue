@@ -15,7 +15,7 @@
         Bill<span class="text-emerald-500">Bird</span>
         <span class="text-xs self-end font-mono text-red-600 ml-1 font-bolder">alpha</span>
       </div>
-      <div class="flex grow justify-between mt-2 sm-mt-0">
+      <div class="flex grow justify-between mt-3 sm-mt-0">
         <nav class="flex gap-x-8 sm:gap-x-12 sm:ml-20">
           <RouterLink to="/">Übersicht</RouterLink>
           <RouterLink to="/faq">FAQ</RouterLink>
