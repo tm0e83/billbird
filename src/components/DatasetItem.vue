@@ -13,8 +13,8 @@
   const collapsed = ref(true);
 
   const intervalName = computed(() => props.dataset.type === 1 ? intervals[props.dataset.interval].name : '');
-  const isPositiveDiff = computed(() => props.dataset.diffAmount > 0);
-  const isNegativeDiff = computed(() => props.dataset.diffAmount < 0);
+  const isPositiveDiff = computed(() => props.dataset.diffAmount.toFixed(2) > 0);
+  const isNegativeDiff = computed(() => props.dataset.diffAmount.toFixed(2) < 0);
 
   function isValidDate(date) {
     return date instanceof Date && date.getTime();
@@ -65,7 +65,6 @@
   }
 
   function applyUpdate() {
-    console.log(props.dataset.id, props.dataset.updateAmount);
     store.addActualAmount(props.dataset.id, props.dataset.updateAmount)
     store.setUpdateAmount(props.dataset.id, null);
   }
