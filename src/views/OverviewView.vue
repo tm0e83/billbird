@@ -69,10 +69,12 @@
 
     fileInput.addEventListener('change', e => {
       const reader = new FileReader();
+
       reader.onload = event => {
-        const datagroups = JSON.parse(event.target.result);
-        store.datagroups = datagroups;
+        const resultJSON = JSON.parse(event.target.result)
+        store.datagroups = resultJSON.datagroups;
       };
+
       reader.readAsText(event.target.files[0]);
     })
 

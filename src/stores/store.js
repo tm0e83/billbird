@@ -20,7 +20,7 @@ export const useStore = defineStore({
 
     nextDatasetId(state) {
       const allDatasets = this.allDataSets;
-      if (!allDatasets) return 0;
+      if (!allDatasets.length) return 1;
       return Math.max(...allDatasets.map(dataset => dataset.id)) + 1;
     },
 

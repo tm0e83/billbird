@@ -65,6 +65,7 @@
   }
 
   function applyUpdate() {
+    console.log(props.dataset.id, props.dataset.updateAmount);
     store.addActualAmount(props.dataset.id, props.dataset.updateAmount)
     store.setUpdateAmount(props.dataset.id, null);
   }
