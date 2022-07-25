@@ -92,7 +92,7 @@
   <div class="dataset">
     <div class="prop title">
       <div class="drag-handle">
-        <GripVerticalIcon class="w-5 h-5" />
+        <GripVerticalIcon class="w-5 h-5 relative -left-[5px] 2xl-left-0" />
       </div>
       <span>{{ dataset.title }}</span>
     </div>
@@ -151,28 +151,28 @@
           :disabled="!dataset.updateAmount"
           class="button"
         >
-          <CheckIcon class="icon" />
+          <CheckIcon class="w-5 h-5 mx-auto" />
         </button>
       </div>
     </div>
 
     <div class="prop details-toggle" @click="collapsed = !collapsed">
       <div v-if="collapsed" class="inner">
-        <ChevronDownIcon class="icon" />
+        <ChevronDownIcon class="w-5 h-5 mx-auto" />
         Details anzeigen
       </div>
       <div v-else class="inner">
-        <ChevronUpIcon class="icon" />
+        <ChevronUpIcon class="w-5 h-5 mx-auto" />
         Details ausblenden
       </div>
     </div>
 
     <div class="prop buttons">
       <button @click="$emit('delete', dataset)" class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0" title="Löschen">
-        <TrashIcon class="icon" />
+        <TrashIcon class="w-5 h-5 mx-auto" />
       </button>
       <button @click="$emit('edit', dataset)" class="button grow 2xl:clear 2xl:p-1 2xl:grow-0" title="Bearbeiten">
-        <EditIcon class="icon" />
+        <EditIcon class="w-5 h-5 mx-auto" />
       </button>
     </div>
 
@@ -215,10 +215,10 @@
     @apply
       justify-start
       items-center
-      text-2xl
+      font-bold
       sm:basis-full
       2xl:basis-auto
-      2xl:text-base;
+      2xl:font-normal;
   }
 
   .drag-handle {
@@ -293,12 +293,5 @@
       flex
       gap-2
       justify-end;
-  }
-
-  .icon {
-    @apply
-      w-5
-      h-5
-      mx-auto;
   }
 </style>

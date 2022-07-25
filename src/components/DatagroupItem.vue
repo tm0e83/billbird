@@ -12,7 +12,7 @@
     <div class="py-2 px-4 bg-gray-100 flex justify-between items-center rounded-t">
       <div class="grow title">
         <div class="drag-handle">
-          <GripVerticalIcon class="w-5 h-5" />
+          <GripVerticalIcon class="w-5 h-5 relative -left-[5px] 2xl-left-0" />
         </div>
         <span>{{ datagroup.title }}</span>
       </div>
