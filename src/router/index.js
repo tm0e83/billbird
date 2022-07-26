@@ -1,23 +1,45 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import OverviewView from '../views/OverviewView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Login from '../views/Login.vue';
+import { useStore } from '@/stores/store.js';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      redirect: '/overview'
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/overview',
       name: 'overview',
-      component: OverviewView
+      component: () => import('../views/Overview.vue')
     },
     {
       path: '/faq',
       name: 'faq',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/FaqView.vue')
+      component: () => import('../views/Faq.vue')
     }
   ]
-})
+});
 
-export default router
+router.beforeEach(async (to, from) => {
+  const publicPages = ['/login'];
+  const authRequired = !publicPages.includes(to.path);
+  const store = useStore();
+
+  if (!authRequired && store.uid) {
+    return '/overview';
+  }
+
+  if (authRequired && !store.uid) {
+    // store.returnUrl = to.fullPath;
+    return '/login';
+  }
+});
+
+export default router;

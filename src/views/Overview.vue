@@ -91,6 +91,12 @@
   }
 
   onMounted(() => {
+    if (store.uid === 'testuser') {
+      console.log('is logged in as test user');
+    } else if (store.uid !== null) {
+      console.log('is logged in as normal user');
+    }
+
     fetch('/timo.json')
     .then(response => response.json())
     .then(data => store.datagroups = data.datagroups)

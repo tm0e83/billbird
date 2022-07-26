@@ -158,6 +158,7 @@
       text-red-700
       border
       border-red-700
-      bg-red-100;
+      bg-red-100
+      rounded;
   }
 </style>

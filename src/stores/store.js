@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia'
 
 export const useStore = defineStore({
-  id: 'counter',
+  id: 'general',
 
   state: () => ({
     currentDate: new Date(),
-    datagroups: []
+    datagroups: [],
+    uid: null
   }),
 
   getters: {
