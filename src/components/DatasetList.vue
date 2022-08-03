@@ -138,7 +138,7 @@ function onSort(args) {
     >
       <template #item="{ element }">
         <DatasetItem
-          ref="datasetRefs"
+          :ref="(el) => datasetRefs.push(el)"
           :dataset="element"
           @delete="(dataset) => deleteDataset(dataset)"
           @edit="(dataset) => editDataset(dataset)"
