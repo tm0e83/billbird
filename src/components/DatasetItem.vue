@@ -47,7 +47,6 @@ function calculateDebitAmount() {
     if (isValidDate(invoiceDate)) {
       const monthsBetween = getMonthDifference(store.currentDate, invoiceDate);
       const pastIntervalMonths = intervals[props.dataset.interval].months - monthsBetween;
-      console.log(props.dataset.title, monthsBetween, pastIntervalMonths);
       store.setDebitAmount(props.dataset.id, pastIntervalMonths * props.dataset.monthlyAmount);
     }
   }
