@@ -1,27 +1,18 @@
 <script setup>
-import { computed, onBeforeUpdate, onMounted, ref } from "vue";
-import intervals from "./shared/intervals.json";
-import { toCurrency } from "./shared/functions.js";
-import { useStore } from "@/stores/store.js";
-import { format } from "date-fns";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  EditIcon,
-  GripVerticalIcon,
-  TrashIcon,
-} from "vue-tabler-icons";
-import CurrencyInput from "@/components/CurrencyInput.vue";
+import { computed, onBeforeUpdate, onMounted, ref } from 'vue';
+import intervals from './shared/intervals.json';
+import { toCurrency } from './shared/functions.js';
+import { useStore } from '@/stores/store.js';
+import { format } from 'date-fns';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, GripVerticalIcon, TrashIcon } from 'vue-tabler-icons';
+import CurrencyInput from '@/components/CurrencyInput.vue';
 
-const props = defineProps(["dataset"]);
+const props = defineProps(['dataset']);
 const store = useStore();
 
 const collapsed = ref(true);
 
-const intervalName = computed(() =>
-  props.dataset.type === 1 ? intervals[props.dataset.interval].name : ""
-);
+const intervalName = computed(() => (props.dataset.type === 1 ? intervals[props.dataset.interval].name : ''));
 const isPositiveDiff = computed(() => props.dataset.diffAmount.toFixed(2) > 0);
 const isNegativeDiff = computed(() => props.dataset.diffAmount.toFixed(2) < 0);
 
@@ -34,23 +25,17 @@ function updateInvoiceDates() {
 
   if (isValidDate(invoiceDate)) {
     if (invoiceDate < store.currentDate) {
-      store.setLastInvoiceDate(
-        props.dataset.id,
-        format(invoiceDate, "yyyy-MM-dd")
-      );
+      store.setLastInvoiceDate(props.dataset.id, format(invoiceDate, 'yyyy-MM-dd'));
       const monthsPerInterval = intervals[props.dataset.interval].months;
       invoiceDate.setMonth(invoiceDate.getMonth() + monthsPerInterval);
-      store.setInvoiceDate(props.dataset.id, format(invoiceDate, "yyyy-MM-dd"));
+      store.setInvoiceDate(props.dataset.id, format(invoiceDate, 'yyyy-MM-dd'));
     }
   }
 }
 
 function calculateMonthlyAmount() {
   if (props.dataset.type === 1) {
-    store.setMonthlyAmount(
-      props.dataset.id,
-      props.dataset.invoiceAmount / intervals[props.dataset.interval].months
-    );
+    store.setMonthlyAmount(props.dataset.id, props.dataset.invoiceAmount / intervals[props.dataset.interval].months);
   }
 }
 
@@ -61,29 +46,19 @@ function calculateDebitAmount() {
     let invoiceDate = new Date(props.dataset.invoiceDate);
     if (isValidDate(invoiceDate)) {
       const monthsBetween = getMonthDifference(store.currentDate, invoiceDate);
-      const pastIntervalMonths =
-        intervals[props.dataset.interval].months - monthsBetween;
-      store.setDebitAmount(
-        props.dataset.id,
-        pastIntervalMonths * props.dataset.monthlyAmount
-      );
+      const pastIntervalMonths = intervals[props.dataset.interval].months - monthsBetween;
+      console.log(props.dataset.title, monthsBetween, pastIntervalMonths);
+      store.setDebitAmount(props.dataset.id, pastIntervalMonths * props.dataset.monthlyAmount);
     }
   }
 }
 
 function calculateDiffAmount() {
-  store.setDiffAmount(
-    props.dataset.id,
-    props.dataset.actualAmount - props.dataset.debitAmount
-  );
+  store.setDiffAmount(props.dataset.id, props.dataset.actualAmount - props.dataset.debitAmount);
 }
 
 function getMonthDifference(startDate, endDate) {
-  return (
-    endDate.getMonth() -
-    startDate.getMonth() +
-    12 * (endDate.getFullYear() - startDate.getFullYear())
-  );
+  return endDate.getMonth() - startDate.getMonth() + 12 * (endDate.getFullYear() - startDate.getFullYear());
 }
 
 function applyUpdate() {
@@ -159,19 +134,28 @@ defineExpose({
       <span>{{ toCurrency(dataset.monthlyAmount) }}</span>
     </div>
 
-    <div class="prop text-right invoice-date" :class="{ collapsed: collapsed }">
+    <div
+      class="prop text-right invoice-date"
+      :class="{ collapsed: collapsed }"
+    >
       <span class="prop-label">Rg.-Datum</span>
       <span v-if="dataset.invoiceDate">
-        {{ format(new Date(dataset.invoiceDate), "dd.MM.yyyy") }}
+        {{ format(new Date(dataset.invoiceDate), 'dd.MM.yyyy') }}
       </span>
     </div>
 
-    <div class="prop text-right interval" :class="{ collapsed: collapsed }">
+    <div
+      class="prop text-right interval"
+      :class="{ collapsed: collapsed }"
+    >
       <span class="prop-label">Interval</span>
       <span>{{ intervalName }}</span>
     </div>
 
-    <div class="prop update-amount" :class="{ collapsed: collapsed }">
+    <div
+      class="prop update-amount"
+      :class="{ collapsed: collapsed }"
+    >
       <span class="prop-label">Update</span>
       <div class="flex">
         <CurrencyInput
@@ -193,12 +177,21 @@ defineExpose({
       </div>
     </div>
 
-    <div class="prop details-toggle" @click="collapsed = !collapsed">
-      <div v-if="collapsed" class="inner">
+    <div
+      class="prop details-toggle"
+      @click="collapsed = !collapsed"
+    >
+      <div
+        v-if="collapsed"
+        class="inner"
+      >
         <ChevronDownIcon class="w-5 h-5 mx-auto" />
         Details anzeigen
       </div>
-      <div v-else class="inner">
+      <div
+        v-else
+        class="inner"
+      >
         <ChevronUpIcon class="w-5 h-5 mx-auto" />
         Details ausblenden
       </div>
