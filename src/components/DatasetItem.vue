@@ -106,6 +106,7 @@ defineExpose({
     <div class="prop text-right diff-amount">
       <span class="prop-label">Differenz</span>
       <span
+        class="value"
         :class="{
           'text-green-600': isPositiveDiff,
           'text-red-600': isNegativeDiff,
