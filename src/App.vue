@@ -41,8 +41,8 @@ function logout() {
           >alpha</span
         >
       </div>
-      <div class="flex grow justify-between items-center mt-3 sm-mt-0">
-        <nav v-if="isLoggedIn" class="flex gap-x-8 sm:gap-x-12 sm:ml-20">
+      <div class="flex grow justify-end items-center mt-3 sm-mt-0">
+        <nav v-if="isLoggedIn" class="grow flex gap-x-8 sm:gap-x-12 sm:ml-20">
           <RouterLink to="/overview">Übersicht</RouterLink>
           <RouterLink to="/faq">FAQ</RouterLink>
         </nav>
