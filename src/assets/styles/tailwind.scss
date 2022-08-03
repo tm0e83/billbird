@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
   @apply bg-gray-200 text-gray-600;
 }
 
 @layer components {
   .button {
-    @apply
-      transition
+    @apply transition
       duration-300
       font-bold
       text-center
@@ -22,15 +22,18 @@ html, body {
       rounded;
 
     &.alert {
-      @apply
-        bg-red-500
+      @apply bg-red-500
         hover:bg-red-600;
+    }
+
+    &.secondary {
+      @apply text-gray-300
+        hover:text-gray-500;
     }
 
     &:not(.hollow) {
       &[disabled] {
-        @apply
-          text-gray-500
+        @apply text-gray-500
           bg-gray-300
           hover:bg-gray-300
           cursor-default;
@@ -38,8 +41,7 @@ html, body {
     }
 
     &.hollow {
-      @apply
-        border
+      @apply border
         border-emerald-500
         text-emerald-500
         bg-transparent
@@ -48,28 +50,37 @@ html, body {
         hover:text-emerald-600;
 
       &.alert {
-        @apply
-          border-red-500
+        @apply border-red-500
           hover:border-red-600
           text-red-500
           hover:text-red-600;
       }
+
+      &.secondary {
+        @apply border-gray-300
+          hover:border-gray-500
+          text-gray-300
+          hover:text-gray-500;
+      }
     }
 
     &.clear {
-      @apply
-        border-0
+      @apply border-0
         text-emerald-500
         bg-transparent
         hover:bg-transparent
         hover:border-transparent
         hover:text-emerald-600;
 
-        &.alert {
-          @apply
-            text-red-500
+      &.alert {
+        @apply text-red-500
             hover:text-red-600;
-        }
+      }
+
+      &.secondary {
+        @apply text-gray-300
+            hover:text-gray-500;
+      }
     }
 
     &.large {
@@ -78,31 +89,11 @@ html, body {
   }
 }
 
-.icon-button {
-  @apply
-    transition
-    duration-300
-    text-emerald-500
-    hover:text-emerald-600
-    bg-transparent
-    hover:bg-transparent;
-
-  &.alert {
-    @apply
-      transition
-      duration-300
-      text-red-500
-      hover:text-red-600
-      bg-transparent
-      hover:bg-transparent;
-  }
-}
-
 input {
   &[type="text"],
+  &[type="password"],
   &[type="number"] {
-    @apply
-      transition
+    @apply transition
       duration-300
       bg-white
       w-full
@@ -119,8 +110,7 @@ input {
 }
 
 select {
-  @apply
-    transition
+  @apply transition
     duration-300
     bg-white
     w-full
@@ -148,8 +138,7 @@ p {
 }
 
 a {
-  @apply
-    cursor-pointer
+  @apply cursor-pointer
     transition
     duration-300
     text-emerald-500
@@ -162,8 +151,7 @@ a {
 
 // Datepicker
 input.dp__input {
-  @apply
-  transition
+  @apply transition
   duration-300
   bg-white
   w-full
