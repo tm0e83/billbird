@@ -1,14 +1,14 @@
 <script setup>
-import { computed, reactive, ref } from "vue";
-import { useStore } from "@/stores/store.js";
-import { toCurrency } from "./shared/functions.js";
-import DatasetItem from "@/components/DatasetItem.vue";
-import EditDataset from "@/components/EditDataset.vue";
-import DeleteDataset from "@/components/DeleteDataset.vue";
-import { CheckIcon } from "vue-tabler-icons";
-import draggable from "vuedraggable";
+import { computed, reactive, ref } from 'vue';
+import { useStore } from '@/stores/store.js';
+import { toCurrency } from './shared/functions.js';
+import DatasetItem from '@/components/DatasetItem.vue';
+import EditDataset from '@/components/EditDataset.vue';
+import DeleteDataset from '@/components/DeleteDataset.vue';
+import { CheckIcon } from 'vue-tabler-icons';
+import draggable from 'vuedraggable';
 
-const props = defineProps(["datasets"]);
+const props = defineProps(['datasets']);
 const store = useStore();
 
 const datasetRefs = ref([]);
@@ -32,54 +32,35 @@ function deleteDataset(dataset) {
 }
 
 const totalInvoiceAmount = computed(() => {
-  return props.datasets.reduce(
-    (sum, dataset) =>
-      dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum,
-    0
-  );
+  return props.datasets.reduce((sum, dataset) => (dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum), 0);
 });
 
 const totalActualAmount = computed(() => {
-  return props.datasets.reduce(
-    (sum, dataset) =>
-      dataset.actualAmount ? (sum += dataset.actualAmount) : sum,
-    0
-  );
+  return props.datasets.reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
 });
 
 const totalDebitAmount = computed(() => {
-  return props.datasets.reduce(
-    (sum, dataset) =>
-      dataset.debitAmount ? (sum += dataset.debitAmount) : sum,
-    0
-  );
+  return props.datasets.reduce((sum, dataset) => (dataset.debitAmount ? (sum += dataset.debitAmount) : sum), 0);
 });
 
 const totalDiffAmount = computed(() => {
-  return props.datasets.reduce(
-    (sum, dataset) => (dataset.diffAmount ? (sum += dataset.diffAmount) : sum),
-    0
-  );
+  return props.datasets.reduce((sum, dataset) => (dataset.diffAmount ? (sum += dataset.diffAmount) : sum), 0);
 });
 
 const totalMonthlyAmount = computed(() => {
-  return props.datasets.reduce(
-    (sum, dataset) =>
-      dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum,
-    0
-  );
+  return props.datasets.reduce((sum, dataset) => (dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum), 0);
 });
 
 const totalUpdateAmount = computed(() => {
-  return props.datasets.reduce(
-    (sum, dataset) =>
-      dataset.updateAmount ? (sum += dataset.updateAmount) : sum,
-    0
-  );
+  return props.datasets.reduce((sum, dataset) => (dataset.updateAmount ? (sum += dataset.updateAmount) : sum), 0);
+});
+
+const hasUpdateAmounts = computed(() => {
+  return props.datasets.filter(dataset => !!dataset.updateAmount).length > 0;
 });
 
 function applyUpdate() {
-  datasetRefs.value.map((datasetRef) => datasetRef.applyUpdate());
+  datasetRefs.value.map(datasetRef => datasetRef.applyUpdate());
 }
 
 function onSort(args) {
@@ -138,10 +119,10 @@ function onSort(args) {
     >
       <template #item="{ element }">
         <DatasetItem
-          :ref="(el) => datasetRefs.push(el)"
+          :ref="el => datasetRefs.push(el)"
           :dataset="element"
-          @delete="(dataset) => deleteDataset(dataset)"
-          @edit="(dataset) => editDataset(dataset)"
+          @delete="dataset => deleteDataset(dataset)"
+          @edit="dataset => editDataset(dataset)"
         />
       </template>
     </draggable>
@@ -163,7 +144,7 @@ function onSort(args) {
           </div>
           <button
             @click="applyUpdate"
-            :disabled="!totalUpdateAmount"
+            :disabled="!hasUpdateAmounts"
             class="button"
             title="Update für alle Datensätze der Gruppe ausführen"
           >

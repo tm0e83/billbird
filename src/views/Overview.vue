@@ -75,7 +75,7 @@ function loadData() {
       store.datagroups = resultJSON.datagroups;
     };
 
-    reader.readAsText(event.target.files[0]);
+    reader.readAsText(e.target.files[0]);
   });
 
   fileInput.click();

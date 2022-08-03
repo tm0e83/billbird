@@ -1,20 +1,25 @@
 <script setup>
-import { useStore } from "@/stores/store.js";
-import DatagroupItem from "@/components/DatagroupItem.vue";
-import { toCurrency } from "./shared/functions.js";
-import { CheckIcon } from "vue-tabler-icons";
-import draggable from "vuedraggable";
+import { computed } from 'vue';
+import { useStore } from '@/stores/store.js';
+import DatagroupItem from '@/components/DatagroupItem.vue';
+import { toCurrency } from './shared/functions.js';
+import { CheckIcon } from 'vue-tabler-icons';
+import draggable from 'vuedraggable';
 
 const store = useStore();
 
 function applyUpdate() {
-  store.datagroups.map((datagroup) => {
-    datagroup.datasets.map((dataset) => {
+  store.datagroups.map(datagroup => {
+    datagroup.datasets.map(dataset => {
       store.addActualAmount(dataset.id, dataset.updateAmount);
       store.setUpdateAmount(dataset.id, null);
     });
   });
 }
+
+const hasUpdateAmounts = computed(() => {
+  return store.allDatasets.filter(dataset => !!dataset.updateAmount).length > 0;
+});
 </script>
 
 <template>
@@ -29,8 +34,8 @@ function applyUpdate() {
       <template #item="{ element }">
         <DatagroupItem
           :datagroup="element"
-          @edit="(datagroup) => $emit('editDatagroup', datagroup)"
-          @delete="(datagroup) => $emit('deleteDatagroup', datagroup)"
+          @edit="datagroup => $emit('editDatagroup', datagroup)"
+          @delete="datagroup => $emit('deleteDatagroup', datagroup)"
         />
       </template>
     </draggable>
@@ -52,7 +57,7 @@ function applyUpdate() {
           </div>
           <button
             @click="applyUpdate"
-            :disabled="!store.totalUpdateAmount"
+            :disabled="!hasUpdateAmounts"
             class="button"
           >
             <CheckIcon class="icon" />
