@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Login from '../views/Login.vue';
+import Overview from '../views/Overview.vue';
 import { useStore } from '@/stores/store.js';
 
 const router = createRouter({
@@ -7,39 +7,43 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/overview'
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
+      redirect: '/overview',
     },
     {
       path: '/overview',
       name: 'overview',
-      component: () => import('../views/Overview.vue')
+      component: Overview,
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/Login.vue'),
+    },
+    {
+      path: '/data',
+      name: 'data',
+      component: () => import('../views/Data.vue'),
     },
     {
       path: '/faq',
       name: 'faq',
-      component: () => import('../views/Faq.vue')
-    }
-  ]
+      component: () => import('../views/Faq.vue'),
+    },
+  ],
 });
 
 router.beforeEach(async (to, from) => {
-  const publicPages = ['/login'];
+  const publicPages = ['/login', '/overview'];
   const authRequired = !publicPages.includes(to.path);
   const store = useStore();
 
-  if (!authRequired && store.uid) {
-    return '/overview';
-  }
+  // if (authRequired && store.uid) {
+  //   return '/data';
+  // }
 
-  if (authRequired && !store.uid) {
-    // store.returnUrl = to.fullPath;
-    return '/login';
-  }
+  // if (authRequired && !store.uid) {
+  //   return '/overview';
+  // }
 });
 
 export default router;
