@@ -1,22 +1,20 @@
 <script setup>
-import { useStore } from "@/stores/store.js";
-import DatasetList from "@/components/DatasetList.vue";
-import { EditIcon, GripVerticalIcon, TrashIcon } from "vue-tabler-icons";
+import { useStore } from '@/stores/store.js';
+import DatasetList from '@/components/DatasetList.vue';
+import { EditIcon, GripVerticalIcon, TrashIcon } from 'vue-tabler-icons';
 
-defineProps(["datagroup"]);
+defineProps(['datagroup']);
 useStore();
 </script>
 
 <template>
   <div class="datagroup mb-3">
-    <div
-      class="py-2 px-4 bg-gray-100 flex justify-between items-center rounded-t"
-    >
+    <div class="py-2 px-4 bg-gray-100 flex justify-between items-center rounded-t">
       <div class="grow title">
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
       </div>
 
-      <div class="flex gap-2 justify-end">
+      <div class="flex gap-2 justify-end ml-4">
         <button
           @click="$emit('delete', datagroup)"
           class="button alert grow clear p-1 grow-0"
@@ -42,7 +40,10 @@ useStore();
         v-if="datagroup.datasets.length"
         :datasets="datagroup.datasets"
       />
-      <div v-else class="py-2 px-4">
+      <div
+        v-else
+        class="py-2 px-4"
+      >
         Diese Datengruppe enthält keine Datensätze.
       </div>
     </div>
@@ -59,6 +60,6 @@ useStore();
 }
 
 .drag-handle {
-  @apply cursor-move p-1 grow-0;
+  @apply cursor-move p-1 grow-0 -mr-2.5;
 }
 </style>
