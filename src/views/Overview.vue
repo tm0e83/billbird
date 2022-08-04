@@ -1,236 +1,166 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
-import { useStore } from '@/stores/store.js';
-import DatagroupList from '@/components/DatagroupList.vue';
-import EditDataset from '@/components/EditDataset.vue';
-import EditDatagroup from '@/components/EditDatagroup.vue';
-import DeleteDatagroup from '@/components/DeleteDatagroup.vue';
-import DropdownMenu from '@/components/DropdownMenu.vue';
-import { format } from 'date-fns';
-import { DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
-
-const store = useStore();
-
-const state = reactive({
-  dataset: null,
-  datagroup: null,
-  editDatasetModalVisible: false,
-  editDatagroupModalVisible: false,
-  deleteDatagroupModalVisible: false,
-});
-
-function editDatagroup(datagroup) {
-  state.datagroup = datagroup;
-  state.editDatagroupModalVisible = true;
-}
-
-function deleteDatagroup(datagroup) {
-  state.datagroup = datagroup;
-  state.deleteDatagroupModalVisible = true;
-}
-
-function createNewDatagroup() {
-  state.datagroup = getNewDatagroup();
-  state.editDatagroupModalVisible = true;
-}
-
-function createNewDataset() {
-  state.dataset = getNewDataset();
-  state.editDatasetModalVisible = true;
-}
-
-function getNewDatagroup() {
-  return {
-    datasets: [],
-    id: null,
-    title: '',
-  };
-}
-
-function getNewDataset() {
-  return {
-    actualAmount: 0,
-    debitAmount: 0,
-    id: null,
-    interval: '',
-    invoiceAmount: null,
-    invoiceDate: null,
-    lastInvoiceDate: null,
-    lastUpdateDate: null,
-    monthlyAmount: 0,
-    title: '',
-    type: '',
-  };
-}
-
-function loadData() {
-  const fileInput = document.createElement('input');
-  fileInput.setAttribute('type', 'file');
-
-  fileInput.addEventListener('change', e => {
-    const reader = new FileReader();
-
-    reader.onload = event => {
-      const resultJSON = JSON.parse(event.target.result);
-      store.datagroups = resultJSON.datagroups;
-    };
-
-    reader.readAsText(e.target.files[0]);
-  });
-
-  fileInput.click();
-}
-
-function downloadAsJSON() {
-  const a = document.createElement('a');
-  const file = new Blob([JSON.stringify({ datagroups: store.datagroups })], { type: 'text/plain' });
-
-  a.href = URL.createObjectURL(file);
-  a.download = `billbird-data-${format(new Date(), 'yyyy-MM-dd')}.json`;
-  a.click();
-}
-
-onMounted(() => {
-  fetch('/timo.json')
-    .then(response => response.json())
-    .then(data => (store.datagroups = data.datagroups))
-    .catch(e => {
-      fetch('/data.json')
-        .then(response => response.json())
-        .then(data => (store.datagroups = data.datagroups))
-        .catch(e => {
-          console.log(e);
-        });
-    });
-});
-
-const menuItems = ref([
-  {
-    label: 'JSON herunterladen',
-    onClick: () => downloadAsJSON(),
-  },
-  {
-    label: 'JSON laden',
-    onClick: () => loadData(),
-  },
-  {
-    label: 'Neue Datengruppe',
-    onClick: () => createNewDatagroup(),
-  },
-  {
-    label: 'Neuer Datensatz',
-    onClick: () => createNewDataset(),
-  },
-]);
+import eslintLogo from '@/assets/images/eslint-logo.svg';
+import tailwindcssLogo from '@/assets/images/tailwindcss-logo.svg';
+import vuejsLogo from '@/assets/images/vuejs-logo.svg';
+import vitejsLogo from '@/assets/images/vitejs-logo.svg';
+import vitestLogo from '@/assets/images/vitest-logo.svg';
+import firebaseLogo from '@/assets/images/firebase-logo.svg';
+import piniaLogo from '@/assets/images/pinia-logo.svg';
+import prettierLogo from '@/assets/images/prettier-logo.svg';
+import invoiceBill from '@/assets/images/invoice-bill.svg';
+import piggyBank from '@/assets/images/piggy-bank.svg';
 </script>
 
 <template>
-  <div class="mt-8 max-w-[2000px] mx-auto">
-    <ModalWindow
-      :show="state.editDatasetModalVisible"
-      @close="state.editDatasetModalVisible = false"
-    >
-      <EditDataset
-        v-if="state.dataset"
-        :dataset="state.dataset"
-        @close="state.editDatasetModalVisible = false"
-      />
-    </ModalWindow>
+  <div>
+    <div class="max-w-4xl m-auto px-3 py-20 text-center text-xl">
+      <div class="headline">Was ist das hier?</div>
+      <p>
+        BillBird ist ein privates Vue3-Testprojekt zum Verwalten meiner eigenen Finanzen. Es ist Programmierspielwiese und nützliches Tool gleichermaßen und ausschließlich für den Eigengebrauch und
+        als Showcase für Bewerbungen gedacht.
+      </p>
 
-    <ModalWindow
-      :show="state.editDatagroupModalVisible"
-      @close="state.editDatagroupModalVisible = false"
-    >
-      <EditDatagroup
-        v-if="state.datagroup"
-        :datagroup="state.datagroup"
-        @close="state.editDatagroupModalVisible = false"
-      />
-    </ModalWindow>
+      <p>Das Tool soll mir einen besseren Überblick über meine Ersparnisse geben und dabei helfen, monatlich die nötigen Beträge für Jahres- oder Quartalsrechnungen zurückzulegen.</p>
 
-    <ModalWindow
-      :show="state.deleteDatagroupModalVisible"
-      max-width="400px"
-      @close="state.deleteDatagroupModalVisible = false"
-    >
-      <DeleteDatagroup
-        v-if="state.datagroup"
-        :datagroup="state.datagroup"
-        @close="state.deleteDatagroupModalVisible = false"
-      />
-    </ModalWindow>
-
-    <div class="flex justify-end md:hidden mb-3">
-      <DropdownMenu :menuItems="menuItems">
-        <DotsVerticalIcon />
-      </DropdownMenu>
+      <p>Das Projekt befindet sich noch im Aufbau.</p>
     </div>
 
-    <nav>
-      <ul class="hidden md:flex flex-col flex-wrap gap-3 md:flex-row md:gap-7 mb-3">
-        <li>
-          <a
-            @click="downloadAsJSON"
-            class="flex gap-1"
-          >
-            <DownloadIcon />
-            <span>JSON herunterladen</span>
-          </a>
-        </li>
-        <li>
-          <a
-            @click="loadData"
-            class="flex gap-1"
-          >
-            <UploadIcon />
-            <span>JSON laden</span>
-          </a>
-        </li>
-        <li>
-          <a
-            @click="createNewDatagroup"
-            class="flex gap-1"
-          >
-            <PlusIcon />
-            <span>Neue Datengruppe</span>
-          </a>
-        </li>
-        <li>
-          <a
-            @click="createNewDataset"
-            class="flex gap-1"
-          >
-            <PlusIcon />
-            <span>Neue Datensatz</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-
-    <DatagroupList
-      v-if="store.datagroups.length"
-      @editDatagroup="datagroup => editDatagroup(datagroup)"
-      @deleteDatagroup="datagroup => deleteDatagroup(datagroup)"
-    />
-    <div v-else>
-      <p>Keine Datensätze vorhanden</p>
+    <div class="features px-3 py-20 bg-slate-300">
+      <div class="max-w-4xl m-auto">
+        <div class="headline">Features</div>
+        <div class="sm:flex sm:justify-center sm:gap-12">
+          <div class="text-center mb-12 sm:mb-0">
+            <img
+              :src="invoiceBill"
+              alt="Rechnung auf Computerbildung"
+            />
+            <div class="text-xl font-black mb-4">Rechnung</div>
+            <p>Wiederkehrende Rechnungen mit einem Intervall anlegen und monatlichen Sparbetrag berechnen lassen.</p>
+          </div>
+          <div class="text-center">
+            <img
+              :src="piggyBank"
+              alt="Sparschwein"
+            />
+            <div class="text-xl font-black mb-4">Sparplan</div>
+            <p>Mit einem Sparplan können feste Sparziele verfolgt und festgelegte Beträge gespart werden.</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <button
-      @click="createNewDatagroup"
-      class="w-full button large mt-3 sm:w-auto sm:mr-3 inline-flex justify-center items-center"
-    >
-      <PlusIcon class="h-5 w-5 mr-2" />
-      Neue Datengruppe
-    </button>
-    <button
-      @click="createNewDataset"
-      class="w-full button large mt-3 sm:w-auto inline-flex justify-center items-center"
-    >
-      <PlusIcon class="h-5 w-5 mr-2" />
-      Neuer Datensatz
-    </button>
+    <div class="tech-stack px-3 py-20 bg-slate-800">
+      <div class="max-w-4xl m-auto">
+        <div class="headline text-white mb-20">Technologie-Stack</div>
+        <ul class="grid gap-20 grid-cols-2 md:grid-cols-4 items-center">
+          <li>
+            <a
+              href="https://eslint.org/"
+              title="ESLint"
+            >
+              <img
+                :src="eslintLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://tailwindcss.com/"
+              title="Tailwind CSS"
+            >
+              <img
+                :src="tailwindcssLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://vuejs.org/"
+              title="Vue.js"
+            >
+              <img
+                :src="vuejsLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://vitejs.dev/"
+              title="Vite"
+            >
+              <img
+                :src="vitejsLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://vitest.dev/"
+              title="Vitest"
+            >
+              <img
+                :src="vitestLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://firebase.google.com/firebase"
+              title="Firebase"
+            >
+              <img
+                :src="firebaseLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://pinia.vuejs.org/"
+              title="Pinia"
+            >
+              <img
+                :src="piniaLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://prettier.io/"
+              title="Prettier"
+            >
+              <img
+                :src="prettierLogo"
+                alt="Logo"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.headline {
+  @apply w-full text-4xl font-black mb-10 text-center md:text-6xl;
+}
+
+.features {
+  img {
+    @apply max-w-[150px] max-h-[150px] w-full h-full m-auto mb-4;
+  }
+}
+
+.tech-stack {
+  img {
+    @apply max-w-[120px] max-h-[120px] w-full h-full m-auto;
+  }
+}
+</style>

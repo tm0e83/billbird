@@ -249,7 +249,9 @@ defineExpose({
 .prop-label {
   @apply 2xl:hidden;
 }
-
+.drag-handle {
+  @apply cursor-move p-1 grow-0 -mr-2.5 ml-4 2xl:ml-0;
+}
 .title {
   @apply justify-between
       items-center
@@ -260,16 +262,15 @@ defineExpose({
       2xl:font-normal;
 }
 
-.drag-handle {
-  @apply cursor-move p-1 grow-0;
-}
-
 .details-toggle {
   @apply flex
       justify-center
       text-sm
       text-gray-400
       py-2
+      cursor-pointer
+      transition-colors
+      hover:text-gray-600
       sm:basis-full
       2xl:hidden;
 
