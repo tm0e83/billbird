@@ -25,6 +25,6 @@ describe('DatasetItem', () => {
   });
 
   it('has a number as diffAmount', () => {
-    expect(parseFloat(wrapper.get('.prop.diff-amount .value').text())).toBeTypeOf('string');
+    expect(parseFloat(wrapper.get('.prop.diff-amount .value').text())).toBeTypeOf('number');
   });
 });
