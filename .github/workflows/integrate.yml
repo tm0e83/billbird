@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        width:
+        with:
           node_version: 16.16.0
       - run: npm ci
       - run: npm run test:unit
