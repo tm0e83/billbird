@@ -16,12 +16,13 @@ import { initializeApp } from 'firebase/app';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyAR1E7fmkRS1ucozio3IpYw33xoeL3LEvI',
-  authDomain: 'billbird-72646.firebaseapp.com',
-  projectId: 'billbird-72646',
-  storageBucket: 'billbird-72646.appspot.com',
-  messagingSenderId: '664806364130',
-  appId: '1:664806364130:web:e8758806485e05fb19dfbb'
+  apiKey: 'AIzaSyCfxcuq6bDa5rNEhmKKAcH9P6OXYQmwdnc',
+  authDomain: 'billbird-2beb9.firebaseapp.com',
+  databaseURL: 'https://billbird-2beb9-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'billbird-2beb9',
+  storageBucket: 'billbird-2beb9.appspot.com',
+  messagingSenderId: '152796681628',
+  appId: '1:152796681628:web:a039390076b53776212459',
 };
 
 // Initialize Firebase
