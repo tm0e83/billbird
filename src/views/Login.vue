@@ -17,10 +17,10 @@ function login() {
       store.uid = data.user.uid;
       router.push('/data');
     })
-    .catch(e => {
+    .catch(error => {
       hasError.value = true;
       router.push('/login');
-      console.log('Login Error', e);
+      console.log('Login Error', error);
     });
 }
 
