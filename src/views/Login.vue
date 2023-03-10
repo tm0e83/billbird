@@ -15,13 +15,12 @@ function login() {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then(data => {
       store.uid = data.user.uid;
-      console.log('go to data');
       router.push('/data');
     })
     .catch(e => {
       hasError.value = true;
       router.push('/login');
-      console.log('error while logging in');
+      console.log('Login Error', e);
     });
 }
 

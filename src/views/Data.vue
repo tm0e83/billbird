@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, toRaw } from 'vue';
 import { useStore } from '@/stores/store.js';
 import DatagroupList from '@/components/DatagroupList.vue';
 import EditDataset from '@/components/EditDataset.vue';
@@ -7,8 +7,11 @@ import EditDatagroup from '@/components/EditDatagroup.vue';
 import DeleteDatagroup from '@/components/DeleteDatagroup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import { format } from 'date-fns';
-import { DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
+import { DeviceFloppyIcon, DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
+import { getDatabase, ref as fireRef, get, child, set } from 'firebase/database';
 
+const db = getDatabase();
+const dbRef = fireRef(db);
 const store = useStore();
 
 const state = reactive({
@@ -37,6 +40,16 @@ function createNewDatagroup() {
 function createNewDataset() {
   state.dataset = getNewDataset();
   state.editDatasetModalVisible = true;
+}
+
+function saveInDatabase() {
+  set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
+    .then(() => {
+      console.log('Data saved successfully!');
+    })
+    .catch(error => {
+      console.log('Save error', error);
+    });
 }
 
 function getNewDatagroup() {
@@ -91,17 +104,31 @@ function downloadAsJSON() {
 }
 
 onMounted(() => {
-  fetch('/timo.json')
-    .then(response => response.json())
-    .then(data => (store.datagroups = data.datagroups))
-    .catch(e => {
-      fetch('/data.json')
-        .then(response => response.json())
-        .then(data => (store.datagroups = data.datagroups))
-        .catch(e => {
-          console.log(e);
-        });
-    });
+  if (store.uid === 'testuser') {
+    fetch('/timo.json')
+      .then(response => response.json())
+      .then(data => (store.datagroups = data.datagroups))
+      .catch(e => {
+        fetch('/data.json')
+          .then(response => response.json())
+          .then(data => (store.datagroups = data.datagroups))
+          .catch(e => {
+            console.log(e);
+          });
+      });
+  } else {
+    get(child(dbRef, 'datagroups'))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          store.datagroups = snapshot.val();
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 });
 
 const menuItems = ref([
@@ -120,6 +147,10 @@ const menuItems = ref([
   {
     label: 'Neuer Datensatz',
     onClick: () => createNewDataset(),
+  },
+  {
+    label: 'Speichern',
+    onClick: () => saveInDatabase(),
   },
 ]);
 </script>
@@ -202,6 +233,15 @@ const menuItems = ref([
           >
             <PlusIcon />
             <span>Neue Datensatz</span>
+          </a>
+        </li>
+        <li>
+          <a
+            @click="saveInDatabase"
+            class="flex gap-1"
+          >
+            <DeviceFloppyIcon />
+            <span>Speichern</span>
           </a>
         </li>
       </ul>
