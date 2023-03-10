@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useStore = defineStore({
   id: 'general',
@@ -6,7 +6,7 @@ export const useStore = defineStore({
   state: () => ({
     currentDate: new Date(),
     datagroups: [],
-    uid: null
+    uid: null,
   }),
 
   getters: {
@@ -26,28 +26,28 @@ export const useStore = defineStore({
     },
 
     totalInvoiceAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => dataset.invoiceAmount ? sum += dataset.invoiceAmount : sum, 0);
+      return this.allDatasets.reduce((sum, dataset) => (dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum), 0);
     },
 
     totalMonthlyAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => dataset.monthlyAmount ? sum += dataset.monthlyAmount : sum, 0);
+      return this.allDatasets.reduce((sum, dataset) => (dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum), 0);
     },
 
     totalActualAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => dataset.actualAmount ? sum += dataset.actualAmount : sum, 0);
+      return this.allDatasets.reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
     },
 
     totalDebitAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => dataset.debitAmount ? sum += dataset.debitAmount : sum, 0);
+      return this.allDatasets.reduce((sum, dataset) => (dataset.debitAmount ? (sum += dataset.debitAmount) : sum), 0);
     },
 
     totalDiffAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => dataset.diffAmount ? sum += dataset.diffAmount : sum, 0);
+      return this.allDatasets.reduce((sum, dataset) => (dataset.diffAmount ? (sum += dataset.diffAmount) : sum), 0);
     },
 
     totalUpdateAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => dataset.updateAmount ? sum += dataset.updateAmount : sum, 0);
-    }
+      return this.allDatasets.reduce((sum, dataset) => (dataset.updateAmount ? (sum += dataset.updateAmount) : sum), 0);
+    },
   },
 
   actions: {
@@ -75,57 +75,43 @@ export const useStore = defineStore({
 
     addActualAmount(id, amount) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.actualAmount += amount);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.actualAmount += amount ?? 0));
       });
     },
 
     setDebitAmount(id, amount) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.debitAmount = amount);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.debitAmount = amount ?? 0));
       });
     },
 
     setDiffAmount(id, amount) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.diffAmount = amount);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.diffAmount = amount));
       });
     },
 
     setInvoiceDate(id, dateStr) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.invoiceDate = dateStr);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.invoiceDate = dateStr));
       });
     },
 
     setLastInvoiceDate(id, dateStr) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.lastInvoiceDate = dateStr);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.lastInvoiceDate = dateStr));
       });
     },
 
     setMonthlyAmount(id, amount) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.monthlyAmount = amount);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.monthlyAmount = amount ?? 0));
       });
     },
 
     setUpdateAmount(id, amount) {
       this.datagroups.map(datagroup => {
-        datagroup.datasets
-          .filter(d => d.id === id)
-          .map(d => d.updateAmount = amount);
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.updateAmount = amount ?? 0));
       });
     },
 
@@ -153,6 +139,6 @@ export const useStore = defineStore({
           }
         });
       });
-    }
-  }
+    },
+  },
 });

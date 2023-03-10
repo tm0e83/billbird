@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@vuepic/vue-datepicker": "^3.3.1",
+    "@vuepic/vue-datepicker": "^4.0.1",
     "date-fns": "^2.28.0",
     "firebase": "^9.9.1",
     "pinia": "^2.0.14",
@@ -17,22 +17,23 @@
     "vue-currency-input": "^3.0.0",
     "vue-router": "^4.0.16",
     "vue-tabler-icons": "^2.6.0",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "vuefire": "^3.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/test-utils": "^2.0.0",
     "autoprefixer": "^10.4.7",
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^9.0.0",
-    "jsdom": "^20.0.0",
+    "jsdom": "^21.1.0",
     "postcss": "^8.4.14",
     "prettier": "^2.5.1",
     "sass": "^1.53.0",
     "tailwindcss": "^3.1.5",
-    "vite": "^2.9.12",
-    "vitest": "^0.15.1"
+    "vite": "^4.1.4",
+    "vitest": "^0.29.0"
   }
 }

@@ -30,3 +30,4 @@ coverage
 # Data
 */**/timo.json
 */**/billbird-data*.json
+public/timo-2023-03-10.json
