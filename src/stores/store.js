@@ -7,6 +7,7 @@ export const useStore = defineStore({
     currentDate: new Date(),
     datagroups: [],
     uid: null,
+    hasUnsavedData: false,
   }),
 
   getters: {

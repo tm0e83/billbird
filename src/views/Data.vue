@@ -22,6 +22,16 @@ const state = reactive({
   deleteDatagroupModalVisible: false,
 });
 
+store.$subscribe((mutation, state) => {
+  store.hasUnsavedData = true;
+  window.addEventListener('beforeunload', beforeUnload);
+});
+
+const beforeUnload = e => {
+  e.preventDefault();
+  return (e.returnValue = '');
+};
+
 function editDatagroup(datagroup) {
   state.datagroup = datagroup;
   state.editDatagroupModalVisible = true;
@@ -46,6 +56,7 @@ function saveInDatabase() {
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
       console.log('Data saved successfully!');
+      window.removeEventListener('beforeunload', beforeUnload);
     })
     .catch(error => {
       console.log('Save error', error);
