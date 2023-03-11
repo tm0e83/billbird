@@ -90,9 +90,9 @@ body {
 }
 
 input {
-  &[type="text"],
-  &[type="password"],
-  &[type="number"] {
+  &[type='text'],
+  &[type='password'],
+  &[type='number'] {
     @apply transition
       duration-300
       bg-white
@@ -106,6 +106,13 @@ input {
       leading-none
       hover:border-gray-400
       focus:border-gray-400;
+  }
+
+  &[type='text'],
+  &[type='number'] {
+    &.negative {
+      @apply text-red-600;
+    }
   }
 }
 
