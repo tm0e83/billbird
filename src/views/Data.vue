@@ -55,7 +55,6 @@ function createNewDataset() {
 function saveInDatabase() {
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
-      console.log('Data saved successfully!');
       window.removeEventListener('beforeunload', beforeUnload);
     })
     .catch(error => {
