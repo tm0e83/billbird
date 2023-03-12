@@ -41,9 +41,9 @@ router.beforeEach(async (to, from) => {
   //   return '/data';
   // }
 
-  // if (authRequired && !store.uid) {
-  //   return '/overview';
-  // }
+  if (authRequired && !store.uid) {
+    return '/login';
+  }
 });
 
 export default router;
