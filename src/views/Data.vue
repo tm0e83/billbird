@@ -9,6 +9,9 @@ import DropdownMenu from '@/components/DropdownMenu.vue';
 import { format } from 'date-fns';
 import { DeviceFloppyIcon, DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
 import { getDatabase, ref as fireRef, get, child, set } from 'firebase/database';
+import { useNotification } from '@kyvg/vue3-notification';
+
+const { notify } = useNotification();
 
 const db = getDatabase();
 const dbRef = fireRef(db);
@@ -56,9 +59,18 @@ function saveInDatabase() {
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
       window.removeEventListener('beforeunload', beforeUnload);
+      notify({
+        title: 'Die Daten wurden gespeichert',
+        type: 'success',
+      });
     })
     .catch(error => {
-      console.log('Save error', error);
+      console.log(error);
+
+      notify({
+        title: 'Es ist ein Fehler aufgetreten',
+        type: 'error',
+      });
     });
 }
 
