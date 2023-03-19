@@ -31,7 +31,14 @@ function logout() {
         store.uid = null;
         router.push('/login');
       })
-      .catch(() => console.log('failed to logout'));
+      .catch(() => {
+        console.log('failed to logout');
+
+        notify({
+          title: 'Es ist ein Fehler aufgetreten',
+          type: 'error',
+        });
+      });
   }
 }
 </script>
@@ -92,6 +99,8 @@ function logout() {
   <main>
     <RouterView />
   </main>
+
+  <notifications />
 </template>
 
 <style scoped lang="scss">
