@@ -1,5 +1,9 @@
 import { defineStore } from 'pinia';
 
+const getAllDatasets = datagroups => {
+  return datagroups.reduce((datasets, datagroup) => datasets.concat(datagroup.datasets), []);
+};
+
 export const useStore = defineStore({
   id: 'general',
 
@@ -12,7 +16,7 @@ export const useStore = defineStore({
 
   getters: {
     allDatasets(state) {
-      return this.datagroups.reduce((datasets, datagroup) => datasets.concat(datagroup.datasets), []);
+      return getAllDatasets(state.datagroups);
     },
 
     nextDatagroupId(state) {
@@ -21,33 +25,33 @@ export const useStore = defineStore({
     },
 
     nextDatasetId(state) {
-      const allDatasets = this.allDataSets;
+      const allDatasets = getAllDatasets(state.datagroups);
       if (!allDatasets.length) return 1;
       return Math.max(...allDatasets.map(dataset => dataset.id)) + 1;
     },
 
     totalInvoiceAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => (dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum), 0);
+      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum), 0);
     },
 
     totalMonthlyAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => (dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum), 0);
+      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum), 0);
     },
 
     totalActualAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
+      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
     },
 
     totalDebitAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => (dataset.debitAmount ? (sum += dataset.debitAmount) : sum), 0);
+      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.debitAmount ? (sum += dataset.debitAmount) : sum), 0);
     },
 
     totalDiffAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => (dataset.diffAmount ? (sum += dataset.diffAmount) : sum), 0);
+      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.diffAmount ? (sum += dataset.diffAmount) : sum), 0);
     },
 
     totalUpdateAmount(state) {
-      return this.allDatasets.reduce((sum, dataset) => (dataset.updateAmount ? (sum += dataset.updateAmount) : sum), 0);
+      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.updateAmount ? (sum += dataset.updateAmount) : sum), 0);
     },
   },
 

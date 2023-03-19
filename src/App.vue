@@ -31,8 +31,8 @@ function logout() {
         store.uid = null;
         router.push('/login');
       })
-      .catch(error => {
-        console.log(error);
+      .catch(() => {
+        console.log('failed to logout');
 
         notify({
           title: 'Es ist ein Fehler aufgetreten',
