@@ -100,7 +100,7 @@ function logout() {
     <RouterView />
   </main>
 
-  <notifications />
+  <notifications position="bottom right" />
 </template>
 
 <style scoped lang="scss">

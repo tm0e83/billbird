@@ -42,7 +42,7 @@ router.beforeEach(async (to, from) => {
   // }
 
   if (authRequired && !store.uid) {
-    return '/overview';
+    return '/login';
   }
 });
 

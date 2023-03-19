@@ -57,9 +57,9 @@ function saveInDatabase() {
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
       window.removeEventListener('beforeunload', beforeUnload);
-
+      
       notify({
-        title: 'Daten gespeichert',
+        title: 'Die Daten wurden gespeichert',
         type: 'success',
       });
     })
