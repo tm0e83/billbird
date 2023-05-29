@@ -56,6 +56,7 @@ function createNewDataset() {
 }
 
 function saveInDatabase() {
+  console.log('SAVE');
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
       window.removeEventListener('beforeunload', beforeUnload);
@@ -63,6 +64,7 @@ function saveInDatabase() {
         title: 'Die Daten wurden gespeichert',
         type: 'success',
       });
+      console.log('after save');
     })
     .catch(error => {
       console.log(error);
