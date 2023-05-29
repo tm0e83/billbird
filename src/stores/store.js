@@ -11,6 +11,10 @@ export const useStore = defineStore({
   }),
 
   getters: {
+    isLoggedIn(state) {
+      return this.uid !== 'testuser';
+    },
+
     allDatasets(state) {
       return this.datagroups.reduce((datasets, datagroup) => datasets.concat(datagroup.datasets), []);
     },

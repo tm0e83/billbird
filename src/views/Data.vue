@@ -173,6 +173,7 @@ const menuItems = ref([
   {
     label: 'Speichern',
     onClick: () => saveInDatabase(),
+    condition: store.isLoggedIn,
   },
 ]);
 </script>
@@ -257,7 +258,7 @@ const menuItems = ref([
             <span>Neue Datensatz</span>
           </a>
         </li>
-        <li>
+        <li v-if="store.isLoggedIn">
           <a
             @click="saveInDatabase"
             class="flex gap-1"
