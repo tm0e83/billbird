@@ -15,6 +15,10 @@ export const useStore = defineStore({
   }),
 
   getters: {
+    isLoggedIn(state) {
+      return this.uid !== 'testuser';
+    },
+
     allDatasets(state) {
       return getAllDatasets(state.datagroups);
     },
