@@ -88,6 +88,7 @@ function getNewDataset() {
   return {
     actualAmount: 0,
     debitAmount: 0,
+    diffAmount: 0,
     id: null,
     interval: '',
     invoiceAmount: null,
