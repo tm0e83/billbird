@@ -97,6 +97,7 @@ function getNewDataset() {
     monthlyAmount: 0,
     title: '',
     type: '',
+    updateAmount: '',
   };
 }
 
