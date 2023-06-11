@@ -29,7 +29,7 @@ export const useStore = defineStore({
     },
 
     nextDatasetId(state) {
-      const allDatasets = getAllDatasets(state.datagroups);
+      const allDatasets = this.allDatasets;
       if (!allDatasets.length) return 1;
       return Math.max(...allDatasets.map(dataset => dataset.id)) + 1;
     },

@@ -53,7 +53,6 @@ function save() {
   } else {
     store.replaceDataset(state.dataset);
   }
-
   emit('close');
 }
 

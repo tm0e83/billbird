@@ -29,6 +29,7 @@ app.use(createPinia());
 app.use(router);
 app.use(Notifications);
 
+// components
 app.component('Datepicker', Datepicker);
 app.component('ModalWindow', ModalWindow);
 
