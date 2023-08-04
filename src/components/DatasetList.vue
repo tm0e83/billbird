@@ -152,13 +152,13 @@ function onSort(args) {
           </button>
         </div>
       </div>
-      <div class="prop text-right actual-amount">
+      <div class="prop text-right text-right actual-amount">
         {{ toCurrency(totalActualAmount) }}
       </div>
-      <div class="prop text-right debit-amount">
+      <div class="prop text-right text-right debit-amount">
         {{ toCurrency(totalDebitAmount) }}
       </div>
-      <div class="prop text-right diff-amount">
+      <div class="prop text-right text-right diff-amount">
         {{ toCurrency(totalDiffAmount) }}
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
@@ -178,8 +178,7 @@ function onSort(args) {
 
 .list-head,
 .list-footer {
-  @apply hidden
-      2xl:font-bold
+  @apply 2xl:font-bold
       2xl:flex
       2xl:items-center;
 }
@@ -188,6 +187,9 @@ function onSort(args) {
   @apply 2xl:text-gray-400
       border-t
       border-t-gray-100;
+}
+.list-footer .prop {
+  @apply block;
 }
 
 .prop {

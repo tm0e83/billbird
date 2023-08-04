@@ -80,12 +80,10 @@ const hasUpdateAmounts = computed(() => {
 
 <style lang="scss" scoped>
 .list-footer {
-  @apply hidden
-      2xl:items-center
-      2xl:font-bold
-      2xl:bg-white
-      2xl:rounded
-      2xl:flex
+  @apply items-center
+      font-bold
+      bg-white
+      rounded
       2xl:flex;
 }
 
