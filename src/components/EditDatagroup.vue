@@ -87,6 +87,7 @@ function save() {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .errors {
   margin-bottom: 1rem;

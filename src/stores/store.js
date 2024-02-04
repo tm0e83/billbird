@@ -4,6 +4,11 @@ const getAllDatasets = datagroups => {
   return datagroups.reduce((datasets, datagroup) => datasets.concat(datagroup.datasets), []);
 };
 
+/**
+ *
+ * @param {*} state
+ * @returns
+ */
 const getAllActiveDatasets = state => {
   return state.datagroups.reduce((datasets, datagroup) => {
     return state.inactiveDatagroupIds.includes(datagroup.id) ? datasets : datasets.concat(datagroup.datasets);

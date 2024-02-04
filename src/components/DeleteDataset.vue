@@ -31,4 +31,7 @@ function deleteDataset() {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
+</style>

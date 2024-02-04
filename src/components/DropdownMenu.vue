@@ -105,6 +105,9 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
+
 .dropdown-menu {
   display: inline-block;
 }

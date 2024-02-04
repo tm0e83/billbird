@@ -86,6 +86,7 @@ const hasUpdateAmounts = computed(() => {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .list-footer {
   font-weight: bold;
