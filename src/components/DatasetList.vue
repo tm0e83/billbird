@@ -196,10 +196,6 @@ function onSort(args) {
   justify-content: space-between;
   padding: 0.5rem 1rem;
 
-  // &.collapsed {
-  //   display: none;
-  // }
-
   &.invoice-date,
   &.interval {
     display: none;
@@ -238,9 +234,9 @@ function onSort(args) {
 }
 
 @media (min-width: $lg) {
-  .list {
-    // grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  // .list {
+  // grid-template-columns: repeat(3, minmax(0, 1fr));
+  // }
 }
 
 @media (min-width: $xl) {

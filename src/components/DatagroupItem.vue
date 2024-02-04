@@ -5,6 +5,7 @@ import DatasetList from '@/components/DatasetList.vue';
 import { EditIcon, GripVerticalIcon, TrashIcon, SquareIcon, SquareCheckIcon } from 'vue-tabler-icons';
 
 const props = defineProps(['datagroup']);
+
 const store = useStore();
 
 const state = reactive({
@@ -95,6 +96,7 @@ function toggle() {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .datagroup {
   background-color: $gray-100;

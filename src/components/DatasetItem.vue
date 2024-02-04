@@ -221,6 +221,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .dataset {
   margin-bottom: 1.25rem;
