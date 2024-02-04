@@ -4,12 +4,19 @@ const getAllDatasets = datagroups => {
   return datagroups.reduce((datasets, datagroup) => datasets.concat(datagroup.datasets), []);
 };
 
+const getAllActiveDatasets = state => {
+  return state.datagroups.reduce((datasets, datagroup) => {
+    return state.inactiveDatagroupIds.includes(datagroup.id) ? datasets : datasets.concat(datagroup.datasets);
+  }, []);
+};
+
 export const useStore = defineStore({
   id: 'general',
 
   state: () => ({
     currentDate: new Date(),
     datagroups: [],
+    inactiveDatagroupIds: [],
     uid: null,
     hasUnsavedData: false,
   }),
@@ -35,27 +42,39 @@ export const useStore = defineStore({
     },
 
     totalInvoiceAmount(state) {
-      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum), 0);
+      return getAllActiveDatasets(state).reduce((sum, dataset) => {
+        return dataset.invoiceAmount ? (sum += dataset.invoiceAmount) : sum;
+      }, 0);
     },
 
     totalMonthlyAmount(state) {
-      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum), 0);
+      return getAllActiveDatasets(state).reduce((sum, dataset) => {
+        return dataset.monthlyAmount ? (sum += dataset.monthlyAmount) : sum;
+      }, 0);
     },
 
     totalActualAmount(state) {
-      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
+      return getAllActiveDatasets(state).reduce((sum, dataset) => {
+        return dataset.actualAmount ? (sum += dataset.actualAmount) : sum;
+      }, 0);
     },
 
     totalDebitAmount(state) {
-      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.debitAmount ? (sum += dataset.debitAmount) : sum), 0);
+      return getAllActiveDatasets(state).reduce((sum, dataset) => {
+        return dataset.debitAmount ? (sum += dataset.debitAmount) : sum;
+      }, 0);
     },
 
     totalDiffAmount(state) {
-      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.diffAmount ? (sum += dataset.diffAmount) : sum), 0);
+      return getAllActiveDatasets(state).reduce((sum, dataset) => {
+        return dataset.diffAmount ? (sum += dataset.diffAmount) : sum;
+      }, 0);
     },
 
     totalUpdateAmount(state) {
-      return getAllDatasets(state.datagroups).reduce((sum, dataset) => (dataset.updateAmount ? (sum += dataset.updateAmount) : sum), 0);
+      return getAllActiveDatasets(state).reduce((sum, dataset) => {
+        return dataset.updateAmount ? (sum += dataset.updateAmount) : sum;
+      }, 0);
     },
   },
 
@@ -148,6 +167,14 @@ export const useStore = defineStore({
           }
         });
       });
+    },
+
+    activateDatagroup(id) {
+      this.inactiveDatagroupIds.splice(this.inactiveDatagroupIds.indexOf(id), 1);
+    },
+
+    deactivateDatagroup(id) {
+      this.inactiveDatagroupIds.push(id);
     },
   },
 });
