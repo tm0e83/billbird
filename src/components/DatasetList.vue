@@ -186,6 +186,9 @@ function onSort(args) {
 .list-footer {
   border-top: 1px solid $gray-100;
 }
+.list-footer .prop {
+  @apply block;
+}
 
 .prop {
   display: flex;
