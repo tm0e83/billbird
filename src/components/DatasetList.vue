@@ -130,36 +130,42 @@ function onSort(args) {
     <div class="list-footer">
       <div class="prop title"></div>
       <div class="prop text-right invoice-amount">
-        {{ toCurrency(totalInvoiceAmount) }}
+        <span class="label">Rg.-Betrag</span>
+        <span>{{ toCurrency(totalInvoiceAmount) }}</span>
       </div>
       <div class="prop text-right monthly-amount">
-        {{ toCurrency(totalMonthlyAmount) }}
+        <span class="label">Mtl. Betrag</span>
+        <span>{{ toCurrency(totalMonthlyAmount) }}</span>
       </div>
       <div class="prop invoice-date"></div>
       <div class="prop interval"></div>
       <div class="prop update-amount">
-        <div class="flex grow">
-          <div class="grow py-2 px-3 mr-2 border border-transparent text-right">
-            {{ toCurrency(totalUpdateAmount) }}
+        <div class="grow flex flex-col xl:flex-row xl:items-center">
+          <div class="grow py-2 xl:px-3 mr-2 text-right flex justify-between xl:justify-end">
+            <span class="label">Update</span>
+            <span>{{ toCurrency(totalUpdateAmount) }}</span>
           </div>
           <button
             @click="applyUpdate"
             :disabled="!hasUpdateAmounts"
-            class="button"
+            class="button self-end mt-2 my-0-xl"
             title="Update für alle Datensätze der Gruppe ausführen"
           >
             <CheckIcon class="w-5 h-5" />
           </button>
         </div>
       </div>
-      <div class="prop text-right text-right actual-amount">
-        {{ toCurrency(totalActualAmount) }}
+      <div class="prop text-right actual-amount">
+        <span class="label">Ist</span>
+        <span>{{ toCurrency(totalActualAmount) }}</span>
       </div>
-      <div class="prop text-right text-right debit-amount">
-        {{ toCurrency(totalDebitAmount) }}
+      <div class="prop text-right debit-amount">
+        <span class="label">Soll</span>
+        <span>{{ toCurrency(totalDebitAmount) }}</span>
       </div>
-      <div class="prop text-right text-right diff-amount">
-        {{ toCurrency(totalDiffAmount) }}
+      <div class="prop text-right diff-amount">
+        <span class="label">Differenz</span>
+        <span>{{ toCurrency(totalDiffAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
     </div>
@@ -167,78 +173,130 @@ function onSort(args) {
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables';
+
 .list {
-  @apply items-start
-      sm:grid
-      sm:grid-cols-2
-      lg:grid-cols-3
-      2xl:block
-      sm:gap-3;
+  align-items: flex-start;
 }
 
-.list-head,
-.list-footer {
-  @apply 2xl:font-bold
-      2xl:flex
-      2xl:items-center;
+.list-head {
+  display: none;
 }
 
 .list-footer {
-  @apply 2xl:text-gray-400
-      border-t
-      border-t-gray-100;
+  border-top: 1px solid $gray-100;
 }
 .list-footer .prop {
   @apply block;
 }
 
 .prop {
-  @apply flex
-      grow
-      justify-between
-      px-4
-      py-2;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
 
-  &.collapsed {
-    @apply hidden 2xl:block;
+  // &.collapsed {
+  //   display: none;
+  // }
+
+  &.invoice-date,
+  &.interval {
+    display: none;
   }
 }
 
 .title {
-  @apply justify-start
-      text-2xl
-      sm:basis-full
-      2xl:basis-auto
-      2xl:text-base;
-}
-
-.actual-amount,
-.debit-amount,
-.diff-amount,
-.invoice-amount,
-.monthly-amount,
-.invoice-date,
-.interval,
-.buttons {
-  @apply 2xl:justify-end
-      2xl:grow-0
-      2xl:shrink-0
-      2xl:basis-[140px];
+  justify-content: flex-start;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .update-amount {
-  @apply 2xl:grow-0
-      2xl:shrink-0
-      2xl:basis-[200px];
-
   .inner {
-    @apply flex;
+    display: flex;
   }
 }
 
 .icon {
-  @apply w-5
-      h-5
-      mx-auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: $sm) {
+  .list {
+    display: grid;
+    // grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .title {
+    flex-basis: 100%;
+  }
+}
+
+@media (min-width: $lg) {
+  .list {
+    // grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $xl) {
+  .list {
+    display: block;
+  }
+
+  .list-head,
+  .list-footer {
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+  }
+
+  .list-footer {
+    color: $gray-400;
+  }
+
+  .prop {
+    // &.collapsed {
+    //   display: block;
+    // }
+
+    &.invoice-date,
+    &.interval {
+      display: block;
+    }
+  }
+  .title {
+    flex-basis: auto;
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+
+  .actual-amount,
+  .debit-amount,
+  .diff-amount,
+  .invoice-amount,
+  .monthly-amount,
+  .invoice-date,
+  .interval,
+  .buttons {
+    justify-content: flex-end;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 140px;
+  }
+
+  .update-amount {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 200px;
+  }
+
+  span.label {
+    display: none;
+  }
 }
 </style>

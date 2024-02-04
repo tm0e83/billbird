@@ -194,13 +194,14 @@ function handleDate(invoiceDate) {
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables';
+
 .errors {
-  @apply mb-4
-      p-5
-      text-red-700
-      border
-      border-red-700
-      bg-red-100
-      rounded;
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  color: $red-700;
+  border: 1px solid $red-700;
+  background-color: $red-100;
+  border-radius: 0.25rem;
 }
 </style>

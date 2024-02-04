@@ -43,35 +43,41 @@ const hasUpdateAmounts = computed(() => {
     <div class="list-footer">
       <div class="prop flex-1 title">Summe</div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">
-        {{ toCurrency(store.totalInvoiceAmount) }}
+        <span class="label">Rg.-Betrag</span>
+        <span>{{ toCurrency(store.totalInvoiceAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">
+        <span class="label">Mtl. Betrag</span>
         {{ toCurrency(store.totalMonthlyAmount) }}
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] invoice-date"></div>
       <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
       <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
-        <div class="flex grow">
-          <div class="grow py-2 px-6 text-right">
-            {{ toCurrency(store.totalUpdateAmount) }}
+        <div class="grow flex flex-col xl:flex-row xl:items-center">
+          <div class="grow py-2 xl:px-3 mr-2 text-right flex justify-between xl:justify-end">
+            <span class="label">Update</span>
+            <span>{{ toCurrency(store.totalUpdateAmount) }}</span>
           </div>
           <button
             @click="applyUpdate"
             :disabled="!hasUpdateAmounts"
-            class="button"
+            class="button self-end mt-2 my-0-xl"
           >
             <CheckIcon class="icon" />
           </button>
         </div>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">
-        {{ toCurrency(store.totalActualAmount) }}
+        <span class="label">Ist</span>
+        <span>{{ toCurrency(store.totalActualAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">
-        {{ toCurrency(store.totalDebitAmount) }}
+        <span class="label">Soll</span>
+        <span>{{ toCurrency(store.totalDebitAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount">
-        {{ toCurrency(store.totalDiffAmount) }}
+        <span class="label">Differenz</span>
+        <span>{{ toCurrency(store.totalDiffAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
     </div>
@@ -79,21 +85,50 @@ const hasUpdateAmounts = computed(() => {
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables';
+
 .list-footer {
-  @apply items-center
-      font-bold
-      bg-white
-      rounded
-      2xl:flex;
+  font-weight: bold;
+  background-color: white;
+  border-radius: 0.25rem;
 }
 
 .prop {
-  @apply py-2 px-4;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+
+  &.invoice-date,
+  &.interval {
+    display: none;
+  }
 }
 
 .icon {
-  @apply w-5
-      h-5
-      mx-auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: $xl) {
+  .list-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .prop {
+    display: block;
+
+    &.invoice-date,
+    &.interval {
+      display: block;
+    }
+  }
+
+  span.label {
+    display: none;
+  }
 }
 </style>

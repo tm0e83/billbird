@@ -1,45 +1,48 @@
 <script setup>
-  import { reactive, toRaw, watch } from 'vue';
-  import { useStore } from '@/stores/store.js' ;
+import { reactive, toRaw, watch } from 'vue';
+import { useStore } from '@/stores/store.js';
 
-  const store = useStore();
-  const props = defineProps(['datagroup']);
-  const emit = defineEmits(['close']);
+const store = useStore();
+const props = defineProps(['datagroup']);
+const emit = defineEmits(['close']);
 
-  let data = Object.assign({}, toRaw(props.datagroup));
-  let state = reactive({
-    datagroup: data,
-    errors: []
-  });
+let data = Object.assign({}, toRaw(props.datagroup));
+let state = reactive({
+  datagroup: data,
+  errors: [],
+});
 
-  watch(() => props.datagroup, (newData, oldData) => {
+watch(
+  () => props.datagroup,
+  (newData, oldData) => {
     data = Object.assign({}, toRaw(newData));
     state.datagroup = data;
     state.errors = [];
-  });
+  }
+);
 
-  function validate() {
-    state.errors = [];
+function validate() {
+  state.errors = [];
 
-    if (!state.datagroup.title) state.errors.push('title');
+  if (!state.datagroup.title) state.errors.push('title');
 
-    return state.errors.length === 0;
+  return state.errors.length === 0;
+}
+
+function save() {
+  const isValid = validate();
+
+  if (!isValid) return;
+
+  if (state.datagroup.id === null) {
+    state.datagroup.id = store.nextDatagroupId;
+    store.addDatagroup(state.datagroup);
+  } else {
+    store.replaceDatagroup(state.datagroup);
   }
 
-  function save() {
-    const isValid = validate();
-
-    if (!isValid) return;
-
-    if (state.datagroup.id === null) {
-      state.datagroup.id = store.nextDatagroupId;
-      store.addDatagroup(state.datagroup);
-    } else {
-      store.replaceDatagroup(state.datagroup);
-    }
-
-    emit('close');
-  }
+  emit('close');
+}
 </script>
 
 <template>
@@ -49,7 +52,10 @@
       <span v-else>Datengruppe erstellen</span>
     </div>
 
-    <div v-if="state.errors.length" class="errors">
+    <div
+      v-if="state.errors.length"
+      class="errors"
+    >
       Ups! Ihre Eingaben sind unvollständig oder fehlerhaft. Bitte überprüfen Sie Ihre Eingaben.
     </div>
 
@@ -59,24 +65,34 @@
         type="text"
         id="ds-new-title"
         v-model="state.datagroup.title"
-      >
+      />
     </div>
 
     <div class="mt-4 flex justify-between">
-      <button @click="$emit('close')" class="button hollow">Schließen</button>
-      <button @click="save" class="button">Speichern</button>
+      <button
+        @click="$emit('close')"
+        class="button hollow"
+      >
+        Schließen
+      </button>
+      <button
+        @click="save"
+        class="button"
+      >
+        Speichern
+      </button>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .errors {
-    @apply
-      mb-4
-      p-5
-      text-red-700
-      border
-      border-red-700
-      bg-red-100;
-  }
+@import '@/assets/styles/variables';
+
+.errors {
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  color: $red-700;
+  border: 1px solid $red-700;
+  background-color: $red-100;
+}
 </style>

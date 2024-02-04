@@ -106,17 +106,25 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .dropdown-menu {
-  @apply inline-block;
+  display: inline-block;
 }
 .dropdown-layer {
-  @apply absolute bg-white opacity-0 invisible -z-10 drop-shadow-md rounded;
+  position: absolute;
+  background-color: white;
+  opacity: 0;
+  visibility: hidden;
+  z-index: -10;
+  border-radius: 0.25rem;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07)) drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
 
   &.expanded {
-    @apply opacity-100 visible z-10;
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
   }
 }
 
 li {
-  @apply px-3 py-1;
+  padding: 0.25rem 0.75rem;
 }
 </style>

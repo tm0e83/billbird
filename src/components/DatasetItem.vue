@@ -220,107 +220,156 @@ defineExpose({
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/variables';
+
 .dataset {
-  @apply mb-5
-      flex
-      flex-col
-      grow
-      border-t
-      border-t-gray-100
-      2xl:flex-row
-      2xl:flex-nowrap
-      2xl:items-center
-      2xl:mb-0;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border-top: 1px solid $gray-100;
 }
 
 .prop {
-  @apply flex
-      grow
-      justify-between
-      px-4
-      py-1
-      2xl:py-2;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 0.25rem 1rem;
 
   &.collapsed {
-    @apply hidden 2xl:block;
+    display: none;
   }
 }
 
-.prop-label {
-  @apply 2xl:hidden;
-}
 .drag-handle {
-  @apply cursor-move p-1 grow-0 -mr-2.5 ml-4 2xl:ml-0;
+  cursor: move;
+  padding: 0.25rem;
+  flex-grow: 0;
+  margin-right: -0.625rem;
+  margin-left: 1rem;
 }
+
 .title {
-  @apply justify-between
-      items-center
-      font-bold
-      overflow-hidden
-      sm:basis-full
-      2xl:basis-auto
-      2xl:font-normal;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  overflow: hidden;
 }
 
 .details-toggle {
-  @apply flex
-      justify-center
-      text-sm
-      text-gray-400
-      py-2
-      cursor-pointer
-      transition-colors
-      hover:text-gray-600
-      sm:basis-full
-      2xl:hidden;
+  display: flex;
+  justify-content: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: $gray-400;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  cursor: pointer;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  &:hover {
+    color: $gray-600;
+  }
 
   .inner {
-    @apply flex gap-1 items-center;
-  }
-}
-
-.actual-amount,
-.debit-amount,
-.diff-amount,
-.invoice-amount,
-.monthly-amount,
-.invoice-date,
-.interval,
-.buttons {
-  @apply 2xl:justify-end 2xl:grow-0 2xl:shrink-0 2xl:basis-[140px];
-}
-
-.actual-amount {
-  @apply 2xl:order-7;
-}
-
-.debit-amount {
-  @apply 2xl:order-8;
-}
-
-.diff-amount {
-  @apply 2xl:order-9;
-}
-
-.buttons {
-  @apply 2xl:order-10;
-}
-
-.update-amount {
-  @apply 2xl:grow-0
-      2xl:shrink-0
-      2xl:basis-[200px];
-  .currency-input {
-    @apply rounded
-        grow
-        mr-2
-        max-w-[120px];
+    display: flex;
+    gap: 1rem;
+    align-items: center;
   }
 }
 
 .buttons {
-  @apply flex
-      gap-2
-      justify-end;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+@media (min-width: 640px) {
+  .title {
+    flex-basis: 100%;
+  }
+
+  .details-toggle {
+    flex-basis: 100%;
+  }
+}
+
+@media (min-width: 1536px) {
+  .dataset {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .prop {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    &.collapsed {
+      display: block;
+    }
+  }
+  .prop-label {
+    display: none;
+  }
+
+  .drag-handle {
+    margin-left: 0;
+  }
+
+  .title {
+    flex-basis: auto;
+    font-weight: 400;
+  }
+
+  .details-toggle {
+    display: none;
+  }
+
+  .actual-amount,
+  .debit-amount,
+  .diff-amount,
+  .invoice-amount,
+  .monthly-amount,
+  .invoice-date,
+  .interval,
+  .buttons {
+    justify-content: flex-end;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 140px;
+  }
+
+  .actual-amount {
+    order: 7;
+  }
+
+  .debit-amount {
+    order: 8;
+  }
+
+  .diff-amount {
+    order: 9;
+  }
+
+  .buttons {
+    order: 10;
+  }
+
+  .update-amount {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 200px;
+
+    .currency-input {
+      border-radius: 0.25rem;
+      flex-grow: 1;
+      margin-right: 0.5rem;
+      max-width: 120px;
+    }
+  }
 }
 </style>
