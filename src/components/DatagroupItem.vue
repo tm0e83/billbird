@@ -27,6 +27,7 @@ function deactivate() {
 function toggle() {
   state.collapsed = !state.collapsed;
 }
+//.
 </script>
 
 <template>

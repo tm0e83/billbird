@@ -41,6 +41,7 @@ function logout() {
       });
   }
 }
+//.
 </script>
 
 <template>
