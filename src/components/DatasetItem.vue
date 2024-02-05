@@ -82,11 +82,18 @@ onBeforeUpdate(() => {
 defineExpose({
   applyUpdate,
 });
+//.
 </script>
 
 <template>
-  <div class="dataset">
-    <div class="prop title">
+  <div
+    class="dataset"
+    :class="{ collapsed: collapsed }"
+  >
+    <div
+      class="prop title"
+      @click="collapsed = !collapsed"
+    >
       <span class="overflow-hidden text-ellipsis">{{ dataset.title }}</span>
       <button class="drag-handle button clear secondary p-1 grow-0 2xl:hidden">
         <GripVerticalIcon class="w-5 h-5" />
@@ -282,9 +289,35 @@ defineExpose({
 }
 
 .buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
+  display: none;
+}
+
+.currency-input {
+  flex-grow: 1;
+  max-width: 120px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+
+  & + button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.dataset.collapsed {
+  .title {
+    .menu {
+      display: none;
+    }
+
+    .current-value {
+      display: block;
+    }
+  }
+}
+
+.dataset:not(.collapsed) {
+  padding-bottom: 0.75rem;
 }
 
 @media (min-width: 640px) {

@@ -67,6 +67,7 @@ onUnmounted(() => {
   window.removeEventListener('scroll', positionLayer);
   window.removeEventListener('orientationchange', positionLayer);
 });
+//.
 </script>
 
 <template>

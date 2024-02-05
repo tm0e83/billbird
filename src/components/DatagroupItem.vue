@@ -27,6 +27,7 @@ function deactivate() {
 function toggle() {
   state.collapsed = !state.collapsed;
 }
+//.
 </script>
 
 <template>
@@ -34,11 +35,11 @@ function toggle() {
     class="datagroup mb-3"
     :class="{ collapsed: state.collapsed, inactive: !isActive }"
   >
-    <div class="py-2 px-4 flex justify-between items-center rounded-t">
-      <div
-        @click="toggle"
-        class="grow title"
-      >
+    <div
+      class="head"
+      @click="toggle"
+    >
+      <div class="title">
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
       </div>
 
@@ -100,6 +101,42 @@ function toggle() {
 
 .datagroup {
   background-color: $gray-100;
+  margin-bottom: 1px;
+
+  .head {
+    padding: 0.5rem 1rem;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+  }
+
+  .handle {
+  }
+
+  .title {
+    flex-grow: 1;
+  }
+
+  .menu {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: flex-end;
+    margin-left: 1rem;
+  }
+
+  .title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  &[draggable='false'] .head {
+    cursor: pointer;
+  }
 
   &.collapsed {
     transition: 150ms background-color ease-in-out;

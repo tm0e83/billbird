@@ -66,6 +66,7 @@ function applyUpdate() {
 function onSort(args) {
   //
 }
+//.
 </script>
 
 <template>
@@ -174,6 +175,7 @@ function onSort(args) {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
+@import '@/assets/styles/mixins';
 
 .list {
   align-items: flex-start;
