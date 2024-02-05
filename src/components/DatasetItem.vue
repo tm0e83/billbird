@@ -120,15 +120,10 @@ defineExpose({
           <TrashIcon class="w-5 h-5 mx-auto" />
         </button>
 
-        <button
-          class="button drag-handle secondary clear p-1 grow-0"
-          title="Verschieben"
-        >
+        <button class="button drag-handle secondary clear p-1 grow-0">
           <GripVerticalIcon class="w-5 h-5 mx-auto" />
         </button>
       </div>
-
-      <span class="current-value">{{ toCurrency(dataset.actualAmount) }}</span>
     </div>
 
     <div class="prop text-right actual-amount">

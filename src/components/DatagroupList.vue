@@ -28,7 +28,7 @@ const hasUpdateAmounts = computed(() => {
       :list="store.datagroups"
       class="list"
       group="datagroups"
-      handle=".drag-handle"
+      handle=".datagroup"
       item-key="id"
     >
       <template #item="{ element }">
