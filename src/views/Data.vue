@@ -58,7 +58,7 @@ function saveInDatabase() {
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
       window.removeEventListener('beforeunload', beforeUnload);
-      
+
       notify({
         title: 'Die Daten wurden gespeichert',
         type: 'success',
@@ -299,4 +299,11 @@ const menuItems = ref([
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  @import '@/assets/styles/variables';
+  @import '@/assets/styles/mixins';
+
+  body {
+    overflow-y: scroll;
+  }
+</style>

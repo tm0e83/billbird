@@ -112,7 +112,7 @@ function onSort(args) {
     <draggable
       :list="datasets"
       class="list"
-      handle=".drag-handle"
+      handle=".dataset"
       group="datasets"
       item-key="id"
       @change="onSort"
@@ -140,15 +140,15 @@ function onSort(args) {
       <div class="prop invoice-date"></div>
       <div class="prop interval"></div>
       <div class="prop update-amount">
-        <div class="grow flex flex-col xl:flex-row xl:items-center">
-          <div class="grow py-2 xl:px-3 mr-2 text-right flex justify-between xl:justify-end">
+        <div class="grow flex flex-col 2xl:flex-row 2xl:items-center">
+          <div class="grow 2xl:pb-2 2xl:px-3 text-right flex justify-between 2xl:justify-end">
             <span class="label">Update</span>
             <span>{{ toCurrency(totalUpdateAmount) }}</span>
           </div>
           <button
             @click="applyUpdate"
             :disabled="!hasUpdateAmounts"
-            class="button self-end mt-2 my-0-xl"
+            class="button self-end 2xl:mt-2 my-0-xl"
             title="Update für alle Datensätze der Gruppe ausführen"
           >
             <CheckIcon class="w-5 h-5" />
@@ -185,16 +185,15 @@ function onSort(args) {
 
 .list-footer {
   border-top: 1px solid $gray-100;
-}
-.list-footer .prop {
-  @apply block;
+  padding: 0.5rem 0 1.5rem;
+  background-color: $gray-50;
 }
 
 .prop {
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
 
   &.invoice-date,
   &.interval {
@@ -222,11 +221,11 @@ function onSort(args) {
 }
 
 @media (min-width: $sm) {
-  .list {
-    display: grid;
+  // .list {
+    // display: grid;
     // grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-  }
+    // gap: 0.75rem;
+  // }
 
   .title {
     flex-basis: 100%;
@@ -239,7 +238,7 @@ function onSort(args) {
   // }
 }
 
-@media (min-width: $xl) {
+@media (min-width: $xxl) {
   .list {
     display: block;
   }
@@ -253,18 +252,20 @@ function onSort(args) {
 
   .list-footer {
     color: $gray-400;
+    padding-bottom: 0;
   }
 
   .prop {
-    // &.collapsed {
-    //   display: block;
-    // }
+    display: block;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 
     &.invoice-date,
     &.interval {
       display: block;
     }
   }
+
   .title {
     flex-basis: auto;
     font-size: 1rem;

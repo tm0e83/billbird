@@ -31,18 +31,15 @@ function toggle() {
 
 <template>
   <div
-    class="datagroup mb-3"
+    class="datagroup"
     :class="{ collapsed: state.collapsed, inactive: !isActive }"
   >
-    <div class="py-2 px-4 flex justify-between items-center rounded-t">
-      <div
-        @click="toggle"
-        class="grow title"
-      >
+    <div class="head" @click="toggle">
+      <div class="title">
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
       </div>
 
-      <div class="flex gap-2 justify-end ml-4">
+      <div class="menu">
         <button
           v-if="!isActive"
           @click="activate"
@@ -73,9 +70,6 @@ function toggle() {
         >
           <TrashIcon class="w-5 h-5" />
         </button>
-        <button class="button clear secondary drag-handle">
-          <GripVerticalIcon class="w-5 h-5" />
-        </button>
       </div>
     </div>
 
@@ -97,9 +91,44 @@ function toggle() {
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
 @import '@/assets/styles/mixins';
-
 .datagroup {
   background-color: $gray-100;
+  margin-bottom: 1px;
+
+  .head {
+    padding: 0.5rem 1rem;
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+  }
+
+  .handle {
+  }
+
+  .title {
+    flex-grow: 1;
+  }
+
+  .menu {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: flex-end;
+    margin-left: 1rem;
+  }
+
+  .title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  &[draggable="false"] .head {
+    cursor: pointer;
+  }
 
   &.collapsed {
     transition: 150ms background-color ease-in-out;
@@ -113,23 +142,11 @@ function toggle() {
       display: none;
     }
   }
-}
 
-.title {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  text-transform: uppercase;
-  user-select: none;
-  cursor: pointer;
-}
-
-.drag-handle {
-  cursor: move;
-  padding: 0.25rem;
-  flex-grow: 0;
-  margin-right: -0.625rem;
+  @media (min-width: $xxl) {
+    .head {
+      justify-content: space-between;
+    }
+  }
 }
 </style>
