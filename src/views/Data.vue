@@ -301,10 +301,10 @@ const menuItems = ref([
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables';
-@import '@/assets/styles/mixins';
+  @import '@/assets/styles/variables';
+  @import '@/assets/styles/mixins';
 
-body {
-  overflow-y: scroll;
-}
+  body {
+    overflow-y: scroll;
+  }
 </style>

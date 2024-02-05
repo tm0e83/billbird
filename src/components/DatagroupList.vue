@@ -29,7 +29,7 @@ const hasUpdateAmounts = computed(() => {
       :list="store.datagroups"
       class="list"
       group="datagroups"
-      handle=".drag-handle"
+      handle=".datagroup"
       item-key="id"
     >
       <template #item="{ element }">
@@ -54,8 +54,8 @@ const hasUpdateAmounts = computed(() => {
       <div class="prop grow-0 shrink-0 basis-[140px] invoice-date"></div>
       <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
       <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
-        <div class="grow flex flex-col xl:flex-row xl:items-center">
-          <div class="grow py-2 xl:px-3 mr-2 text-right flex justify-between xl:justify-end">
+        <div class="grow flex flex-col 2xl:flex-row 2xl:items-center">
+          <div class="grow py-2 2xl:px-3 2xl:mr-2 text-right flex justify-between 2xl:justify-end">
             <span class="label">Update</span>
             <span>{{ toCurrency(store.totalUpdateAmount) }}</span>
           </div>
@@ -92,7 +92,8 @@ const hasUpdateAmounts = computed(() => {
 .list-footer {
   font-weight: bold;
   background-color: white;
-  border-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }
 
 .prop {
@@ -113,7 +114,7 @@ const hasUpdateAmounts = computed(() => {
   margin-right: auto;
 }
 
-@media (min-width: $xl) {
+@media (min-width: $xxl) {
   .list-footer {
     display: flex;
     flex-wrap: wrap;
