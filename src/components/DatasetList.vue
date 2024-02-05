@@ -66,7 +66,6 @@ function applyUpdate() {
 function onSort(args) {
   //
 }
-//.
 </script>
 
 <template>
@@ -175,7 +174,6 @@ function onSort(args) {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
-@import '@/assets/styles/mixins';
 
 .list {
   align-items: flex-start;
@@ -224,9 +222,9 @@ function onSort(args) {
 
 @media (min-width: $sm) {
   // .list {
-    // display: grid;
-    // grid-template-columns: repeat(2, minmax(0, 1fr));
-    // gap: 0.75rem;
+  // display: grid;
+  // grid-template-columns: repeat(2, minmax(0, 1fr));
+  // gap: 0.75rem;
   // }
 
   .title {

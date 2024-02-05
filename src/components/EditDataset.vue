@@ -59,7 +59,6 @@ function save() {
 function handleDate(invoiceDate) {
   state.dataset.invoiceDate = format(invoiceDate, 'yyyy-MM-dd');
 }
-//.
 </script>
 
 <template>

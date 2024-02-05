@@ -82,32 +82,48 @@ onBeforeUpdate(() => {
 defineExpose({
   applyUpdate,
 });
-//.
 </script>
 
 <template>
-  <div class="dataset" :class="{ 'collapsed': collapsed }">
-    <div class="prop title" @click="collapsed = !collapsed">
-      <span class="overflow-hidden text-ellipsis">{{ dataset.title }}</span>
+  <div
+    class="dataset"
+    :class="{ collapsed: collapsed }"
+  >
+    <div
+      class="prop head"
+      @click="collapsed = !collapsed"
+    >
+      <div class="handle">
+        <button
+          class="button drag-handle secondary clear p-1 grow-0"
+          title="Verschieben"
+        >
+          <GripVerticalIcon class="w-5 h-5" />
+        </button>
+      </div>
+
+      <div class="title">{{ dataset.title }}</div>
 
       <div class="menu">
         <button
           @click="$emit('edit', dataset)"
-          class="button grow clear p-1 grow-0"
+          class="button clear p-1 grow-0"
           title="Bearbeiten"
         >
           <EditIcon class="w-5 h-5 mx-auto" />
         </button>
         <button
           @click="$emit('delete', dataset)"
-          class="button alert grow clear p-1 grow-0"
+          class="button alert clear p-1 grow-0"
           title="Löschen"
         >
           <TrashIcon class="w-5 h-5 mx-auto" />
         </button>
-      </div>
 
-      <span class="current-value">{{ toCurrency(dataset.actualAmount) }}</span>
+        <button class="button drag-handle secondary clear p-1 grow-0">
+          <GripVerticalIcon class="w-5 h-5 mx-auto" />
+        </button>
+      </div>
     </div>
 
     <div class="prop text-right actual-amount">
@@ -194,6 +210,12 @@ defineExpose({
       >
         <TrashIcon class="w-5 h-5 mx-auto" />
       </button>
+      <button
+        class="button hidden secondary drag-handle grow 2xl:block 2xl:clear 2xl:p-1 2xl:grow-0"
+        title="Verschieben"
+      >
+        <GripVerticalIcon class="w-5 h-5 mx-auto" />
+      </button>
     </div>
   </div>
 </template>
@@ -214,10 +236,25 @@ defineExpose({
   flex-grow: 1;
   justify-content: space-between;
   padding: 0.1rem 1rem;
+
+  &:not(.head) {
+    margin-left: 18px;
+  }
 }
 
-.title {
-  justify-content: space-between;
+.handle {
+  min-width: 18px;
+  max-width: 18px;
+}
+
+.drag-handle {
+  cursor: move;
+  margin-left: -0.625rem;
+  padding: 0.25rem;
+}
+
+.head {
+  // justify-content: space-between;
   align-items: center;
   font-weight: bold;
   overflow: hidden;
@@ -236,6 +273,11 @@ defineExpose({
   }
 }
 
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .buttons {
   display: none;
 }
@@ -246,14 +288,14 @@ defineExpose({
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 
-  &+button {
+  & + button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 }
 
 .dataset.collapsed {
-  .title {
+  .head {
     .menu {
       display: none;
     }
@@ -277,7 +319,7 @@ defineExpose({
 @media (max-width: 1535px) {
   .dataset {
     &.collapsed {
-      .prop:not(.title) {
+      .prop:not(.head) {
         display: none;
       }
     }
@@ -300,14 +342,23 @@ defineExpose({
     &.collapsed {
       display: block;
     }
+
+    &:not(.head) {
+      margin-left: 0;
+    }
   }
+
   .prop-label {
     display: none;
   }
 
-  .title {
+  .head {
     flex-basis: auto;
     font-weight: 400;
+
+    .handle {
+      display: none;
+    }
 
     .menu {
       display: none;

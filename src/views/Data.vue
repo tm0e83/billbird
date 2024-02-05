@@ -179,7 +179,6 @@ const menuItems = ref([
     condition: store.isLoggedIn,
   },
 ]);
-//.
 </script>
 
 <template>
