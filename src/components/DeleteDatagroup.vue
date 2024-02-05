@@ -9,7 +9,6 @@ function deleteDatagroup() {
   store.deleteDatagroup(props.datagroup.id);
   emit('close');
 }
-//.
 </script>
 
 <template>

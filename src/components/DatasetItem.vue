@@ -82,7 +82,6 @@ onBeforeUpdate(() => {
 defineExpose({
   applyUpdate,
 });
-//.
 </script>
 
 <template>
@@ -91,13 +90,45 @@ defineExpose({
     :class="{ collapsed: collapsed }"
   >
     <div
-      class="prop title"
+      class="prop head"
       @click="collapsed = !collapsed"
     >
-      <span class="overflow-hidden text-ellipsis">{{ dataset.title }}</span>
-      <button class="drag-handle button clear secondary p-1 grow-0 2xl:hidden">
-        <GripVerticalIcon class="w-5 h-5" />
-      </button>
+      <div class="handle">
+        <button
+          class="button drag-handle secondary clear p-1 grow-0"
+          title="Verschieben"
+        >
+          <GripVerticalIcon class="w-5 h-5" />
+        </button>
+      </div>
+
+      <div class="title">{{ dataset.title }}</div>
+
+      <div class="menu">
+        <button
+          @click="$emit('edit', dataset)"
+          class="button clear p-1 grow-0"
+          title="Bearbeiten"
+        >
+          <EditIcon class="w-5 h-5 mx-auto" />
+        </button>
+        <button
+          @click="$emit('delete', dataset)"
+          class="button alert clear p-1 grow-0"
+          title="Löschen"
+        >
+          <TrashIcon class="w-5 h-5 mx-auto" />
+        </button>
+
+        <button
+          class="button drag-handle secondary clear p-1 grow-0"
+          title="Verschieben"
+        >
+          <GripVerticalIcon class="w-5 h-5 mx-auto" />
+        </button>
+      </div>
+
+      <span class="current-value">{{ toCurrency(dataset.actualAmount) }}</span>
     </div>
 
     <div class="prop text-right actual-amount">
@@ -123,46 +154,31 @@ defineExpose({
       </span>
     </div>
 
-    <div
-      class="prop text-right invoice-amount"
-      :class="{ collapsed: collapsed }"
-    >
+    <div class="prop text-right invoice-amount">
       <span class="prop-label">Rg.-Betrag</span>
       <span v-if="dataset.invoiceAmount">
         {{ toCurrency(dataset.invoiceAmount) }}
       </span>
     </div>
 
-    <div
-      class="prop text-right monthly-amount"
-      :class="{ collapsed: collapsed }"
-    >
+    <div class="prop text-right monthly-amount">
       <span class="prop-label">Monatlich</span>
       <span>{{ toCurrency(dataset.monthlyAmount) }}</span>
     </div>
 
-    <div
-      class="prop text-right invoice-date"
-      :class="{ collapsed: collapsed }"
-    >
+    <div class="prop text-right invoice-date">
       <span class="prop-label">Rg.-Datum</span>
       <span v-if="dataset.invoiceDate">
         {{ format(new Date(dataset.invoiceDate), 'dd.MM.yyyy') }}
       </span>
     </div>
 
-    <div
-      class="prop text-right interval"
-      :class="{ collapsed: collapsed }"
-    >
+    <div class="prop text-right interval">
       <span class="prop-label">Interval</span>
       <span>{{ intervalName }}</span>
     </div>
 
-    <div
-      class="prop update-amount"
-      :class="{ collapsed: collapsed }"
-    >
+    <div class="prop update-amount">
       <span class="prop-label">Update</span>
       <div class="flex">
         <CurrencyInput
@@ -184,27 +200,14 @@ defineExpose({
       </div>
     </div>
 
-    <div
-      class="prop details-toggle"
-      @click="collapsed = !collapsed"
-    >
-      <div
-        v-if="collapsed"
-        class="inner"
-      >
-        <ChevronDownIcon class="w-5 h-5 mx-auto" />
-        Details anzeigen
-      </div>
-      <div
-        v-else
-        class="inner"
-      >
-        <ChevronUpIcon class="w-5 h-5 mx-auto" />
-        Details ausblenden
-      </div>
-    </div>
-
     <div class="prop buttons">
+      <button
+        @click="$emit('edit', dataset)"
+        class="button grow 2xl:clear 2xl:p-1 2xl:grow-0"
+        title="Bearbeiten"
+      >
+        <EditIcon class="w-5 h-5 mx-auto" />
+      </button>
       <button
         @click="$emit('delete', dataset)"
         class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0"
@@ -213,14 +216,10 @@ defineExpose({
         <TrashIcon class="w-5 h-5 mx-auto" />
       </button>
       <button
-        @click="$emit('edit', dataset)"
-        class="button grow 2xl:clear 2xl:p-1 2xl:grow-0"
-        title="Bearbeiten"
+        class="button hidden secondary drag-handle grow 2xl:block 2xl:clear 2xl:p-1 2xl:grow-0"
+        title="Verschieben"
       >
-        <EditIcon class="w-5 h-5 mx-auto" />
-      </button>
-      <button class="button clear secondary drag-handle hidden 2xl:block">
-        <GripVerticalIcon class="w-5 h-5" />
+        <GripVerticalIcon class="w-5 h-5 mx-auto" />
       </button>
     </div>
   </div>
@@ -231,7 +230,6 @@ defineExpose({
 @import '@/assets/styles/mixins';
 
 .dataset {
-  margin-bottom: 1.25rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -242,50 +240,47 @@ defineExpose({
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
-  padding: 0.25rem 1rem;
+  padding: 0.1rem 1rem;
 
-  &.collapsed {
-    display: none;
+  &:not(.head) {
+    margin-left: 18px;
   }
+}
+
+.handle {
+  min-width: 18px;
+  max-width: 18px;
 }
 
 .drag-handle {
   cursor: move;
+  margin-left: -0.625rem;
   padding: 0.25rem;
-  flex-grow: 0;
-  margin-right: -0.625rem;
-  margin-left: 1rem;
 }
 
-.title {
-  justify-content: space-between;
+.head {
+  // justify-content: space-between;
   align-items: center;
   font-weight: bold;
   overflow: hidden;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+
+  .menu {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: flex-end;
+    margin-left: 1rem;
+  }
+
+  .current-value {
+    display: none;
+  }
 }
 
-.details-toggle {
-  display: flex;
-  justify-content: center;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: $gray-400;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  cursor: pointer;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-
-  &:hover {
-    color: $gray-600;
-  }
-
-  .inner {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .buttons {
@@ -305,7 +300,7 @@ defineExpose({
 }
 
 .dataset.collapsed {
-  .title {
+  .head {
     .menu {
       display: none;
     }
@@ -324,9 +319,15 @@ defineExpose({
   .title {
     flex-basis: 100%;
   }
+}
 
-  .details-toggle {
-    flex-basis: 100%;
+@media (max-width: 1535px) {
+  .dataset {
+    &.collapsed {
+      .prop:not(.head) {
+        display: none;
+      }
+    }
   }
 }
 
@@ -336,6 +337,7 @@ defineExpose({
     flex-wrap: nowrap;
     align-items: center;
     margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .prop {
@@ -345,22 +347,31 @@ defineExpose({
     &.collapsed {
       display: block;
     }
+
+    &:not(.head) {
+      margin-left: 0;
+    }
   }
+
   .prop-label {
     display: none;
   }
 
-  .drag-handle {
-    margin-left: 0;
-  }
-
-  .title {
+  .head {
     flex-basis: auto;
     font-weight: 400;
-  }
 
-  .details-toggle {
-    display: none;
+    .handle {
+      display: none;
+    }
+
+    .menu {
+      display: none;
+    }
+
+    .current-value {
+      display: none !important;
+    }
   }
 
   .actual-amount,
@@ -375,6 +386,12 @@ defineExpose({
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 140px;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
   }
 
   .actual-amount {
@@ -397,13 +414,10 @@ defineExpose({
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 200px;
+  }
 
-    .currency-input {
-      border-radius: 0.25rem;
-      flex-grow: 1;
-      margin-right: 0.5rem;
-      max-width: 120px;
-    }
+  .currency-input {
+    max-width: initial;
   }
 }
 </style>

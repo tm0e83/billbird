@@ -24,26 +24,46 @@ function deactivate() {
   store.deactivateDatagroup(props.datagroup.id);
 }
 
-function toggle() {
+function hasParent(el, cssClass) {
+  if (el) {
+    if (el.classList.contains(cssClass)) {
+      return true;
+    } else {
+      hasParent(el.parentElement, cssClass);
+    }
+  } else {
+    return false;
+  }
+}
+
+function toggle(e) {
+  if (e.target.classList.contains('button') || hasParent(e.target.parentElement, 'button')) return;
   state.collapsed = !state.collapsed;
 }
-//.
 </script>
 
 <template>
   <div
-    class="datagroup mb-3"
+    class="datagroup"
     :class="{ collapsed: state.collapsed, inactive: !isActive }"
   >
     <div
       class="head"
       @click="toggle"
     >
+      <div class="handle">
+        <button
+          class="button drag-handle secondary clear p-1 grow-0"
+          title="Verschieben"
+        >
+          <GripVerticalIcon class="w-5 h-5" />
+        </button>
+      </div>
       <div class="title">
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
       </div>
 
-      <div class="flex gap-2 justify-end ml-4">
+      <div class="menu">
         <button
           v-if="!isActive"
           @click="activate"
@@ -74,9 +94,6 @@ function toggle() {
         >
           <TrashIcon class="w-5 h-5" />
         </button>
-        <button class="button clear secondary drag-handle">
-          <GripVerticalIcon class="w-5 h-5" />
-        </button>
       </div>
     </div>
 
@@ -98,7 +115,6 @@ function toggle() {
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
 @import '@/assets/styles/mixins';
-
 .datagroup {
   background-color: $gray-100;
   margin-bottom: 1px;
@@ -111,6 +127,12 @@ function toggle() {
   }
 
   .handle {
+  }
+
+  .drag-handle {
+    cursor: move;
+    margin-left: -0.625rem;
+    // padding: 0.25rem;
   }
 
   .title {
@@ -150,23 +172,11 @@ function toggle() {
       display: none;
     }
   }
-}
 
-.title {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  text-transform: uppercase;
-  user-select: none;
-  cursor: pointer;
-}
-
-.drag-handle {
-  cursor: move;
-  padding: 0.25rem;
-  flex-grow: 0;
-  margin-right: -0.625rem;
+  @media (min-width: $xxl) {
+    .head {
+      justify-content: space-between;
+    }
+  }
 }
 </style>

@@ -9,7 +9,6 @@ function deleteDataset() {
   store.deleteDataset(props.dataset);
   emit('close');
 }
-//.
 </script>
 
 <template>
