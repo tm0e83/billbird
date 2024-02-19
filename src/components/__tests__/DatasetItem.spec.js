@@ -21,7 +21,7 @@ store.datagroups = [Object.assign({}, datagroupJson, { datasets: [datasetJson] }
 
 describe('DatasetItem', () => {
   it('renders the correct title', () => {
-    expect(wrapper.get('.prop.title').text()).toContain(datasetJson.title);
+    expect(wrapper.get('.head .title').text()).toContain(datasetJson.title);
   });
 
   it('has a number as diffAmount', () => {
