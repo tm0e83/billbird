@@ -23,6 +23,6 @@ describe('DatagroupList', () => {
 
   it('shows correct invoice sum', () => {
     const invoiceAmountSum = store.allDatasets.reduce((sum, dataset) => (sum += dataset.invoiceAmount), 0);
-    expect(parseFloat(wrapper.find('.list-footer .invoice-amount').text())).toBe(invoiceAmountSum);
+    expect(parseFloat(wrapper.find('.list-footer .invoice-amount .value').text())).toBe(invoiceAmountSum);
   });
 });
