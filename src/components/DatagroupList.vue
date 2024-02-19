@@ -54,14 +54,15 @@ const hasUpdateAmounts = computed(() => {
       <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
       <div class="prop grow-0 shrink-0 basis-[200px] update-amount">
         <div class="grow flex flex-col 2xl:flex-row 2xl:items-center">
-          <div class="grow py-2 2xl:px-3 2xl:mr-2 text-right flex justify-between 2xl:justify-end">
+          <div class="grow 2xl:py-2 2xl:px-3 text-right flex justify-between 2xl:justify-end">
             <span class="label">Update</span>
             <span>{{ toCurrency(store.totalUpdateAmount) }}</span>
           </div>
           <button
             @click="applyUpdate"
             :disabled="!hasUpdateAmounts"
-            class="button self-end mt-2 my-0-xl"
+            class="button self-end my-0-xl"
+            title="Update für alle Datensätze ausführen"
           >
             <CheckIcon class="icon" />
           </button>
@@ -96,7 +97,7 @@ const hasUpdateAmounts = computed(() => {
 }
 
 .prop {
-  padding: 0.5rem 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
 
@@ -122,6 +123,8 @@ const hasUpdateAmounts = computed(() => {
 
   .prop {
     display: block;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 
     &.invoice-date,
     &.interval {

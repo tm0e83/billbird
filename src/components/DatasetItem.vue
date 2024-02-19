@@ -93,17 +93,8 @@ defineExpose({
       class="prop head"
       @click="collapsed = !collapsed"
     >
-      <div class="handle">
-        <button
-          class="button drag-handle secondary clear p-1 grow-0"
-          title="Verschieben"
-        >
-          <GripVerticalIcon class="w-5 h-5" />
-        </button>
-      </div>
-
       <div class="title">{{ dataset.title }}</div>
-
+      <div class="current-value">{{ toCurrency(dataset.actualAmount) }}</div>
       <div class="menu">
         <button
           @click="$emit('edit', dataset)"
@@ -249,16 +240,14 @@ defineExpose({
 
 .drag-handle {
   cursor: move;
-  margin-left: -0.625rem;
+  margin-right: -0.625rem;
   padding: 0.25rem;
 }
 
 .head {
-  // justify-content: space-between;
   align-items: center;
   font-weight: bold;
   overflow: hidden;
-  cursor: pointer;
   padding: 0.5rem 1rem;
 
   .menu {
@@ -306,11 +295,7 @@ defineExpose({
   }
 }
 
-.dataset:not(.collapsed) {
-  padding-bottom: 0.75rem;
-}
-
-@media (min-width: 640px) {
+@media (min-width: $sm) {
   .title {
     flex-basis: 100%;
   }
@@ -323,10 +308,18 @@ defineExpose({
         display: none;
       }
     }
+
+    &:not(.collapsed) {
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  .head {
+    cursor: pointer;
   }
 }
 
-@media (min-width: 1536px) {
+@media (min-width: $xxl) {
   .dataset {
     flex-direction: row;
     flex-wrap: nowrap;

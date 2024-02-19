@@ -1,6 +1,7 @@
 <script setup>
 import { computed, reactive } from 'vue';
 import { useStore } from '@/stores/store.js';
+import { toCurrency } from './shared/functions.js';
 import DatasetList from '@/components/DatasetList.vue';
 import { EditIcon, GripVerticalIcon, TrashIcon, SquareIcon, SquareCheckIcon } from 'vue-tabler-icons';
 
@@ -14,6 +15,10 @@ const state = reactive({
 
 const isActive = computed(() => {
   return store.inactiveDatagroupIds.includes(props.datagroup.id) === false;
+});
+
+const totalActualAmount = computed(() => {
+  return props.datagroup.datasets.reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
 });
 
 function activate() {
@@ -51,18 +56,11 @@ function toggle(e) {
       class="head"
       @click="toggle"
     >
-      <div class="handle">
-        <button
-          class="button drag-handle secondary clear p-1 grow-0"
-          title="Verschieben"
-        >
-          <GripVerticalIcon class="w-5 h-5" />
-        </button>
-      </div>
       <div class="title">
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
       </div>
 
+      <div class="current-value">{{ toCurrency(totalActualAmount) }}</div>
       <div class="menu">
         <button
           v-if="!isActive"
@@ -94,6 +92,9 @@ function toggle(e) {
         >
           <TrashIcon class="w-5 h-5" />
         </button>
+        <button class="button drag-handle secondary clear p-1 grow-0">
+          <GripVerticalIcon class="w-5 h-5 mx-auto" />
+        </button>
       </div>
     </div>
 
@@ -124,15 +125,15 @@ function toggle(e) {
     align-items: center;
     display: flex;
     cursor: pointer;
-  }
 
-  .handle {
+    .current-value {
+      display: none;
+    }
   }
 
   .drag-handle {
     cursor: move;
-    margin-left: -0.625rem;
-    // padding: 0.25rem;
+    margin-right: -0.625rem;
   }
 
   .title {
@@ -168,6 +169,16 @@ function toggle(e) {
       background-color: $gray-100;
     }
 
+    .head {
+      .menu {
+        display: none;
+      }
+
+      .current-value {
+        display: block;
+      }
+    }
+
     .list {
       display: none;
     }
@@ -176,6 +187,14 @@ function toggle(e) {
   @media (min-width: $xxl) {
     .head {
       justify-content: space-between;
+
+      .menu {
+        display: none;
+      }
+
+      .current-value {
+        display: none !important;
+      }
     }
   }
 }

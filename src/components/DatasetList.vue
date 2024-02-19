@@ -141,14 +141,14 @@ function onSort(args) {
       <div class="prop interval"></div>
       <div class="prop update-amount">
         <div class="grow flex flex-col 2xl:flex-row 2xl:items-center">
-          <div class="grow 2xl:pb-2 2xl:px-3 text-right flex justify-between 2xl:justify-end">
+          <div class="grow 2xl:py-2 2xl:px-3 text-right flex justify-between 2xl:justify-end">
             <span class="label">Update</span>
             <span>{{ toCurrency(totalUpdateAmount) }}</span>
           </div>
           <button
             @click="applyUpdate"
             :disabled="!hasUpdateAmounts"
-            class="button self-end 2xl:mt-2 my-0-xl"
+            class="button self-end my-0-xl"
             title="Update für alle Datensätze der Gruppe ausführen"
           >
             <CheckIcon class="w-5 h-5" />
@@ -221,21 +221,9 @@ function onSort(args) {
 }
 
 @media (min-width: $sm) {
-  // .list {
-  // display: grid;
-  // grid-template-columns: repeat(2, minmax(0, 1fr));
-  // gap: 0.75rem;
-  // }
-
   .title {
     flex-basis: 100%;
   }
-}
-
-@media (min-width: $lg) {
-  // .list {
-  // grid-template-columns: repeat(3, minmax(0, 1fr));
-  // }
 }
 
 @media (min-width: $xxl) {
