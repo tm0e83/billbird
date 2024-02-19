@@ -240,16 +240,14 @@ defineExpose({
 
 .drag-handle {
   cursor: move;
-  margin-left: -0.625rem;
+  margin-right: -0.625rem;
   padding: 0.25rem;
 }
 
 .head {
-  // justify-content: space-between;
   align-items: center;
   font-weight: bold;
   overflow: hidden;
-  cursor: pointer;
   padding: 0.5rem 1rem;
 
   .menu {
@@ -297,10 +295,6 @@ defineExpose({
   }
 }
 
-.dataset:not(.collapsed) {
-  padding-bottom: 0.75rem;
-}
-
 @media (min-width: $sm) {
   .title {
     flex-basis: 100%;
@@ -314,6 +308,14 @@ defineExpose({
         display: none;
       }
     }
+
+    &:not(.collapsed) {
+      padding-bottom: 0.75rem;
+    }
+  }
+
+  .head {
+    cursor: pointer;
   }
 }
 

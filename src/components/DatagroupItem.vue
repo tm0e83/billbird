@@ -133,8 +133,7 @@ function toggle(e) {
 
   .drag-handle {
     cursor: move;
-    margin-left: -0.625rem;
-    // padding: 0.25rem;
+    margin-right: -0.625rem;
   }
 
   .title {
