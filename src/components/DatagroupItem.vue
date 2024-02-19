@@ -56,6 +56,9 @@ function toggle(e) {
       class="head"
       @click="toggle"
     >
+      <button class="button drag-handle secondary clear p-1 grow-0">
+        <GripVerticalIcon class="w-5 h-5 mx-auto" />
+      </button>
       <div class="title">
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
       </div>
@@ -91,9 +94,6 @@ function toggle(e) {
           title="Löschen"
         >
           <TrashIcon class="w-5 h-5" />
-        </button>
-        <button class="button drag-handle secondary clear p-1 grow-0">
-          <GripVerticalIcon class="w-5 h-5 mx-auto" />
         </button>
       </div>
     </div>
@@ -133,7 +133,7 @@ function toggle(e) {
 
   .drag-handle {
     cursor: move;
-    margin-right: -0.625rem;
+    margin-left: -0.625rem;
   }
 
   .title {
@@ -145,6 +145,7 @@ function toggle(e) {
     gap: 0.25rem;
     justify-content: flex-end;
     margin-left: 1rem;
+    margin-right: -0.4rem;
   }
 
   .title {

@@ -93,6 +93,9 @@ defineExpose({
       class="prop head"
       @click="collapsed = !collapsed"
     >
+      <button class="button drag-handle secondary clear p-1 grow-0">
+        <GripVerticalIcon class="icon mx-auto" />
+      </button>
       <div class="title">{{ dataset.title }}</div>
       <div class="current-value">{{ toCurrency(dataset.actualAmount) }}</div>
       <div class="menu">
@@ -101,18 +104,14 @@ defineExpose({
           class="button clear p-1 grow-0"
           title="Bearbeiten"
         >
-          <EditIcon class="w-5 h-5 mx-auto" />
+          <EditIcon class="icon mx-auto" />
         </button>
         <button
           @click="$emit('delete', dataset)"
           class="button alert clear p-1 grow-0"
           title="Löschen"
         >
-          <TrashIcon class="w-5 h-5 mx-auto" />
-        </button>
-
-        <button class="button drag-handle secondary clear p-1 grow-0">
-          <GripVerticalIcon class="w-5 h-5 mx-auto" />
+          <TrashIcon class="icon mx-auto" />
         </button>
       </div>
     </div>
@@ -192,20 +191,14 @@ defineExpose({
         class="button grow 2xl:clear 2xl:p-1 2xl:grow-0"
         title="Bearbeiten"
       >
-        <EditIcon class="w-5 h-5 mx-auto" />
+        <EditIcon class="icon mx-auto" />
       </button>
       <button
         @click="$emit('delete', dataset)"
         class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0"
         title="Löschen"
       >
-        <TrashIcon class="w-5 h-5 mx-auto" />
-      </button>
-      <button
-        class="button hidden secondary drag-handle grow 2xl:block 2xl:clear 2xl:p-1 2xl:grow-0"
-        title="Verschieben"
-      >
-        <GripVerticalIcon class="w-5 h-5 mx-auto" />
+        <TrashIcon class="icon mx-auto" />
       </button>
     </div>
   </div>
@@ -228,19 +221,19 @@ defineExpose({
   justify-content: space-between;
   padding: 0.1rem 1rem;
 
-  &:not(.head) {
-    margin-left: 18px;
-  }
+  // &:not(.head) {
+  //   margin-left: 18px;
+  // }
 }
 
-.handle {
-  min-width: 18px;
-  max-width: 18px;
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .drag-handle {
   cursor: move;
-  margin-right: -0.625rem;
+  margin-left: -0.625rem;
   padding: 0.25rem;
 }
 
@@ -255,6 +248,7 @@ defineExpose({
     gap: 0.25rem;
     justify-content: flex-end;
     margin-left: 1rem;
+    margin-right: -0.4rem;
   }
 
   .current-value {
@@ -348,10 +342,6 @@ defineExpose({
   .head {
     flex-basis: auto;
     font-weight: 400;
-
-    .handle {
-      display: none;
-    }
 
     .menu {
       display: none;
