@@ -44,11 +44,11 @@ const hasUpdateAmounts = computed(() => {
       <div class="prop flex-1 title">Summe</div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right invoice-amount">
         <span class="label">Rg.-Betrag</span>
-        <span>{{ toCurrency(store.totalInvoiceAmount) }}</span>
+        <span class="value">{{ toCurrency(store.totalInvoiceAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right monthly-amount">
         <span class="label">Mtl. Betrag</span>
-        {{ toCurrency(store.totalMonthlyAmount) }}
+        <span class="value">{{ toCurrency(store.totalMonthlyAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] invoice-date"></div>
       <div class="prop grow-0 shrink-0 basis-[140px] interval"></div>
@@ -70,15 +70,15 @@ const hasUpdateAmounts = computed(() => {
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right actual-amount">
         <span class="label">Ist</span>
-        <span>{{ toCurrency(store.totalActualAmount) }}</span>
+        <span class="value">{{ toCurrency(store.totalActualAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right debit-amount">
         <span class="label">Soll</span>
-        <span>{{ toCurrency(store.totalDebitAmount) }}</span>
+        <span class="value">{{ toCurrency(store.totalDebitAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] text-right diff-amount">
         <span class="label">Differenz</span>
-        <span>{{ toCurrency(store.totalDiffAmount) }}</span>
+        <span class="value">{{ toCurrency(store.totalDiffAmount) }}</span>
       </div>
       <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
     </div>
