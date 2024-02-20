@@ -164,7 +164,7 @@ function toggle(e) {
   }
 
   .list {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 1);
   }
 
   &[draggable='false'] .head {
@@ -173,7 +173,7 @@ function toggle(e) {
 
   &.collapsed {
     transition: 150ms background-color ease-in-out;
-    background-color: $gray-50;
+    background-color: white;
 
     &:hover {
       background-color: $gray-100;
