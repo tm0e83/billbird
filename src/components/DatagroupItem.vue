@@ -98,10 +98,11 @@ function toggle(e) {
       </div>
     </div>
 
-    <div class="list bg-white rounded-b">
+    <div class="list rounded-b">
       <DatasetList
         v-if="datagroup.datasets.length"
         :datasets="datagroup.datasets"
+        :collapsed="state.collapsed"
       />
       <div
         v-else
@@ -119,6 +120,10 @@ function toggle(e) {
 .datagroup {
   background-color: $gray-100;
   margin-bottom: 1px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 
   .head {
     padding: 0.5rem 1rem;
@@ -158,13 +163,17 @@ function toggle(e) {
     user-select: none;
   }
 
+  .list {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
   &[draggable='false'] .head {
     cursor: pointer;
   }
 
   &.collapsed {
     transition: 150ms background-color ease-in-out;
-    background-color: $gray-50;
+    background-color: white;
 
     &:hover {
       background-color: $gray-100;
@@ -184,6 +193,10 @@ function toggle(e) {
       display: none;
     }
   }
+
+  // &:not(.collapsed) {
+  //   background-color: rgb(236 253 245);
+  // }
 
   @media (min-width: $xxl) {
     .head {

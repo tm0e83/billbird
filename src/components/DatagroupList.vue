@@ -23,12 +23,12 @@ const hasUpdateAmounts = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div class="outer-list">
     <draggable
       :list="store.datagroups"
       class="list"
       group="datagroups"
-      handle=".datagroup"
+      handle=".drag-handle"
       item-key="id"
     >
       <template #item="{ element }">
@@ -89,11 +89,19 @@ const hasUpdateAmounts = computed(() => {
 @import '@/assets/styles/variables';
 @import '@/assets/styles/mixins';
 
+.outer-list {
+  box-shadow: 0 0 2px 0 rgb(99,99,99,0.15);
+}
+
 .list-footer {
   font-weight: bold;
-  background-color: white;
-  border-bottom-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
+  background-color: $gray-100;
+  margin-top: 1px;
+  // border-bottom-left-radius: 0.25rem;
+  // border-bottom-right-radius: 0.25rem;
+  padding-left: calc(28px - 0.625rem);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .prop {
@@ -119,6 +127,8 @@ const hasUpdateAmounts = computed(() => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .prop {

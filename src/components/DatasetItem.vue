@@ -135,7 +135,7 @@ defineExpose({
           'text-red-600': isNegativeDiff,
         }"
       >
-        {{ toCurrency(dataset.diffAmount) }}
+      {{ dataset.diffAmount > 0 ? '+' : '' }}{{ toCurrency(dataset.diffAmount) }}
       </span>
     </div>
 
@@ -221,9 +221,9 @@ defineExpose({
   justify-content: space-between;
   padding: 0.1rem 1rem;
 
-  // &:not(.head) {
-  //   margin-left: 18px;
-  // }
+  &:not(.head) {
+    margin-left: calc(28px - 0.625rem);
+  }
 }
 
 .icon {
@@ -259,6 +259,7 @@ defineExpose({
 .title {
   overflow: hidden;
   text-overflow: ellipsis;
+  flex: 1;
 }
 
 .buttons {

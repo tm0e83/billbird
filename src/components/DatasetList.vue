@@ -8,7 +8,7 @@ import DeleteDataset from '@/components/DeleteDataset.vue';
 import { CheckIcon } from 'vue-tabler-icons';
 import draggable from 'vuedraggable';
 
-const props = defineProps(['datasets']);
+const props = defineProps(['datasets', 'collapsed']);
 const store = useStore();
 
 const datasetRefs = ref([]);
@@ -93,7 +93,7 @@ function onSort(args) {
     />
   </ModalWindow>
 
-  <div>
+  <div :class="{ 'expanded' : !collapsed}">
     <div class="list-head">
       <div class="prop title">
         <span>Titel</span>
@@ -148,7 +148,7 @@ function onSort(args) {
           <button
             @click="applyUpdate"
             :disabled="!hasUpdateAmounts"
-            class="button self-end my-0-xl"
+            class="button self-end 2xl:self-center my-0-xl"
             title="Update für alle Datensätze der Gruppe ausführen"
           >
             <CheckIcon class="w-5 h-5" />
@@ -185,9 +185,13 @@ function onSort(args) {
 
 .list-footer {
   border-top: 1px solid $gray-100;
-  padding: 0.5rem 0 1.5rem;
+  padding: 0.5rem 0 1.5rem calc(28px - 0.625rem);
   background-color: $gray-50;
 }
+
+// .expanded .list-footer {
+//   background-color: rgb(236 253 245);
+// }
 
 .prop {
   display: flex;
@@ -238,9 +242,15 @@ function onSort(args) {
     align-items: center;
   }
 
+  .list-head {
+    padding-left: calc(28px - 0.625rem);
+  }
+
   .list-footer {
     color: $gray-400;
+    padding-top: 0;
     padding-bottom: 0;
+    padding-left: 0;
   }
 
   .prop {
