@@ -112,7 +112,7 @@ function onSort(args) {
     <draggable
       :list="datasets"
       class="list"
-      handle=".dataset"
+      handle=".drag-handle"
       group="datasets"
       item-key="id"
       @change="onSort"
