@@ -93,10 +93,12 @@ defineExpose({
       class="prop head"
       @click="collapsed = !collapsed"
     >
-      <button class="button drag-handle secondary clear p-1 grow-0">
-        <GripVerticalIcon class="icon mx-auto" />
-      </button>
-      <div class="title">{{ dataset.title }}</div>
+      <div class="title">
+        <button class="button drag-handle secondary clear p-1 grow-0">
+          <GripVerticalIcon class="icon mx-auto" />
+        </button>
+        <span>{{ dataset.title }}</span>
+      </div>
       <div class="current-value">{{ toCurrency(dataset.actualAmount) }}</div>
       <div class="menu">
         <button
@@ -186,20 +188,22 @@ defineExpose({
     </div>
 
     <div class="prop buttons">
-      <button
-        @click="$emit('edit', dataset)"
-        class="button grow 2xl:clear 2xl:p-1 2xl:grow-0"
-        title="Bearbeiten"
-      >
-        <EditIcon class="icon mx-auto" />
-      </button>
-      <button
-        @click="$emit('delete', dataset)"
-        class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0"
-        title="Löschen"
-      >
-        <TrashIcon class="icon mx-auto" />
-      </button>
+      <div class="menu">
+        <button
+          @click="$emit('edit', dataset)"
+          class="button grow 2xl:clear 2xl:p-1 2xl:grow-0"
+          title="Bearbeiten"
+        >
+          <EditIcon class="icon mx-auto" />
+        </button>
+        <button
+          @click="$emit('delete', dataset)"
+          class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0"
+          title="Löschen"
+        >
+          <TrashIcon class="icon mx-auto" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -212,7 +216,7 @@ defineExpose({
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  border-top: 1px solid $gray-100;
+  border-bottom: 1px solid $gray-200;
 }
 
 .prop {
@@ -233,14 +237,14 @@ defineExpose({
 
 .drag-handle {
   cursor: move;
-  margin-left: -0.625rem;
   padding: 0.25rem;
+  margin-left: -0.5rem;
 }
 
 .head {
   align-items: center;
-  font-weight: bold;
   overflow: hidden;
+  font-weight: 500;
   padding: 0.5rem 1rem;
 
   .menu {
@@ -248,7 +252,7 @@ defineExpose({
     gap: 0.25rem;
     justify-content: flex-end;
     margin-left: 1rem;
-    margin-right: -0.4rem;
+    margin-right: -0.5rem;
   }
 
   .current-value {
@@ -260,6 +264,8 @@ defineExpose({
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .buttons {
@@ -369,8 +375,14 @@ defineExpose({
 
   .buttons {
     display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
+
+    .menu {
+      display: flex;
+      gap: 0.25rem;
+      justify-content: flex-end;
+      margin-left: 1rem;
+      margin-right: -0.5rem;
+    }
   }
 
   .actual-amount {
@@ -393,10 +405,19 @@ defineExpose({
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 200px;
+    align-items: center;
   }
 
   .currency-input {
     max-width: initial;
+  }
+
+  .title {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    user-select: none;
   }
 }
 </style>
