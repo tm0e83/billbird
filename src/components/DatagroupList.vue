@@ -96,10 +96,7 @@ const hasUpdateAmounts = computed(() => {
 .list-footer {
   font-weight: bold;
   background-color: $gray-100;
-  margin-top: 1px;
-  // border-bottom-left-radius: 0.25rem;
-  // border-bottom-right-radius: 0.25rem;
-  padding-left: calc(28px - 0.625rem);
+  padding-left: calc(28px - 0.5rem);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }

@@ -93,7 +93,7 @@ function onSort(args) {
     />
   </ModalWindow>
 
-  <div :class="{ 'expanded' : !collapsed}">
+  <div :class="{ 'expanded' : !collapsed }">
     <div class="list-head">
       <div class="prop title">
         <span>Titel</span>
@@ -184,14 +184,11 @@ function onSort(args) {
 }
 
 .list-footer {
-  border-top: 1px solid $gray-100;
-  padding: 0.5rem 0 1.5rem calc(28px - 0.625rem);
-  background-color: $gray-50;
+  // border-top: 1px solid $gray-100;
+  padding: 0.5rem 0 1.5rem calc(28px - 0.5rem);
+  // background-color: $gray-50;
+  font-weight: 500;
 }
-
-// .expanded .list-footer {
-//   background-color: rgb(236 253 245);
-// }
 
 .prop {
   display: flex;
@@ -238,18 +235,14 @@ function onSort(args) {
   .list-head,
   .list-footer {
     display: flex;
-    font-weight: bold;
+    font-weight: 500;
     align-items: center;
-  }
-
-  .list-head {
-    padding-left: calc(28px - 0.625rem);
   }
 
   .list-footer {
     color: $gray-400;
     padding-top: 0;
-    padding-bottom: 0;
+    // padding-bottom: 0;
     padding-left: 0;
   }
 
@@ -260,7 +253,7 @@ function onSort(args) {
 
     &.invoice-date,
     &.interval {
-      display: block;
+      display: flex;
     }
   }
 
@@ -268,6 +261,7 @@ function onSort(args) {
     flex-basis: auto;
     font-size: 1rem;
     line-height: 1.5rem;
+    padding-left: calc(0.5rem + 28px);
   }
 
   .actual-amount,
