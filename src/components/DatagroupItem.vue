@@ -208,6 +208,7 @@ function applyUpdate() {
     line-height: 1.75rem;
     text-transform: uppercase;
     user-select: none;
+    overflow: hidden;
   }
 
   .actual-amount {
@@ -228,7 +229,6 @@ function applyUpdate() {
     display: flex;
     gap: 0.25rem;
     justify-content: flex-end;
-    margin-left: 1rem;
     margin-right: -0.5rem;
   }
 
@@ -248,7 +248,7 @@ function applyUpdate() {
       display: flex;
     }
 
-    .menu {
+    .buttons {
       display: none;
     }
 
@@ -262,7 +262,7 @@ function applyUpdate() {
     .head {
       justify-content: space-between;
 
-      .menu {
+      .buttons {
         display: flex;
       }
     }

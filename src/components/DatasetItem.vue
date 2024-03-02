@@ -11,6 +11,7 @@ const props = defineProps(['dataset']);
 const store = useStore();
 
 const collapsed = ref(true);
+const updateType = ref('add');
 
 const intervalName = computed(() => (props.dataset.type === 1 ? intervals[props.dataset.interval].name : ''));
 const isPositiveDiff = computed(() => props.dataset.diffAmount.toFixed(2) > 0);
@@ -61,8 +62,17 @@ function getMonthDifference(startDate, endDate) {
 }
 
 function applyUpdate() {
-  store.addActualAmount(props.dataset.id, props.dataset.updateAmount);
+  if (updateType.value === 'add') {
+    store.addActualAmount(props.dataset.id, props.dataset.updateAmount);
+  } else {
+    store.setActualAmount(props.dataset.id, props.dataset.updateAmount);
+  }
+
   store.setUpdateAmount(props.dataset.id, null);
+}
+
+function changeUpdateType() {
+  updateType.value = updateType.value === 'add' ? 'equals' : 'add';
 }
 
 onMounted(() => {
@@ -137,7 +147,7 @@ defineExpose({
           'text-red-600': isNegativeDiff,
         }"
       >
-      {{ dataset.diffAmount > 0 ? '+' : '' }}{{ toCurrency(dataset.diffAmount) }}
+      {{ Math.floor(dataset.diffAmount) > 0 ? '+' : '' }}{{ toCurrency(dataset.diffAmount) }}
       </span>
     </div>
 
@@ -168,6 +178,10 @@ defineExpose({
     <div class="prop update-amount">
       <span class="prop-label">Update</span>
       <div class="flex">
+        <div class="update-type-buttons">
+          <a @click="changeUpdateType" :class="{ 'active' : updateType === 'add' }">+</a>
+          <a @click="changeUpdateType" :class="{ 'active' : updateType === 'equals' }">=</a>
+        </div>
         <CurrencyInput
           v-model="dataset.updateAmount"
           :options="{
@@ -266,6 +280,26 @@ defineExpose({
   flex: 1;
   display: flex;
   align-items: center;
+}
+
+.update-type-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.25rem;
+    flex: 1;
+    color: $gray-300;
+    line-height: 1;
+
+    &.active {
+      color: $primary-color;
+      font-weight: bold;
+    }
+  }
 }
 
 .buttons {
