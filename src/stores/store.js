@@ -112,6 +112,12 @@ export const useStore = defineStore({
       });
     },
 
+    setActualAmount(id, amount) {
+      this.datagroups.map(datagroup => {
+        datagroup.datasets.filter(d => d.id === id).map(d => (d.actualAmount = amount ?? 0));
+      });
+    },
+
     setDebitAmount(id, amount) {
       this.datagroups.map(datagroup => {
         datagroup.datasets.filter(d => d.id === id).map(d => (d.debitAmount = amount ?? 0));
