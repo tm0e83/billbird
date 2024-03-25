@@ -341,6 +341,7 @@ defineExpose({
     align-items: center;
     margin-bottom: 0;
     padding-bottom: 0;
+    gap: 0 1rem;
   }
 
   .prop {
@@ -353,6 +354,8 @@ defineExpose({
 
     &:not(.head) {
       margin-left: 0;
+      padding-left: 0;
+      padding-right: 0;
     }
   }
 
@@ -411,8 +414,6 @@ defineExpose({
   .buttons {
     width: 20px;
     padding: 0 !important;
-    // margin-right: -1rem;
-    // transform: translateX(-0.5rem);
     display: flex;
     order: 10;
 

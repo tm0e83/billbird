@@ -102,7 +102,10 @@ defineExpose({
 .list-footer {
   font-weight: bold;
   background-color: $gray-100;
-  padding: 0.5rem calc(0.5rem + 20px + 1rem) 0.5rem calc(20px + 0.75rem);
+  // padding: 0.5rem calc(0.5rem + 20px + 1rem) 0.5rem calc(20px + 0.75rem);
+  // padding-left: calc(20px + 0.25rem);
+  padding: 0.5rem calc(0.5rem + 20px + 1rem) 1.5rem calc(20px + 0.75rem);
+  gap: 0 1rem;
 }
 
 .prop {
@@ -128,8 +131,7 @@ defineExpose({
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0 0.5rem;
   }
 
   .prop {
@@ -143,9 +145,12 @@ defineExpose({
     }
   }
 
+  .title {
+    padding-left: calc(20px + 0.25rem);
+  }
+
   .buttons {
-    width: 32px;
-    padding-left: 0;
+    width: 20px;
   }
 
   span.label {

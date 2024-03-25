@@ -213,6 +213,7 @@ defineExpose({
   justify-content: flex-start;
   font-size: 1.5rem;
   line-height: 2rem;
+  padding-left: calc(20px + 0.25rem);
 }
 
 .update-amount {
@@ -244,6 +245,8 @@ defineExpose({
     display: flex;
     font-weight: 500;
     align-items: center;
+    gap: 0 1rem;
+    padding: 0 0.5rem;
   }
 
   .list-footer {
@@ -292,7 +295,7 @@ defineExpose({
   }
 
   .buttons {
-    width: 48px;
+    width: 20px;
     // padding-left: 0;
   }
 
