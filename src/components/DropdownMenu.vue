@@ -1,6 +1,4 @@
 <script setup>
-// DO NOT use this component yet!
-
 import { onMounted, onUnmounted, ref } from 'vue';
 import { DotsVerticalIcon } from 'vue-tabler-icons';
 import { useElementEdges } from '@/composables/element-edges.js';
@@ -17,7 +15,8 @@ const dropdownMenuRef = ref(null);
 const triggerRef = ref(null);
 const dropdownLayerRef = ref(null);
 
-function toggle() {
+function toggle(e) {
+  e.stopPropagation();
   positionLayer();
   isExpanded.value = !isExpanded.value;
 }
@@ -47,6 +46,7 @@ function positionLayer() {
 }
 
 function onClickOutside(e) {
+  if (!dropdownMenuRef.value) return;
   const clickedOutsideDropownMenu = !e.target.isEqualNode(dropdownMenuRef.value) && !dropdownMenuRef.value.contains(e.target);
 
   if (isExpanded.value && clickedOutsideDropownMenu) {
@@ -55,7 +55,7 @@ function onClickOutside(e) {
 }
 
 onMounted(() => {
-  document.body.addEventListener('click', onClickOutside);
+  document.documentElement.addEventListener('click', onClickOutside);
   window.addEventListener('scroll', positionLayer);
   window.addEventListener('resize', positionLayer);
   window.addEventListener('orientationchange', positionLayer);
@@ -77,8 +77,9 @@ onUnmounted(() => {
     <a
       @click="toggle"
       ref="triggerRef"
+      class="dropdown-trigger"
     >
-      <slot><DotsVerticalIcon class="w-5 h-5" /></slot>
+      <slot><DotsVerticalIcon /></slot>
     </a>
 
     <Teleport to="body">
@@ -89,7 +90,7 @@ onUnmounted(() => {
       >
         <slot name="menu"></slot>
         <ul v-if="menuItems.length">
-          <template v-for="menuItem in menuItems">
+          <template v-for="(menuItem, index) in menuItems" :key="index">
             <li v-if="menuItem.condition !== false">
               <a
                 :href="menuItem.href"
@@ -111,6 +112,12 @@ onUnmounted(() => {
 .dropdown-menu {
   display: inline-block;
 }
+
+.dropdown-trigger {
+  display: block;
+  // padding: 0.25rem;
+}
+
 .dropdown-layer {
   position: absolute;
   background-color: white;

@@ -4,15 +4,28 @@ import intervals from './shared/intervals.json';
 import { toCurrency } from './shared/functions.js';
 import { useStore } from '@/stores/store.js';
 import { format } from 'date-fns';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, GripVerticalIcon, TrashIcon } from 'vue-tabler-icons';
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, EditIcon, GripVerticalIcon, TrashIcon, DotsVerticalIcon } from 'vue-tabler-icons';
 import CurrencyInput from '@/components/CurrencyInput.vue';
+import DropdownMenu from '@/components/DropdownMenu.vue';
 
 const props = defineProps(['dataset']);
 const store = useStore();
-
+const emit = defineEmits(['edit', 'delete']);
 const collapsed = ref(true);
-const updateType = ref('add');
-
+const menuItems = ref([
+  {
+    label: 'Ausfüllen',
+    onClick: () => fillUpdateField(),
+  },
+  {
+    label: 'Bearbeiten',
+    onClick: () => emit('edit', props.dataset),
+  },
+  {
+    label: 'Löschen',
+    onClick: () => emit('delete', props.dataset),
+  },
+]);
 const intervalName = computed(() => (props.dataset.type === 1 ? intervals[props.dataset.interval].name : ''));
 const isPositiveDiff = computed(() => props.dataset.diffAmount.toFixed(2) > 0);
 const isNegativeDiff = computed(() => props.dataset.diffAmount.toFixed(2) < 0);
@@ -62,7 +75,7 @@ function getMonthDifference(startDate, endDate) {
 }
 
 function applyUpdate() {
-  if (updateType.value === 'add') {
+  if (props.dataset.updateType === 'add') {
     store.addActualAmount(props.dataset.id, props.dataset.updateAmount);
   } else {
     store.setActualAmount(props.dataset.id, props.dataset.updateAmount);
@@ -72,7 +85,11 @@ function applyUpdate() {
 }
 
 function changeUpdateType() {
-  updateType.value = updateType.value === 'add' ? 'equals' : 'add';
+  store.setUpdateType(props.dataset.id, props.dataset.updateType === 'add' ? 'equals' : 'add');
+}
+
+function fillUpdateField() {
+  store.setUpdateAmount(props.dataset.id, props.dataset.monthlyAmount);
 }
 
 onMounted(() => {
@@ -91,6 +108,7 @@ onBeforeUpdate(() => {
 
 defineExpose({
   applyUpdate,
+  fillUpdateField
 });
 </script>
 
@@ -104,27 +122,16 @@ defineExpose({
       @click="collapsed = !collapsed"
     >
       <div class="title">
-        <button class="button drag-handle secondary clear p-1 grow-0">
-          <GripVerticalIcon class="icon mx-auto" />
+        <button class="button drag-handle secondary clear p-0 grow-0 mr-1">
+          <GripVerticalIcon class="w-5 h-5 mx-auto" />
         </button>
         <span>{{ dataset.title }}</span>
       </div>
       <div class="current-value">{{ toCurrency(dataset.actualAmount) }}</div>
       <div class="menu">
-        <button
-          @click="$emit('edit', dataset)"
-          class="button clear p-1 grow-0"
-          title="Bearbeiten"
-        >
-          <EditIcon class="icon mx-auto" />
-        </button>
-        <button
-          @click="$emit('delete', dataset)"
-          class="button alert clear p-1 grow-0"
-          title="Löschen"
-        >
-          <TrashIcon class="icon mx-auto" />
-        </button>
+        <DropdownMenu :menuItems="menuItems">
+          <DotsVerticalIcon class="w-5 h-5 mx-auto" />
+        </DropdownMenu>
       </div>
     </div>
 
@@ -179,8 +186,8 @@ defineExpose({
       <span class="prop-label">Update</span>
       <div class="flex">
         <div class="update-type-buttons">
-          <a @click="changeUpdateType" :class="{ 'active' : updateType === 'add' }">+</a>
-          <a @click="changeUpdateType" :class="{ 'active' : updateType === 'equals' }">=</a>
+          <a @click="changeUpdateType" :class="{ 'active' : dataset.updateType === 'add' }">+</a>
+          <a @click="changeUpdateType" :class="{ 'active' : dataset.updateType === 'equals' }">=</a>
         </div>
         <CurrencyInput
           v-model="dataset.updateAmount"
@@ -203,20 +210,9 @@ defineExpose({
 
     <div class="prop buttons">
       <div class="menu">
-        <button
-          @click="$emit('edit', dataset)"
-          class="button grow 2xl:clear 2xl:p-1 2xl:grow-0"
-          title="Bearbeiten"
-        >
-          <EditIcon class="icon mx-auto" />
-        </button>
-        <button
-          @click="$emit('delete', dataset)"
-          class="button alert grow 2xl:clear 2xl:p-1 2xl:grow-0"
-          title="Löschen"
-        >
-          <TrashIcon class="icon mx-auto" />
-        </button>
+        <DropdownMenu :menuItems="menuItems">
+          <DotsVerticalIcon class="w-5 h-5 mx-auto" />
+        </DropdownMenu>
       </div>
     </div>
   </div>
@@ -231,16 +227,18 @@ defineExpose({
   flex-direction: column;
   flex-grow: 1;
   border-bottom: 1px solid $gray-200;
+  padding: 0 0.5rem;
 }
 
 .prop {
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
-  padding: 0.1rem 1rem;
+  padding: 0.1rem 0;
 
   &:not(.head) {
-    margin-left: calc(28px - 0.625rem);
+    padding-left: calc(20px + 0.25rem);
+    padding-right: calc(20px + 1rem);
   }
 }
 
@@ -251,26 +249,20 @@ defineExpose({
 
 .drag-handle {
   cursor: move;
-  padding: 0.25rem;
-  margin-left: -0.5rem;
 }
 
 .head {
   align-items: center;
   overflow: hidden;
   font-weight: 500;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
+  gap: 0 1rem;
 
   .menu {
     display: flex;
-    gap: 0.25rem;
+    display: flex;
     justify-content: flex-end;
-    margin-left: 1rem;
-    margin-right: -0.5rem;
-  }
-
-  .current-value {
-    display: none;
+    width: 20px;
   }
 }
 
@@ -315,18 +307,6 @@ defineExpose({
   & + button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
-}
-
-.dataset.collapsed {
-  .head {
-    .menu {
-      display: none;
-    }
-
-    .current-value {
-      display: block;
-    }
   }
 }
 
@@ -404,19 +384,16 @@ defineExpose({
     justify-content: flex-end;
     flex-grow: 0;
     flex-shrink: 0;
-    flex-basis: 140px;
   }
 
-  .buttons {
-    display: flex;
-
-    .menu {
-      display: flex;
-      gap: 0.25rem;
-      justify-content: flex-end;
-      margin-left: 1rem;
-      margin-right: -0.5rem;
-    }
+  .actual-amount,
+  .debit-amount,
+  .diff-amount,
+  .invoice-amount,
+  .monthly-amount,
+  .invoice-date,
+  .interval {
+    flex-basis: 140px;
   }
 
   .actual-amount {
@@ -432,7 +409,18 @@ defineExpose({
   }
 
   .buttons {
+    width: 20px;
+    padding: 0 !important;
+    // margin-right: -1rem;
+    // transform: translateX(-0.5rem);
+    display: flex;
     order: 10;
+
+    .menu {
+      display: flex;
+      gap: 0.25rem;
+      justify-content: flex-end;
+    }
   }
 
   .update-amount {

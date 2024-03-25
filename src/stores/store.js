@@ -11,7 +11,9 @@ const getAllDatasets = datagroups => {
  */
 const getAllActiveDatasets = state => {
   return state.datagroups.reduce((datasets, datagroup) => {
-    return state.inactiveDatagroupIds.includes(datagroup.id) ? datasets : datasets.concat(datagroup.datasets);
+    // return state.inactiveDatagroupIds.includes(datagroup.id) ? datasets : datasets.concat(datagroup.datasets);
+    return datagroup.active ? datasets.concat(datagroup.datasets) : datasets;
+
   }, []);
 };
 
@@ -21,9 +23,9 @@ export const useStore = defineStore({
   state: () => ({
     currentDate: new Date(),
     datagroups: [],
-    inactiveDatagroupIds: [],
     uid: null,
-    hasUnsavedData: false,
+    // hasUnsavedData: false,
+    // isTouchDevice: false,
   }),
 
   getters: {
@@ -154,6 +156,12 @@ export const useStore = defineStore({
       });
     },
 
+    setUpdateType(id, updateType) {
+      this.datagroups.map(datagroup => {
+        datagroup.datasets.filter(d => d.id === id).map(d => d.updateType = updateType);
+      });
+    },
+
     replaceDatagroup(datagroup) {
       this.datagroups = this.datagroups.map(currentDatagroup => {
         return currentDatagroup.id === datagroup.id ? datagroup : currentDatagroup;
@@ -181,11 +189,21 @@ export const useStore = defineStore({
     },
 
     activateDatagroup(id) {
-      this.inactiveDatagroupIds.splice(this.inactiveDatagroupIds.indexOf(id), 1);
+      this.datagroups.map(datagroup => {
+        if (datagroup.id === id) {
+          datagroup.active = true;
+        }
+      });
+      // this.inactiveDatagroupIds.splice(this.inactiveDatagroupIds.indexOf(id), 1);
     },
 
     deactivateDatagroup(id) {
-      this.inactiveDatagroupIds.push(id);
+      this.datagroups.map(datagroup => {
+        if (datagroup.id === id) {
+          datagroup.active = false;
+        }
+      });
+      // this.inactiveDatagroupIds.push(id);
     },
   },
 });

@@ -63,9 +63,18 @@ function applyUpdate() {
   datasetRefs.value.map(datasetRef => datasetRef.applyUpdate());
 }
 
+function fillUpdateFields() {
+  datasetRefs.value.map(datasetRef => datasetRef.fillUpdateField());
+}
+
 function onSort(args) {
   //
 }
+
+defineExpose({
+  applyUpdate,
+  fillUpdateFields
+});
 </script>
 
 <template>
@@ -167,7 +176,7 @@ function onSort(args) {
         <span class="label">Differenz</span>
         <span>{{ toCurrency(totalDiffAmount) }}</span>
       </div>
-      <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
+      <div class="prop grow-0 shrink-0 buttons"></div>
     </div>
   </div>
 </template>
@@ -184,9 +193,7 @@ function onSort(args) {
 }
 
 .list-footer {
-  // border-top: 1px solid $gray-100;
-  padding: 0.5rem 0 1.5rem calc(28px - 0.5rem);
-  // background-color: $gray-50;
+  padding: 0.5rem calc(0.5rem + 20px + 1rem) 1.5rem calc(20px + 0.75rem);
   font-weight: 500;
 }
 
@@ -194,7 +201,7 @@ function onSort(args) {
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0;
 
   &.invoice-date,
   &.interval {
@@ -242,8 +249,6 @@ function onSort(args) {
   .list-footer {
     color: $gray-400;
     padding-top: 0;
-    // padding-bottom: 0;
-    padding-left: 0;
   }
 
   .prop {
@@ -261,7 +266,6 @@ function onSort(args) {
     flex-basis: auto;
     font-size: 1rem;
     line-height: 1.5rem;
-    padding-left: calc(0.5rem + 28px);
   }
 
   .actual-amount,
@@ -275,7 +279,21 @@ function onSort(args) {
     justify-content: flex-end;
     flex-grow: 0;
     flex-shrink: 0;
+  }
+
+  .actual-amount,
+  .debit-amount,
+  .diff-amount,
+  .invoice-amount,
+  .monthly-amount,
+  .invoice-date,
+  .interval {
     flex-basis: 140px;
+  }
+
+  .buttons {
+    width: 48px;
+    // padding-left: 0;
   }
 
   .update-amount {

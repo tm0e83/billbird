@@ -37,10 +37,6 @@ router.beforeEach(async (to, from) => {
   const authRequired = !publicPages.includes(to.path);
   const store = useStore();
 
-  // if (authRequired && store.uid) {
-  //   return '/data';
-  // }
-
   if (authRequired && !store.uid) {
     return '/login';
   }

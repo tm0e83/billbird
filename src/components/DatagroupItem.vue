@@ -1,21 +1,47 @@
 <script setup>
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useStore } from '@/stores/store.js';
 import { toCurrency } from './shared/functions.js';
 import DatasetList from '@/components/DatasetList.vue';
-import { CheckIcon, EditIcon, GripVerticalIcon, TrashIcon, SquareIcon, SquareCheckIcon } from 'vue-tabler-icons';
+import { CheckIcon, EditIcon, GripVerticalIcon, TrashIcon, DotsVerticalIcon } from 'vue-tabler-icons';
+import DropdownMenu from '@/components/DropdownMenu.vue';
 
 const props = defineProps(['datagroup']);
-
 const store = useStore();
+const emit = defineEmits(['edit', 'delete']);
+const datasetListRef = ref(null);
 
 const state = reactive({
   collapsed: true,
 });
 
-const isActive = computed(() => {
-  return store.inactiveDatagroupIds.includes(props.datagroup.id) === false;
-});
+const isActive = computed(() => props.datagroup.active === true);
+const isInctive = computed(() => props.datagroup.active === false);
+
+const menuItems = reactive([
+  {
+    label: 'Ausfüllen',
+    onClick: () => fillUpdateFields(),
+  },
+  {
+    label: 'Bearbeiten',
+    onClick: () => emit('edit', props.datagroup),
+  },
+  {
+    label: 'Löschen',
+    onClick: () => emit('delete', props.datagroup),
+  },
+  {
+    label: 'Aktivieren',
+    onClick: () => activate(),
+    condition: isInctive
+  },
+  {
+    label: 'Deaktivieren',
+    onClick: () => deactivate(),
+    condition: isActive
+  },
+]);
 
 const totalActualAmount = computed(() => {
   return props.datagroup.datasets.reduce((sum, dataset) => (dataset.actualAmount ? (sum += dataset.actualAmount) : sum), 0);
@@ -50,20 +76,28 @@ function activate() {
 }
 
 function deactivate() {
+  state.collapsed = true;
   store.deactivateDatagroup(props.datagroup.id);
 }
 
 function toggle(e) {
+  if (!props.datagroup.active) return;
   if (e.target.classList.contains('button') || e.target.closest('.button')) return;
   state.collapsed = !state.collapsed;
 }
 
 function applyUpdate() {
-  props.datagroup.datasets.map(dataset => {
-    store.addActualAmount(dataset.id, dataset.updateAmount);
-    store.setUpdateAmount(dataset.id, null);
-  });
+  if (props.datagroup.active && datasetListRef.value) datasetListRef.value.applyUpdate();
 }
+
+function fillUpdateFields() {
+  if (datasetListRef.value) datasetListRef.value.fillUpdateFields();
+}
+
+defineExpose({
+  applyUpdate,
+  fillUpdateFields
+});
 </script>
 
 <template>
@@ -76,7 +110,7 @@ function applyUpdate() {
       @click="toggle"
     >
     <div class="prop title">
-        <button class="button drag-handle secondary clear p-1 grow-0">
+        <button class="button drag-handle secondary clear p-0 grow-0 mr-1">
           <GripVerticalIcon class="w-5 h-5 mx-auto" />
         </button>
         <span class="overflow-hidden text-ellipsis">{{ datagroup.title }}</span>
@@ -113,44 +147,18 @@ function applyUpdate() {
       <div class="prop text-right diff-amount">
         <span title="Differenz">{{ toCurrency(totalDiffAmount) }}</span>
       </div>
-      <div class="prop grow-0 shrink-0 basis-[140px] buttons">
+      <div class="prop grow-0 shrink-0 buttons">
         <div class="menu">
-          <button
-            v-if="!isActive"
-            @click="activate"
-            class="button grow clear p-1 grow-0"
-            title="Aktivieren"
-          >
-            <SquareIcon class="w-5 h-5" />
-          </button>
-          <button
-            v-if="isActive"
-            @click="deactivate"
-            class="button grow clear p-1 grow-0"
-            title="Deaktivieren"
-          >
-            <SquareCheckIcon class="w-5 h-5" />
-          </button>
-          <button
-            @click="$emit('edit', datagroup)"
-            class="button grow clear p-1 grow-0"
-            title="Bearbeiten"
-          >
-            <EditIcon class="w-5 h-5" />
-          </button>
-          <button
-            @click="$emit('delete', datagroup)"
-            class="button alert grow clear p-1 grow-0"
-            title="Löschen"
-          >
-            <TrashIcon class="w-5 h-5" />
-          </button>
+          <DropdownMenu :menuItems="menuItems">
+            <DotsVerticalIcon class="w-5 h-5 mx-auto" />
+          </DropdownMenu>
         </div>
       </div>
     </div>
 
     <div class="list">
       <DatasetList
+        ref="datasetListRef"
         v-if="datagroup.datasets.length"
         :datasets="datagroup.datasets"
         :collapsed="state.collapsed"
@@ -168,8 +176,8 @@ function applyUpdate() {
 <style lang="scss" scoped>
 @import '@/assets/styles/variables';
 @import '@/assets/styles/mixins';
+
 .datagroup {
-  // background-color: $gray-100;
   background-color: #fff;
   margin-bottom: 1px;
 
@@ -177,10 +185,15 @@ function applyUpdate() {
     margin-bottom: 0;
   }
 
+  &.inactive {
+    color: $gray-300;
+  }
+
   .head {
-    padding: 0;
+    padding: 0 0.5rem;
     align-items: center;
     display: flex;
+    gap: 0 1rem;
     min-height: 3.25rem;
     font-weight: bold;
     cursor: pointer;
@@ -191,12 +204,18 @@ function applyUpdate() {
     }
   }
 
+  &.inactive {
+    .head {
+      cursor: default;
+    }
+  }
+
   .drag-handle {
     cursor: move;
-    margin-left: -0.5rem;
   }
+
   .prop {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0;
   }
 
   .title {
@@ -211,10 +230,6 @@ function applyUpdate() {
     overflow: hidden;
   }
 
-  .actual-amount {
-    display: none;
-  }
-
   .debit-amount,
   .diff-amount,
   .invoice-amount,
@@ -225,11 +240,16 @@ function applyUpdate() {
     display: none;
   }
 
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    width: 20px;
+  }
+
   .menu {
     display: flex;
     gap: 0.25rem;
     justify-content: flex-end;
-    margin-right: -0.5rem;
   }
 
   .list {
@@ -244,15 +264,6 @@ function applyUpdate() {
   &.collapsed {
     margin-bottom: 0;
 
-    .actual-amount {
-      display: flex;
-    }
-
-    .buttons {
-      display: none;
-    }
-
-
     .list {
       display: none;
     }
@@ -261,10 +272,6 @@ function applyUpdate() {
   @media (min-width: $xxl) {
     .head {
       justify-content: space-between;
-
-      .buttons {
-        display: flex;
-      }
     }
 
     .prop {
@@ -273,14 +280,6 @@ function applyUpdate() {
       &.title {
         justify-content: flex-start;
       }
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: flex-end;
-      flex-grow: 0;
-      flex-shrink: 0;
-      flex-basis: 140px;
     }
 
     .actual-amount {

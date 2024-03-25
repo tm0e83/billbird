@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onBeforeMount } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import { useStore } from '@/stores/store.js';
 import githubLogo from '@/assets/images/github-logo.svg';
@@ -9,7 +9,6 @@ import { LoginIcon, LogoutIcon } from 'vue-tabler-icons';
 
 const store = useStore();
 const auth = getAuth();
-
 const isLoggedIn = ref(false);
 
 watch(
@@ -41,6 +40,10 @@ function logout() {
       });
   }
 }
+
+// onBeforeMount(() => {
+//   store.isTouchDevice = 'ontouchstart' in window;
+// });
 </script>
 
 <template>

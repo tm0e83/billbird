@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from '@/stores/store.js';
 import DatagroupItem from '@/components/DatagroupItem.vue';
 import { toCurrency } from './shared/functions.js';
@@ -7,18 +7,23 @@ import { CheckIcon } from 'vue-tabler-icons';
 import draggable from 'vuedraggable';
 
 const store = useStore();
+const datagroupRefs = ref([]);
 
 function applyUpdate() {
-  store.datagroups.map(datagroup => {
-    datagroup.datasets.map(dataset => {
-      store.addActualAmount(dataset.id, dataset.updateAmount);
-      store.setUpdateAmount(dataset.id, null);
-    });
-  });
+  datagroupRefs.value.map(datagroupRef => datagroupRef.applyUpdate());
+}
+
+function fillUpdateFields() {
+  datagroupRefs.value.map(datagroupRef => datagroupRef.fillUpdateFields());
 }
 
 const hasUpdateAmounts = computed(() => {
   return store.allDatasets.filter(dataset => !!dataset.updateAmount).length > 0;
+});
+
+defineExpose({
+  applyUpdate,
+  fillUpdateFields
 });
 </script>
 
@@ -33,6 +38,7 @@ const hasUpdateAmounts = computed(() => {
     >
       <template #item="{ element }">
         <DatagroupItem
+          :ref="el => datagroupRefs.push(el)"
           :datagroup="element"
           @edit="datagroup => $emit('editDatagroup', datagroup)"
           @delete="datagroup => $emit('deleteDatagroup', datagroup)"
@@ -80,7 +86,7 @@ const hasUpdateAmounts = computed(() => {
         <span class="label">Differenz</span>
         <span class="value">{{ toCurrency(store.totalDiffAmount) }}</span>
       </div>
-      <div class="prop grow-0 shrink-0 basis-[140px] buttons"></div>
+      <div class="prop grow-0 shrink-0 buttons"></div>
     </div>
   </div>
 </template>
@@ -96,13 +102,11 @@ const hasUpdateAmounts = computed(() => {
 .list-footer {
   font-weight: bold;
   background-color: $gray-100;
-  padding-left: calc(28px - 0.5rem);
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem calc(0.5rem + 20px + 1rem) 0.5rem calc(20px + 0.75rem);
 }
 
 .prop {
-  padding: 0 1rem;
+  padding: 0;
   display: flex;
   justify-content: space-between;
 
@@ -137,6 +141,11 @@ const hasUpdateAmounts = computed(() => {
     &.interval {
       display: block;
     }
+  }
+
+  .buttons {
+    width: 32px;
+    padding-left: 0;
   }
 
   span.label {

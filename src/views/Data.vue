@@ -7,13 +7,14 @@ import EditDatagroup from '@/components/EditDatagroup.vue';
 import DeleteDatagroup from '@/components/DeleteDatagroup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import { format } from 'date-fns';
-import { DeviceFloppyIcon, DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
+import { BallpenIcon, DeviceFloppyIcon, DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
 import { getDatabase, ref as fireRef, get, child, set } from 'firebase/database';
 import { notify } from '@kyvg/vue3-notification';
 
 const db = getDatabase();
 const dbRef = fireRef(db);
 const store = useStore();
+const datagroupListRef = ref(null);
 
 const state = reactive({
   dataset: null,
@@ -23,10 +24,10 @@ const state = reactive({
   deleteDatagroupModalVisible: false,
 });
 
-store.$subscribe((mutation, state) => {
-  store.hasUnsavedData = true;
-  window.addEventListener('beforeunload', beforeUnload);
-});
+// store.$subscribe((mutation, state) => {
+//   store.hasUnsavedData = true;
+//   window.addEventListener('beforeunload', beforeUnload);
+// });
 
 const beforeUnload = e => {
   e.preventDefault();
@@ -54,7 +55,6 @@ function createNewDataset() {
 }
 
 function saveInDatabase() {
-  console.log('SAVE');
   set(fireRef(db, 'datagroups'), toRaw(store.datagroups))
     .then(() => {
       window.removeEventListener('beforeunload', beforeUnload);
@@ -156,7 +156,12 @@ onMounted(() => {
   }
 });
 
-const menuItems = ref([
+// const menuItems = ref({});
+const menuItems = reactive([
+  {
+    label: 'Ausfüllen',
+    onClick: () => fillUpdateFields(),
+  },
   {
     label: 'JSON herunterladen',
     onClick: () => downloadAsJSON(),
@@ -179,6 +184,21 @@ const menuItems = ref([
     condition: store.isLoggedIn,
   },
 ]);
+
+const createItemMenuItems = reactive([
+  {
+    label: 'Datengruppe',
+    onClick: () => createNewDatagroup(),
+  },
+  {
+    label: 'Datensatz',
+    onClick: () => createNewDataset(),
+  },
+]);
+
+function fillUpdateFields() {
+  if (datagroupListRef.value) datagroupListRef.value.fillUpdateFields();
+}
 </script>
 
 <template>
@@ -224,7 +244,21 @@ const menuItems = ref([
     </div>
 
     <nav>
-      <ul class="hidden md:flex flex-col flex-wrap gap-3 md:flex-row md:gap-7 mb-3">
+      <!--
+      <div>
+        <input type="text" placeholder="Suche">
+      </div>
+      -->
+      <ul class="hidden md:flex flex-col flex-wrap gap-3 md:flex-row md:gap-7">
+        <li>
+          <a
+            @click="fillUpdateFields"
+            class="flex gap-1"
+          >
+            <BallpenIcon />
+            <span>Ausfüllen</span>
+          </a>
+        </li>
         <li>
           <a
             @click="downloadAsJSON"
@@ -244,22 +278,12 @@ const menuItems = ref([
           </a>
         </li>
         <li>
-          <a
-            @click="createNewDatagroup"
-            class="flex gap-1"
-          >
-            <PlusIcon />
-            <span>Neue Datengruppe</span>
-          </a>
-        </li>
-        <li>
-          <a
-            @click="createNewDataset"
-            class="flex gap-1"
-          >
-            <PlusIcon />
-            <span>Neue Datensatz</span>
-          </a>
+          <DropdownMenu :menuItems="createItemMenuItems">
+            <div class="flex gap-1">
+              <PlusIcon />
+              <span>Neu</span>
+            </div>
+          </DropdownMenu>
         </li>
         <li v-if="store.isLoggedIn">
           <a
@@ -274,6 +298,7 @@ const menuItems = ref([
     </nav>
 
     <DatagroupList
+      ref="datagroupListRef"
       v-if="store.datagroups.length"
       @editDatagroup="datagroup => editDatagroup(datagroup)"
       @deleteDatagroup="datagroup => deleteDatagroup(datagroup)"
@@ -305,5 +330,13 @@ const menuItems = ref([
 
   body {
     overflow-y: scroll;
+  }
+
+  nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 0.5rem;
   }
 </style>
