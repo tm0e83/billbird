@@ -100,11 +100,8 @@ defineExpose({
 }
 
 .list-footer {
-  font-weight: bold;
   background-color: $gray-100;
-  // padding: 0.5rem calc(0.5rem + 20px + 1rem) 0.5rem calc(20px + 0.75rem);
-  // padding-left: calc(20px + 0.25rem);
-  padding: 0.5rem calc(0.5rem + 20px + 1rem) 1.5rem calc(20px + 0.75rem);
+  padding: 1.5rem calc(0.5rem + 20px + 1rem) 1.5rem calc(20px + 0.75rem);
   gap: 0 1rem;
 }
 
@@ -117,6 +114,10 @@ defineExpose({
   &.interval {
     display: none;
   }
+}
+
+.title {
+  font-weight: bold;
 }
 
 .icon {
@@ -132,6 +133,7 @@ defineExpose({
     flex-wrap: wrap;
     align-items: center;
     padding: 0 0.5rem;
+    font-weight: bold;
   }
 
   .prop {
@@ -146,6 +148,7 @@ defineExpose({
   }
 
   .title {
+    visibility: hidden;
     padding-left: calc(20px + 0.25rem);
   }
 

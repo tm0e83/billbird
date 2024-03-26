@@ -7,7 +7,7 @@ import EditDatagroup from '@/components/EditDatagroup.vue';
 import DeleteDatagroup from '@/components/DeleteDatagroup.vue';
 import DropdownMenu from '@/components/DropdownMenu.vue';
 import { format } from 'date-fns';
-import { BallpenIcon, DeviceFloppyIcon, DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
+import { BucketDropletIcon, DeviceFloppyIcon, DotsVerticalIcon, DownloadIcon, PlusIcon, UploadIcon } from 'vue-tabler-icons';
 import { getDatabase, ref as fireRef, get, child, set } from 'firebase/database';
 import { notify } from '@kyvg/vue3-notification';
 
@@ -237,25 +237,27 @@ function fillUpdateFields() {
       />
     </ModalWindow>
 
-    <div class="flex justify-end md:hidden mb-3">
-      <DropdownMenu :menuItems="menuItems">
-        <DotsVerticalIcon />
-      </DropdownMenu>
-    </div>
-
     <nav>
       <!--
       <div>
         <input type="text" placeholder="Suche">
       </div>
       -->
-      <ul class="hidden md:flex flex-col flex-wrap gap-3 md:flex-row md:gap-7">
+
+      <div class="mobile-nav">
+        <DropdownMenu :menuItems="menuItems">
+          <DotsVerticalIcon class="w-5 h-5 mx-auto" />
+        </DropdownMenu>
+      </div>
+
+      <ul class="desktop-nav">
         <li>
           <a
             @click="fillUpdateFields"
             class="flex gap-1"
           >
-            <BallpenIcon />
+
+            <BucketDropletIcon />
             <span>Ausfüllen</span>
           </a>
         </li>
@@ -338,5 +340,27 @@ function fillUpdateFields() {
     justify-content: space-between;
     align-items: flex-end;
     margin-bottom: 0.5rem;
+  }
+
+  .mobile-nav {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 0.5rem;
+
+    @media (min-width: $md) {
+      display: none;
+    }
+  }
+
+  .desktop-nav {
+    display: none;
+
+    @media (min-width: $md) {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.75rem
+    }
   }
 </style>
